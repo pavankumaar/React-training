@@ -1,6 +1,55 @@
-# Getting Started with Create React App
+# React Training Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a React training application with topic completion tracking functionality. It includes a PostgreSQL database to store the completion status of topics.
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- PostgreSQL database
+
+## Setup
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Create a `.env` file in the root directory with the following content (adjust as needed):
+
+   **For local PostgreSQL:**
+   ```
+   PORT=3000
+   SERVER_PORT=5001
+   DB_USER=postgres
+   DB_HOST=localhost
+   DB_NAME=react_training
+   DB_PASSWORD=postgres
+   DB_PORT=5432
+   ```
+
+   **For Neon DB or other cloud PostgreSQL services:**
+   ```
+   PORT=3000
+   SERVER_PORT=5001
+   DATABASE_URL=postgres://user:password@hostname:port/database?sslmode=require
+   ```
+   
+   Replace the `DATABASE_URL` with your actual connection string from Neon DB.
+
+3. Set up the database:
+   
+   **For local PostgreSQL:**
+   ```
+   npm run db:setup
+   ```
+   
+   **For Neon DB:**
+   
+   When using Neon DB, you don't need to create the database manually. The database is already created when you set up your Neon project. Just run:
+   ```
+   npm run db:setup
+   ```
+   This will create the necessary tables in your existing Neon database.
 
 ## Available Scripts
 
@@ -8,11 +57,21 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the React app in development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### `npm run server`
+
+Runs the backend server for the topic completion API.\
+The server will be available at [http://localhost:5001](http://localhost:5001).
+
+### `npm run dev`
+
+Runs both the React app and the backend server concurrently.\
+This is the recommended way to run the application during development.
 
 ### `npm test`
 
@@ -68,3 +127,18 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Topic Completion Feature
+
+This application includes a feature to mark topics as completed:
+
+1. Each topic card has a "Mark as Done" button next to the "View Topic" button
+2. Clicking the button toggles the completion status of the topic
+3. The completion status is stored in a PostgreSQL database
+4. The UI updates to show a visual indicator of completed topics
+
+The feature uses:
+- A Node.js/Express backend server
+- PostgreSQL database for persistent storage
+- React Context API for state management
+- Real-time database updates (no localStorage caching)
