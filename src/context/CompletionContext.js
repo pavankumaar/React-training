@@ -22,38 +22,26 @@ export const CompletionProvider = ({ children }) => {
   const fetchCompletedTopics = async () => {
     try {
       setLoading(true);
-      console.log('Fetching completed topics from:', `${API_URL}/topics`);
       
       const response = await axios.get(`${API_URL}/topics`, { timeout: 8000 });
-      console.log('Topics API response:', response.data);
       
       const topics = {};
       if (Array.isArray(response.data)) {
         response.data.forEach(topic => {
           if (topic && topic.completed) {
             topics[topic.topic_path] = true;
-            console.log('Marked as completed:', topic.topic_path);
           }
         });
         
         // Always use the API data, even if empty
-        console.log('Using API data for completed topics');
         setCompletedTopics(topics);
         setUsesFallback(false);
       } else {
-        console.error('Unexpected response format:', response.data);
         // Just set an empty object
         setCompletedTopics({});
         setUsesFallback(false);
       }
     } catch (error) {
-      console.error('Error loading completed topics:', error);
-      console.error('Error details:', error.message);
-      if (error.response) {
-        console.error('Response status:', error.response.status);
-        console.error('Response data:', error.response.data);
-      }
-      
       // Just set an empty object if there's an error
       setCompletedTopics({});
       setUsesFallback(false);
@@ -79,7 +67,8 @@ export const CompletionProvider = ({ children }) => {
       // Fetch the updated list from the database
       await fetchCompletedTopics();
     } catch (error) {
-      console.error('Error marking topic as completed:', error);
+      // Handle error silently and ensure loading state is reset
+      setLoading(false);
     }
   };
   
@@ -95,7 +84,8 @@ export const CompletionProvider = ({ children }) => {
       // Fetch the updated list from the database
       await fetchCompletedTopics();
     } catch (error) {
-      console.error('Error marking topic as not completed:', error);
+      // Handle error silently and ensure loading state is reset
+      setLoading(false);
     }
   };
   

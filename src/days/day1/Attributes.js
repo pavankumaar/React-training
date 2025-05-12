@@ -1,17 +1,11 @@
-import React from 'react';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
-import CompleteButton from '../../components/CompleteButton';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
-`;
-
-const Section = styled.section`
-  margin-bottom: 2rem;
 `;
 
 const SectionTitle = styled.h3`
@@ -65,9 +59,9 @@ const Attributes = () => {
         
         <SectionTitle>The src Attribute</SectionTitle>
         <p>The <code>src</code> attribute specifies the path to the image to be displayed:</p>
-        <img src="image.jpg" alt="Placeholder Image" width="150" height="150" />
+        <img src="image.jpg" alt="Placeholder Img" width="150" height="150" />
         <CodeBlock>
-{`<img src="image.jpg" alt="Placeholder Image" width="150" height="150">`}
+{`<img src="image.jpg" alt="Placeholder Img" width="150" height="150">`}
         </CodeBlock>
         
         <SectionTitle>The width and height Attributes</SectionTitle>

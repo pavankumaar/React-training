@@ -23,11 +23,15 @@ const TopicHeader = styled.div`
 `;
 
 const StatusIcon = styled.span`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
+  color: white;
   border-radius: 50%;
   margin-right: 10px;
+  padding-top: 2px;
   background-color: ${props => props.completed ? 'var(--success-color)' : 'var(--medium-gray)'};
 `;
 
@@ -103,7 +107,7 @@ const TopicCard = ({ title, description, link, completed: propCompleted = false 
   return (
     <Card>
       <TopicHeader>
-        <StatusIcon completed={isCompleted} />
+        <StatusIcon completed={isCompleted}>{isCompleted ? '✓' : ''}</StatusIcon>
         <TopicTitle>{title}</TopicTitle>
         {isCompleted && <CompletedTag>Completed</CompletedTag>}
       </TopicHeader>

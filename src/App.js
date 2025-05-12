@@ -1,10 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { CompletionProvider } from './context/CompletionContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
 // Main pages
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Day index pages
@@ -47,56 +50,63 @@ import Loops from './days/day5/Loops';
 
 function App() {
   return (
-    <CompletionProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          {/* Main routes */}
-          <Route path="/" element={<HomePage />} />
+    <AuthProvider>
+      <CompletionProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            {/* Main routes */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            } />
           
           {/* Day index routes */}
-          <Route path="/day1" element={<Day1IndexPage />} />
-          <Route path="/day2" element={<Day2IndexPage />} />
-          <Route path="/day3" element={<Day3IndexPage />} />
-          <Route path="/day4" element={<Day4IndexPage />} />
-          <Route path="/day5" element={<Day5IndexPage />} />
+          <Route path="/day1" element={<ProtectedRoute><Day1IndexPage /></ProtectedRoute>} />
+          <Route path="/day2" element={<ProtectedRoute><Day2IndexPage /></ProtectedRoute>} />
+          <Route path="/day3" element={<ProtectedRoute><Day3IndexPage /></ProtectedRoute>} />
+          <Route path="/day4" element={<ProtectedRoute><Day4IndexPage /></ProtectedRoute>} />
+          <Route path="/day5" element={<ProtectedRoute><Day5IndexPage /></ProtectedRoute>} />
           
           {/* Day 1 routes */}
-          <Route path="/day1/html-basics" element={<HtmlBasics />} />
-          <Route path="/day1/headings" element={<Headings />} />
-          <Route path="/day1/paragraphs-text" element={<ParagraphsText />} />
-          <Route path="/day1/attributes" element={<Attributes />} />
-          <Route path="/day1/tables" element={<Tables />} />
-          <Route path="/day1/forms" element={<Forms />} />
-          <Route path="/day1/images" element={<Images />} />
+          <Route path="/day1/html-basics" element={<ProtectedRoute><HtmlBasics /></ProtectedRoute>} />
+          <Route path="/day1/headings" element={<ProtectedRoute><Headings /></ProtectedRoute>} />
+          <Route path="/day1/paragraphs-text" element={<ProtectedRoute><ParagraphsText /></ProtectedRoute>} />
+          <Route path="/day1/attributes" element={<ProtectedRoute><Attributes /></ProtectedRoute>} />
+          <Route path="/day1/tables" element={<ProtectedRoute><Tables /></ProtectedRoute>} />
+          <Route path="/day1/forms" element={<ProtectedRoute><Forms /></ProtectedRoute>} />
+          <Route path="/day1/images" element={<ProtectedRoute><Images /></ProtectedRoute>} />
           
           {/* Day 2 routes */}
-          <Route path="/day2/css-introduction" element={<CssIntroduction />} />
-          <Route path="/day2/css-selectors" element={<CssSelectors />} />
-          <Route path="/day2/classes-ids" element={<ClassesIds />} />
-          <Route path="/day2/div-span" element={<DivSpan />} />
-          <Route path="/day2/box-model" element={<BoxModel />} />
+          <Route path="/day2/css-introduction" element={<ProtectedRoute><CssIntroduction /></ProtectedRoute>} />
+          <Route path="/day2/css-selectors" element={<ProtectedRoute><CssSelectors /></ProtectedRoute>} />
+          <Route path="/day2/classes-ids" element={<ProtectedRoute><ClassesIds /></ProtectedRoute>} />
+          <Route path="/day2/div-span" element={<ProtectedRoute><DivSpan /></ProtectedRoute>} />
+          <Route path="/day2/box-model" element={<ProtectedRoute><BoxModel /></ProtectedRoute>} />
           
           {/* Day 3 routes */}
-          <Route path="/day3/flexbox-grid" element={<FlexboxGrid />} />
-          <Route path="/day3/styling-forms-buttons" element={<StylingFormsButtons />} />
-          <Route path="/day3/responsive-design" element={<ResponsiveDesign />} />
+          <Route path="/day3/flexbox-grid" element={<ProtectedRoute><FlexboxGrid /></ProtectedRoute>} />
+          <Route path="/day3/styling-forms-buttons" element={<ProtectedRoute><StylingFormsButtons /></ProtectedRoute>} />
+          <Route path="/day3/responsive-design" element={<ProtectedRoute><ResponsiveDesign /></ProtectedRoute>} />
           
           {/* Day 4 routes */}
-          <Route path="/day4/variables" element={<Variables />} />
-          <Route path="/day4/data-types" element={<DataTypes />} />
-          <Route path="/day4/operators-conditionals" element={<OperatorsConditionals />} />
+          <Route path="/day4/variables" element={<ProtectedRoute><Variables /></ProtectedRoute>} />
+          <Route path="/day4/data-types" element={<ProtectedRoute><DataTypes /></ProtectedRoute>} />
+          <Route path="/day4/operators-conditionals" element={<ProtectedRoute><OperatorsConditionals /></ProtectedRoute>} />
           
           {/* Day 5 routes */}
-          <Route path="/day5/functions" element={<Functions />} />
-          <Route path="/day5/arrays-objects" element={<ArraysObjects />} />
-          <Route path="/day5/loops" element={<Loops />} />
+          <Route path="/day5/functions" element={<ProtectedRoute><Functions /></ProtectedRoute>} />
+          <Route path="/day5/arrays-objects" element={<ProtectedRoute><ArraysObjects /></ProtectedRoute>} />
+          <Route path="/day5/loops" element={<ProtectedRoute><Loops /></ProtectedRoute>} />
           
           {/* 404 route */}
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />
         </Routes>
       </Router>
-    </CompletionProvider>
+      </CompletionProvider>
+    </AuthProvider>
   );
 }
 

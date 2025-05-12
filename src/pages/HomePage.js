@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
-import CompletionContext from '../context/CompletionContext';
 
 const Title = styled.h1`
   text-align: center;
@@ -145,16 +144,13 @@ const HomePage = () => {
   const fetchDayStats = async () => {
     try {
       setLoading(true);
-      console.log('Checking server health...');
       
       // Add timestamp to prevent caching
       const timestamp = new Date().getTime();
-      console.log('Fetching stats from:', `${API_URL}/stats/days?t=${timestamp}`);
       
       // First try to get the topics to see if the server is responding at all
       let topicsResponse;
       try {
-        console.log('Checking API connection with topics endpoint');
         topicsResponse = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
           timeout: 5000,
           headers: {
@@ -163,15 +159,7 @@ const HomePage = () => {
             'Expires': '0',
           }
         });
-        console.log('Topics API response status:', topicsResponse.status);
-        console.log('Topics API response data:', topicsResponse.data);
       } catch (topicsErr) {
-        console.error('Topics API error:', topicsErr);
-        console.error('Error details:', topicsErr.message);
-        if (topicsErr.response) {
-          console.error('Response status:', topicsErr.response.status);
-          console.error('Response data:', topicsErr.response.data);
-        }
         // If we can't even get the topics, show an error
         setError('Cannot connect to the server API. Please check if the server is running.');
         setLoading(false);
@@ -182,7 +170,6 @@ const HomePage = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
-      console.log('Now fetching stats...');
       let response;
       try {
         response = await axios.get(`${API_URL}/stats/days?t=${timestamp}`, {
@@ -196,19 +183,13 @@ const HomePage = () => {
         
         clearTimeout(timeoutId);
         
-        console.log('Stats API response status:', response.status);
-        console.log('Stats response data:', response.data);
-        
         // Check if the response has any completed topics
         let hasCompletedTopics = false;
         Object.keys(response.data).forEach(day => {
           if (response.data[day]?.topics?.length > 0) {
             hasCompletedTopics = true;
-            console.log(`Day ${day} has ${response.data[day].topics.length} completed topics:`, response.data[day].topics);
           }
         });
-        
-        console.log('Has completed topics:', hasCompletedTopics);
         
         // Ensure all days are present in the response data
         const completeStats = {
@@ -219,7 +200,6 @@ const HomePage = () => {
           day5: response.data.day5 || { completed: 0, total: 3, topics: [] }
         };
         
-        console.log('Using API data for day stats');
         setDayStats(completeStats);
         
         // Update completed topics from the stats
@@ -231,7 +211,6 @@ const HomePage = () => {
           day5: completeStats.day5.topics || []
         };
         
-        console.log('Setting completed topics:', updatedCompletedTopics);
         setCompletedTopics(updatedCompletedTopics);
         
         if (!hasCompletedTopics) {
@@ -240,21 +219,12 @@ const HomePage = () => {
           setError(null);
         }
       } catch (statsErr) {
-        console.error('Stats API error:', statsErr);
-        console.error('Error details:', statsErr.message);
-        if (statsErr.response) {
-          console.error('Response status:', statsErr.response.status);
-          console.error('Response data:', statsErr.response.data);
-        }
         clearTimeout(timeoutId);
         
         // Show error
         setError('Error fetching statistics. Please try again later.');
       }
     } catch (err) {
-      console.error('Error fetching day statistics:', err);
-      console.error('Error details:', err.message);
-      
       // Show error
       setError('Error fetching statistics. Please try again later.');
     } finally {
@@ -265,15 +235,12 @@ const HomePage = () => {
   // Fetch stats on component mount
   useEffect(() => {
     const initializeData = async () => {
-      console.log('Initializing data, environment:', process.env.NODE_ENV);
-      
       // Check if the server is running
       const isServerRunning = await checkServerStatus();
       
       if (isServerRunning) {
         fetchDayStats();
       } else {
-        console.log('Server appears to be offline');
         setError('Server is not running. Please start the server with "npm run server" and try again.');
         setLoading(false);
       }
@@ -282,14 +249,11 @@ const HomePage = () => {
     initializeData();
   }, []);
   
-  // handleRefresh function removed as it's no longer needed
-  
   // Function to check if the server is running
   const checkServerStatus = async () => {
     try {
       // Add timestamp to prevent caching
       const timestamp = new Date().getTime();
-      console.log('Checking server status at:', `${API_URL}/topics?t=${timestamp}`);
       
       const response = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
         timeout: 5000,
@@ -300,28 +264,13 @@ const HomePage = () => {
         }
       });
       
-      console.log('Server status check response status:', response.status);
-      console.log('Server status check response headers:', response.headers);
-      console.log('Server status check response data:', response.data);
-      
       // Check if the response is valid
       if (response.data && Array.isArray(response.data)) {
-        console.log('Server is running and returning valid data');
         return true;
       } else {
-        console.warn('Server returned unexpected data format:', response.data);
         return false;
       }
     } catch (err) {
-      console.error('Server status check failed:', err);
-      console.error('Error details:', err.message);
-      if (err.response) {
-        console.error('Response status:', err.response.status);
-        console.error('Response headers:', err.response.headers);
-        console.error('Response data:', err.response.data);
-      } else if (err.request) {
-        console.error('No response received. Request details:', err.request);
-      }
       return false;
     }
   };

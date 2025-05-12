@@ -1,28 +1,15 @@
-import React from 'react';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
-import CompleteButton from '../../components/CompleteButton';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
 `;
 
-const Section = styled.section`
-  margin-bottom: 2rem;
-`;
-
 const SectionTitle = styled.h2`
   margin-bottom: 1rem;
-`;
-
-// Responsive design examples
-const ResponsiveContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
 `;
 
 const ResponsiveGrid = styled.div`

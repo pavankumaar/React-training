@@ -107,11 +107,8 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   const safeCompletedTopics = Array.isArray(completedTopics) ? completedTopics : [];
     
   const completedCount = safeCompletedTopics.length;
-  const isFullyCompleted = completedCount === totalTopics && totalTopics > 0;
   
-  // Log for debugging
-  console.log(`DayCard ${day} - completedTopics:`, safeCompletedTopics);
-  console.log(`DayCard ${day} - stats:`, stats);
+  // Ensure stats and completedTopics are valid
   
   // Ensure stats has valid values even if it's null or incomplete
   const safeStats = stats && typeof stats === 'object' ? {
@@ -164,10 +161,7 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
               isCompleted = false;
             }
             
-            // Log for debugging
-            if (isCompleted) {
-              console.log(`Topic ${topic} is marked as completed`);
-            }
+            // Check if topic is completed
               
             return (
               <li key={index} style={{

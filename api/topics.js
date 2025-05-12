@@ -34,7 +34,6 @@ const DEFAULT_DB_CONNECTION = {
 
 // If a connection string is provided (common for Neon DB)
 if (process.env.DATABASE_URL) {
-  console.log('Using DATABASE_URL for connection');
   poolConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -44,7 +43,6 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   // Otherwise use individual connection parameters
-  console.log('Using individual connection parameters');
   poolConfig = {
     user: process.env.DB_USER || DEFAULT_DB_CONNECTION.user,
     host: process.env.DB_HOST || DEFAULT_DB_CONNECTION.host,
@@ -63,8 +61,6 @@ const pool = new Pool(poolConfig);
 // Initialize database
 const initDb = async () => {
   try {
-    console.log('Initializing database in topics.js...');
-    
     // Create topics table if it doesn't exist
     await pool.query(`
       CREATE TABLE IF NOT EXISTS completed_topics (
@@ -76,17 +72,12 @@ const initDb = async () => {
       );
     `);
     
-    console.log('Database initialized successfully');
-    
     // Check if we have any sample data
     const result = await pool.query('SELECT COUNT(*) FROM completed_topics');
     const count = parseInt(result.rows[0].count);
-    console.log('Current topic count:', count);
     
     // Add some sample data if the table is empty
     if (count === 0) {
-      console.log('Adding sample completed topics...');
-      
       // Sample topics to mark as completed
       const sampleTopics = [
         'day1/html-basics',
@@ -101,11 +92,9 @@ const initDb = async () => {
           [topicPath, true]
         );
       }
-      
-      console.log('Sample data added successfully');
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
+    console.error('Error initializing database:', error.message);
   }
 };
 
@@ -115,33 +104,25 @@ initDb();
 // Get all topics
 app.get('/api/topics', async (req, res) => {
   try {
-    console.log('Fetching topics from database...');
-    
     // Test database connection first
     try {
-      const testResult = await pool.query('SELECT NOW()');
-      console.log('Database connection test successful:', testResult.rows[0]);
+      await pool.query('SELECT NOW()');
     } catch (testError) {
-      console.error('Database connection test failed:', testError);
       return res.status(500).json({ 
         error: 'Database connection failed', 
-        details: testError.message,
-        stack: testError.stack
+        details: testError.message
       });
     }
     
     // Now fetch the topics
     const result = await pool.query('SELECT * FROM completed_topics ORDER BY created_at DESC');
-    console.log('Topics fetched successfully:', result.rows.length, 'topics found');
     
     // Return the topics
     res.json(result.rows);
   } catch (error) {
-    console.error('Error fetching topics:', error);
     res.status(500).json({ 
       error: 'Server error', 
-      details: error.message,
-      stack: error.stack
+      details: error.message
     });
   }
 });
@@ -161,7 +142,6 @@ app.get('/api/topics/:topicPath', async (req, res) => {
     
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error fetching topic:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -194,7 +174,6 @@ app.post('/api/topics', async (req, res) => {
     
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Error creating/updating topic:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
