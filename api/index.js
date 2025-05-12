@@ -162,6 +162,7 @@ app.get('/api/stats/days', async (req, res) => {
     // Get all completed topics
     const result = await pool.query('SELECT * FROM completed_topics WHERE completed = true');
     const completedTopics = result.rows;
+    console.log('completedTopics', completedTopics);
     
     // Initialize stats object
     const stats = {
