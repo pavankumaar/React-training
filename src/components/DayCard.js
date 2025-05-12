@@ -99,41 +99,9 @@ const ProgressText = styled.div`
   white-space: nowrap;
 `;
 
-// Fallback data for each day
-const FALLBACK_DATA = {
-  1: {
-    completed: 4,
-    total: 7,
-    topics: ['HTML Basics', 'Headings', 'Paragraphs & Text', 'Attributes']
-  },
-  2: {
-    completed: 2,
-    total: 5,
-    topics: ['CSS Introduction', 'Selectors']
-  },
-  3: {
-    completed: 1,
-    total: 3,
-    topics: ['Flexbox & Grid']
-  },
-  4: {
-    completed: 0,
-    total: 3,
-    topics: []
-  },
-  5: {
-    completed: 0,
-    total: 3,
-    topics: []
-  }
-};
-
 const DayCard = ({ day, title, description, topics, link, completedTopics = [], stats = null }) => {
   // Calculate completion stats
   const totalTopics = topics.length;
-  
-  // Don't force fallback data in production anymore
-  const useFallback = false;
   
   // Ensure completedTopics is an array
   const safeCompletedTopics = Array.isArray(completedTopics) ? completedTopics : [];
@@ -144,7 +112,6 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   // Log for debugging
   console.log(`DayCard ${day} - completedTopics:`, safeCompletedTopics);
   console.log(`DayCard ${day} - stats:`, stats);
-  console.log(`DayCard ${day} - using fallback:`, useFallback);
   
   // Ensure stats has valid values even if it's null or incomplete
   const safeStats = stats && typeof stats === 'object' ? {

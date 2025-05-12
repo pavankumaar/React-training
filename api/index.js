@@ -22,12 +22,12 @@ const isVercel = process.env.VERCEL === '1';
 // PostgreSQL connection
 let poolConfig;
 
-// Hardcoded connection for Neon DB (for Vercel deployment)
-const NEON_DB_CONNECTION = {
-  user: 'react_training_owner',
-  host: 'ep-shrill-star-a4h59l0n-pooler.us-east-1.aws.neon.tech',
+// Default connection for when environment variables are not set
+const DEFAULT_DB_CONNECTION = {
+  user: 'postgres',
+  host: 'localhost',
   database: 'react_training',
-  password: 'npg_t0AvB2RzSbis',
+  password: 'postgres',
   port: 5432,
   ssl: {
     require: true,
@@ -35,12 +35,8 @@ const NEON_DB_CONNECTION = {
   }
 };
 
-// For Vercel deployment, use the hardcoded connection
-if (process.env.VERCEL) {
-  console.log('Running on Vercel, using hardcoded Neon DB connection');
-  poolConfig = NEON_DB_CONNECTION;
-} else if (process.env.DATABASE_URL) {
-  // If a connection string is provided (common for Neon DB)
+// If a connection string is provided (common for Neon DB)
+if (process.env.DATABASE_URL) {
   console.log('Using DATABASE_URL for connection');
   poolConfig = {
     connectionString: process.env.DATABASE_URL,
@@ -53,11 +49,11 @@ if (process.env.VERCEL) {
   // Otherwise use individual connection parameters
   console.log('Using individual connection parameters');
   poolConfig = {
-    user: process.env.DB_USER || NEON_DB_CONNECTION.user,
-    host: process.env.DB_HOST || NEON_DB_CONNECTION.host,
-    database: process.env.DB_NAME || NEON_DB_CONNECTION.database,
-    password: process.env.DB_PASSWORD || NEON_DB_CONNECTION.password,
-    port: process.env.DB_PORT || NEON_DB_CONNECTION.port,
+    user: process.env.DB_USER || DEFAULT_DB_CONNECTION.user,
+    host: process.env.DB_HOST || DEFAULT_DB_CONNECTION.host,
+    database: process.env.DB_NAME || DEFAULT_DB_CONNECTION.database,
+    password: process.env.DB_PASSWORD || DEFAULT_DB_CONNECTION.password,
+    port: process.env.DB_PORT || DEFAULT_DB_CONNECTION.port,
     ssl: {
       require: true,
       rejectUnauthorized: false

@@ -122,49 +122,30 @@ const ShimmerCard = () => (
 // API URL - Try to get from environment or use relative path
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
-// Hardcoded fallback data
-const FALLBACK_COMPLETED_TOPICS = {
-  day1: ['HTML Basics', 'Headings', 'Paragraphs & Text', 'Attributes'],
-  day2: ['CSS Introduction', 'Selectors'],
-  day3: ['Flexbox & Grid'],
-  day4: [],
-  day5: []
-};
-
-const FALLBACK_DAY_STATS = {
-  day1: { completed: 4, total: 7, topics: ['HTML Basics', 'Headings', 'Paragraphs & Text', 'Attributes'] },
-  day2: { completed: 2, total: 5, topics: ['CSS Introduction', 'Selectors'] },
-  day3: { completed: 1, total: 3, topics: ['Flexbox & Grid'] },
-  day4: { completed: 0, total: 3, topics: [] },
-  day5: { completed: 0, total: 3, topics: [] }
-};
-
 const HomePage = () => {
-  // Get the completion context to check if we're using fallback data
-  const { usesFallback } = useContext(CompletionContext);
+  const [completedTopics, setCompletedTopics] = useState({
+    day1: [],
+    day2: [],
+    day3: [],
+    day4: [],
+    day5: []
+  });
   
-  const [completedTopics, setCompletedTopics] = useState(FALLBACK_COMPLETED_TOPICS);
-  
-  const [dayStats, setDayStats] = useState(FALLBACK_DAY_STATS);
+  const [dayStats, setDayStats] = useState({
+    day1: { completed: 0, total: 7, topics: [] },
+    day2: { completed: 0, total: 5, topics: [] },
+    day3: { completed: 0, total: 3, topics: [] },
+    day4: { completed: 0, total: 3, topics: [] },
+    day5: { completed: 0, total: 3, topics: [] }
+  });
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usingFallbackData, setUsingFallbackData] = useState(false);
   
   const fetchDayStats = async () => {
     try {
       setLoading(true);
       console.log('Checking server health...');
-      
-      // Only use fallback data if explicitly using fallback from context
-      if (usesFallback) {
-        console.log('Using fallback data for day stats (from context)');
-        setDayStats(FALLBACK_DAY_STATS);
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsingFallbackData(true);
-        setError(null);
-        return;
-      }
       
       console.log('Fetching stats from:', `${API_URL}/stats/days`);
       
@@ -175,12 +156,9 @@ const HomePage = () => {
         console.log('Topics API response:', topicsResponse.data);
       } catch (topicsErr) {
         console.error('Topics API error:', topicsErr);
-        // If we can't even get the topics, use fallback data
-        console.log('Using fallback data due to topics API error');
-        setDayStats(FALLBACK_DAY_STATS);
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsingFallbackData(true);
-        setError(null);
+        // If we can't even get the topics, show an error
+        setError('Cannot connect to the server API. Please check if the server is running.');
+        setLoading(false);
         return;
       }
       
@@ -201,60 +179,38 @@ const HomePage = () => {
         
         // Ensure all days are present in the response data
         const completeStats = {
-          day1: response.data.day1 || FALLBACK_DAY_STATS.day1,
-          day2: response.data.day2 || FALLBACK_DAY_STATS.day2,
-          day3: response.data.day3 || FALLBACK_DAY_STATS.day3,
-          day4: response.data.day4 || FALLBACK_DAY_STATS.day4,
-          day5: response.data.day5 || FALLBACK_DAY_STATS.day5
+          day1: response.data.day1 || { completed: 0, total: 7, topics: [] },
+          day2: response.data.day2 || { completed: 0, total: 5, topics: [] },
+          day3: response.data.day3 || { completed: 0, total: 3, topics: [] },
+          day4: response.data.day4 || { completed: 0, total: 3, topics: [] },
+          day5: response.data.day5 || { completed: 0, total: 3, topics: [] }
         };
         
-        // Check if we got any completed topics
-        const hasCompletedTopics = Object.values(completeStats).some(
-          day => day.completed > 0 && day.topics.length > 0
-        );
+        console.log('Using API data for day stats');
+        setDayStats(completeStats);
         
-        if (hasCompletedTopics) {
-          console.log('Using API data for day stats');
-          setDayStats(completeStats);
-          
-          // Update completed topics from the stats
-          setCompletedTopics({
-            day1: completeStats.day1.topics || [],
-            day2: completeStats.day2.topics || [],
-            day3: completeStats.day3.topics || [],
-            day4: completeStats.day4.topics || [],
-            day5: completeStats.day5.topics || []
-          });
-          
-          setUsingFallbackData(false);
-        } else {
-          console.log('API returned no completed topics, using fallback data');
-          setDayStats(FALLBACK_DAY_STATS);
-          setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-          setUsingFallbackData(true);
-        }
+        // Update completed topics from the stats
+        setCompletedTopics({
+          day1: completeStats.day1.topics || [],
+          day2: completeStats.day2.topics || [],
+          day3: completeStats.day3.topics || [],
+          day4: completeStats.day4.topics || [],
+          day5: completeStats.day5.topics || []
+        });
         
         setError(null);
       } catch (statsErr) {
         console.error('Stats API error:', statsErr);
         clearTimeout(timeoutId);
         
-        // Use fallback data
-        console.log('Using fallback data due to stats API error');
-        setDayStats(FALLBACK_DAY_STATS);
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsingFallbackData(true);
-        setError(null);
+        // Show error
+        setError('Error fetching statistics. Please try again later.');
       }
     } catch (err) {
       console.error('Error fetching day statistics:', err);
       
-      // Use fallback data
-      console.log('Using fallback data due to general error');
-      setDayStats(FALLBACK_DAY_STATS);
-      setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-      setUsingFallbackData(true);
-      setError(null);
+      // Show error
+      setError('Error fetching statistics. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -263,19 +219,16 @@ const HomePage = () => {
   // Fetch stats on component mount
   useEffect(() => {
     const initializeData = async () => {
-      // Don't force fallback data in production anymore
       console.log('Initializing data, environment:', process.env.NODE_ENV);
       
-      // In development, try to fetch from API first
+      // Check if the server is running
       const isServerRunning = await checkServerStatus();
       
       if (isServerRunning) {
         fetchDayStats();
       } else {
-        console.log('Server appears to be offline, using fallback data');
-        setDayStats(FALLBACK_DAY_STATS);
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsingFallbackData(true);
+        console.log('Server appears to be offline');
+        setError('Server is not running. Please start the server with "npm run server" and try again.');
         setLoading(false);
       }
     };
@@ -330,23 +283,7 @@ const HomePage = () => {
         </div>
       )}
       
-      {usingFallbackData && !error && (
-        <div style={{ 
-          color: 'var(--primary-color)', 
-          textAlign: 'center', 
-          marginBottom: '1rem',
-          padding: '0.5rem',
-          backgroundColor: '#f0f8ff',
-          borderRadius: 'var(--border-radius)',
-          maxWidth: '800px',
-          margin: '0 auto 1.5rem',
-          fontSize: '0.9rem'
-        }}>
-          <div>
-            Using demo data for course progress. Your actual progress will be tracked when connected to the server.
-          </div>
-        </div>
-      )}
+
       
       {loading ? (
         <>

@@ -10,16 +10,7 @@ const API_URL = process.env.REACT_APP_API_URL || '/api';
 // Custom hook to use the completion context
 export const useCompletion = () => useContext(CompletionContext);
 
-// Hardcoded fallback data for when the API fails
-const FALLBACK_COMPLETED_TOPICS = {
-  'day1/html-basics': true,
-  'day1/headings': true,
-  'day1/paragraphs-text': true,
-  'day1/attributes': true,
-  'day2/css-introduction': true,
-  'day2/css-selectors': true,
-  'day3/flexbox-grid': true
-};
+
 
 // Provider component
 export const CompletionProvider = ({ children }) => {
@@ -45,21 +36,15 @@ export const CompletionProvider = ({ children }) => {
           }
         });
         
-        // Only update if we got some data
-        if (Object.keys(topics).length > 0) {
-          console.log('Using API data for completed topics');
-          setCompletedTopics(topics);
-          setUsesFallback(false);
-        } else {
-          console.log('API returned empty data, using fallback');
-          setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-          setUsesFallback(true);
-        }
+        // Always use the API data, even if empty
+        console.log('Using API data for completed topics');
+        setCompletedTopics(topics);
+        setUsesFallback(false);
       } else {
         console.error('Unexpected response format:', response.data);
-        console.log('Using fallback completed topics');
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsesFallback(true);
+        // Just set an empty object
+        setCompletedTopics({});
+        setUsesFallback(false);
       }
     } catch (error) {
       console.error('Error loading completed topics:', error);
@@ -69,9 +54,9 @@ export const CompletionProvider = ({ children }) => {
         console.error('Response data:', error.response.data);
       }
       
-      console.log('Using fallback completed topics due to error');
-      setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-      setUsesFallback(true);
+      // Just set an empty object if there's an error
+      setCompletedTopics({});
+      setUsesFallback(false);
     } finally {
       setLoading(false);
     }
