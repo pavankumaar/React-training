@@ -118,8 +118,8 @@ const ShimmerCard = () => (
   </ShimmerCardWrapper>
 );
 
-// API URL - Try to get from environment or use default
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+// API URL - Try to get from environment or use relative path
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const HomePage = () => {
   const [completedTopics, setCompletedTopics] = useState({
@@ -357,7 +357,9 @@ const HomePage = () => {
             Error Loading Statistics
           </div>
           <div>
-            {error}
+            {error.includes('Server is not running') 
+              ? 'Unable to connect to the server. If you\'re on a mobile device, please note that you need to be on the same network as the server.' 
+              : error}
           </div>
         </div>
       )}

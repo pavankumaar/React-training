@@ -196,7 +196,7 @@ const CssIntroduction = () => {
         </div>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2" 

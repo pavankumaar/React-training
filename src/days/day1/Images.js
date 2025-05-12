@@ -327,7 +327,7 @@ const Images = () => {
         </CodeBlock>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/forms" 

@@ -310,7 +310,7 @@ h1 {
         </ul>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day3/styling-forms-buttons" 

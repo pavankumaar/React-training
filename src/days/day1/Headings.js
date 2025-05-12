@@ -78,7 +78,7 @@ const Headings = () => {
         </CodeBlock>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/html-basics" 

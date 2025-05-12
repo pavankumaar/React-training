@@ -373,7 +373,7 @@ const Tables = () => {
         </CodeBlock>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/attributes" 

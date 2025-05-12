@@ -303,7 +303,7 @@ const CssSelectors = () => {
         <p>When specificity is equal, the last rule defined wins.</p>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2/css-introduction" 

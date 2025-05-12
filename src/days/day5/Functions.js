@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
-import CompleteButton from '../../components/CompleteButton';
+
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -330,7 +330,6 @@ console.log(counter.getCount()); // 1`}
         </CodeBlock>
       </Section>
       
-      <CompleteButton />
       
       <Navigation 
         prevLink="/day5" 

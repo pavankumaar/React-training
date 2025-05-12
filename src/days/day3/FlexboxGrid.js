@@ -244,7 +244,7 @@ const FlexboxGrid = () => {
         </ul>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2/box-model" 

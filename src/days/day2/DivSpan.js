@@ -262,7 +262,7 @@ const DivSpan = () => {
         </ul>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2/classes-ids" 

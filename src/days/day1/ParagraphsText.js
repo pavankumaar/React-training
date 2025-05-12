@@ -75,7 +75,7 @@ const ParagraphsText = () => {
         </pre>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/headings" 

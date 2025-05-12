@@ -241,7 +241,7 @@ const ClassesIds = () => {
         </ul>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2/css-selectors" 

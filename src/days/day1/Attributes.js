@@ -116,7 +116,7 @@ const Attributes = () => {
         </ul>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/paragraphs-text" 

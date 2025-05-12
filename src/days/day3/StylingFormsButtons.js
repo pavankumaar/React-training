@@ -437,7 +437,7 @@ label {
         </div>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day3/flexbox-grid" 

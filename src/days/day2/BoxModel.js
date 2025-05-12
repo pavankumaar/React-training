@@ -417,7 +417,7 @@ box-sizing: border-box;`}
         <p>In both cases, margins are not included in the element's dimensions but affect its position and the space around it.</p>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day2/div-span" 

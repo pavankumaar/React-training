@@ -4,8 +4,8 @@ import axios from 'axios';
 // Create the context
 const CompletionContext = createContext();
 
-// API URL - Try to get from environment or use default
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+// API URL - Try to get from environment or use relative path
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 // Custom hook to use the completion context
 export const useCompletion = () => useContext(CompletionContext);

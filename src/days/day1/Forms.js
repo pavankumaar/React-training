@@ -399,7 +399,7 @@ const Forms = () => {
         </FormContainer>
       </Example>
       
-      <CompleteButton />
+      
       
       <Navigation 
         prevLink="/day1/tables" 
