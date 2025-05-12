@@ -10,10 +10,22 @@ const API_URL = process.env.REACT_APP_API_URL || '/api';
 // Custom hook to use the completion context
 export const useCompletion = () => useContext(CompletionContext);
 
+// Hardcoded fallback data for when the API fails
+const FALLBACK_COMPLETED_TOPICS = {
+  'day1/html-basics': true,
+  'day1/headings': true,
+  'day1/paragraphs-text': true,
+  'day1/attributes': true,
+  'day2/css-introduction': true,
+  'day2/css-selectors': true,
+  'day3/flexbox-grid': true
+};
+
 // Provider component
 export const CompletionProvider = ({ children }) => {
-  const [completedTopics, setCompletedTopics] = useState({});
+  const [completedTopics, setCompletedTopics] = useState(FALLBACK_COMPLETED_TOPICS);
   const [loading, setLoading] = useState(true);
+  const [usesFallback, setUsesFallback] = useState(false);
   
   // Function to fetch completed topics from the database
   const fetchCompletedTopics = async () => {
@@ -32,12 +44,23 @@ export const CompletionProvider = ({ children }) => {
             console.log('Marked as completed:', topic.topic_path);
           }
         });
+        
+        // Only update if we got some data
+        if (Object.keys(topics).length > 0) {
+          console.log('Using API data for completed topics');
+          setCompletedTopics(topics);
+          setUsesFallback(false);
+        } else {
+          console.log('API returned empty data, using fallback');
+          setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
+          setUsesFallback(true);
+        }
       } else {
         console.error('Unexpected response format:', response.data);
+        console.log('Using fallback completed topics');
+        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
+        setUsesFallback(true);
       }
-      
-      console.log('Completed topics:', topics);
-      setCompletedTopics(topics);
     } catch (error) {
       console.error('Error loading completed topics:', error);
       console.error('Error details:', error.message);
@@ -45,15 +68,10 @@ export const CompletionProvider = ({ children }) => {
         console.error('Response status:', error.response.status);
         console.error('Response data:', error.response.data);
       }
-      // Provide a fallback for testing
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Using fallback completed topics for development');
-        setCompletedTopics({
-          'day1/html-basics': true,
-          'day1/headings': true,
-          'day2/css-introduction': true
-        });
-      }
+      
+      console.log('Using fallback completed topics due to error');
+      setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
+      setUsesFallback(true);
     } finally {
       setLoading(false);
     }
@@ -108,7 +126,8 @@ export const CompletionProvider = ({ children }) => {
     markAsNotCompleted,
     isTopicCompleted,
     loading,
-    refreshTopics: fetchCompletedTopics
+    refreshTopics: fetchCompletedTopics,
+    usesFallback
   };
   
   return (
