@@ -316,8 +316,34 @@ const HomePage = () => {
       if (isServerRunning) {
         fetchDayStats();
       } else {
+        console.log('Server appears to be offline, using fallback data');
+        
+        // Fallback data for development/testing
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Using fallback data for development');
+          
+          // Set some fallback completion data
+          setCompletedTopics({
+            day1: ['HTML Basics', 'Headings'],
+            day2: ['CSS Introduction'],
+            day3: [],
+            day4: [],
+            day5: []
+          });
+          
+          // Set fallback day stats
+          setDayStats({
+            day1: { completed: 2, total: 7, topics: ['HTML Basics', 'Headings'] },
+            day2: { completed: 1, total: 5, topics: ['CSS Introduction'] },
+            day3: { completed: 0, total: 3, topics: [] },
+            day4: { completed: 0, total: 3, topics: [] },
+            day5: { completed: 0, total: 3, topics: [] }
+          });
+        } else {
+          setError('Server is not running. The database connection may not be configured correctly.');
+        }
+        
         setLoading(false);
-        setError('Server is not running. Please start the server with "npm run server" and try again.');
       }
     };
     
@@ -329,10 +355,17 @@ const HomePage = () => {
   // Function to check if the server is running
   const checkServerStatus = async () => {
     try {
-      await axios.get(`${API_URL}/topics`, { timeout: 3000 });
+      console.log('Checking server status at:', `${API_URL}/topics`);
+      const response = await axios.get(`${API_URL}/topics`, { timeout: 5000 });
+      console.log('Server status check response:', response.data);
       return true;
     } catch (err) {
       console.error('Server status check failed:', err);
+      console.error('Error details:', err.message);
+      if (err.response) {
+        console.error('Response status:', err.response.status);
+        console.error('Response data:', err.response.data);
+      }
       return false;
     }
   };

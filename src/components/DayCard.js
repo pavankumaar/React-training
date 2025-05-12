@@ -102,8 +102,15 @@ const ProgressText = styled.div`
 const DayCard = ({ day, title, description, topics, link, completedTopics = [], stats = null }) => {
   // Calculate completion stats
   const totalTopics = topics.length;
-  const completedCount = completedTopics.length;
+  
+  // Ensure completedTopics is an array
+  const safeCompletedTopics = Array.isArray(completedTopics) ? completedTopics : [];
+  const completedCount = safeCompletedTopics.length;
   const isFullyCompleted = completedCount === totalTopics && totalTopics > 0;
+  
+  // Log for debugging
+  console.log(`DayCard ${day} - completedTopics:`, safeCompletedTopics);
+  console.log(`DayCard ${day} - stats:`, stats);
   
   // Ensure stats has valid values even if it's null or incomplete
   const safeStats = stats && typeof stats === 'object' ? {
@@ -142,9 +149,21 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
         
         <TopicsList>
           {topics.map((topic, index) => {
-            const isCompleted = 
-              (safeStats.topics && safeStats.topics.includes(topic)) || 
-              completedTopics.includes(topic);
+            // Safely check if the topic is completed
+            let isCompleted = false;
+            
+            try {
+              isCompleted = 
+                (safeStats.topics && Array.isArray(safeStats.topics) && safeStats.topics.includes(topic)) || 
+                (Array.isArray(completedTopics) && completedTopics.includes(topic));
+            } catch (error) {
+              console.error(`Error checking completion for topic ${topic}:`, error);
+            }
+            
+            // Log for debugging
+            if (isCompleted) {
+              console.log(`Topic ${topic} is marked as completed`);
+            }
               
             return (
               <li key={index} style={{

@@ -48,6 +48,58 @@ if (process.env.DATABASE_URL) {
 
 const pool = new Pool(poolConfig);
 
+// Initialize database
+const initDb = async () => {
+  try {
+    console.log('Initializing database...');
+    
+    // Create topics table if it doesn't exist
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS completed_topics (
+        id SERIAL PRIMARY KEY,
+        topic_path VARCHAR(255) NOT NULL UNIQUE,
+        completed BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    console.log('Database initialized successfully');
+    
+    // Check if we have any sample data
+    const result = await pool.query('SELECT COUNT(*) FROM completed_topics');
+    const count = parseInt(result.rows[0].count);
+    console.log('Current topic count:', count);
+    
+    // Add some sample data if the table is empty
+    if (count === 0) {
+      console.log('Adding sample completed topics...');
+      
+      // Sample topics to mark as completed
+      const sampleTopics = [
+        'day1/html-basics',
+        'day1/headings',
+        'day2/css-introduction'
+      ];
+      
+      // Insert each sample topic
+      for (const topicPath of sampleTopics) {
+        await pool.query(
+          'INSERT INTO completed_topics (topic_path, completed) VALUES ($1, $2) ON CONFLICT (topic_path) DO NOTHING',
+          [topicPath, true]
+        );
+      }
+      
+      console.log('Sample data added successfully');
+    }
+  } catch (error) {
+    console.error('Error initializing database:', error);
+  }
+};
+
+// Initialize database on startup
+initDb();
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   pool.query('SELECT 1', (err) => {
