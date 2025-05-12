@@ -23,7 +23,7 @@ const FALLBACK_COMPLETED_TOPICS = {
 
 // Provider component
 export const CompletionProvider = ({ children }) => {
-  const [completedTopics, setCompletedTopics] = useState(FALLBACK_COMPLETED_TOPICS);
+  const [completedTopics, setCompletedTopics] = useState({});
   const [loading, setLoading] = useState(true);
   const [usesFallback, setUsesFallback] = useState(false);
   

@@ -132,13 +132,11 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   // Calculate completion stats
   const totalTopics = topics.length;
   
-  // Always use fallback data in production
-  const useFallback = process.env.NODE_ENV === 'production';
+  // Don't force fallback data in production anymore
+  const useFallback = false;
   
   // Ensure completedTopics is an array
-  const safeCompletedTopics = useFallback 
-    ? FALLBACK_DATA[day].topics 
-    : (Array.isArray(completedTopics) ? completedTopics : []);
+  const safeCompletedTopics = Array.isArray(completedTopics) ? completedTopics : [];
     
   const completedCount = safeCompletedTopics.length;
   const isFullyCompleted = completedCount === totalTopics && totalTopics > 0;
@@ -149,17 +147,15 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   console.log(`DayCard ${day} - using fallback:`, useFallback);
   
   // Ensure stats has valid values even if it's null or incomplete
-  const safeStats = useFallback 
-    ? FALLBACK_DATA[day]
-    : (stats && typeof stats === 'object' ? {
-        completed: typeof stats.completed === 'number' ? stats.completed : 0,
-        total: typeof stats.total === 'number' ? stats.total : totalTopics,
-        topics: Array.isArray(stats.topics) ? stats.topics : []
-      } : {
-        completed: 0,
-        total: totalTopics,
-        topics: []
-      });
+  const safeStats = stats && typeof stats === 'object' ? {
+    completed: typeof stats.completed === 'number' ? stats.completed : 0,
+    total: typeof stats.total === 'number' ? stats.total : totalTopics,
+    topics: Array.isArray(stats.topics) ? stats.topics : []
+  } : {
+    completed: 0,
+    total: totalTopics,
+    topics: []
+  };
   
   return (
     <Card>
@@ -191,18 +187,14 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
             let isCompleted = false;
             
             try {
-              // In production, use the fallback data
-              if (process.env.NODE_ENV === 'production') {
-                isCompleted = FALLBACK_DATA[day].topics.includes(topic);
-              } else {
-                isCompleted = 
-                  (safeStats.topics && Array.isArray(safeStats.topics) && safeStats.topics.includes(topic)) || 
-                  (Array.isArray(completedTopics) && completedTopics.includes(topic));
-              }
+              // Use the actual data from props
+              isCompleted = 
+                (safeStats.topics && Array.isArray(safeStats.topics) && safeStats.topics.includes(topic)) || 
+                (Array.isArray(completedTopics) && completedTopics.includes(topic));
             } catch (error) {
               console.error(`Error checking completion for topic ${topic}:`, error);
-              // Fallback to using the hardcoded data
-              isCompleted = FALLBACK_DATA[day].topics.includes(topic);
+              // Only use fallback as a last resort
+              isCompleted = false;
             }
             
             // Log for debugging

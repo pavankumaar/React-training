@@ -156,9 +156,9 @@ const HomePage = () => {
       setLoading(true);
       console.log('Checking server health...');
       
-      // Always use fallback data in production for now
-      if (process.env.NODE_ENV === 'production' || usesFallback) {
-        console.log('Using fallback data for day stats');
+      // Only use fallback data if explicitly using fallback from context
+      if (usesFallback) {
+        console.log('Using fallback data for day stats (from context)');
         setDayStats(FALLBACK_DAY_STATS);
         setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
         setUsingFallbackData(true);
@@ -263,15 +263,8 @@ const HomePage = () => {
   // Fetch stats on component mount
   useEffect(() => {
     const initializeData = async () => {
-      // In production, always use fallback data
-      if (process.env.NODE_ENV === 'production') {
-        console.log('Production environment detected, using fallback data');
-        setDayStats(FALLBACK_DAY_STATS);
-        setCompletedTopics(FALLBACK_COMPLETED_TOPICS);
-        setUsingFallbackData(true);
-        setLoading(false);
-        return;
-      }
+      // Don't force fallback data in production anymore
+      console.log('Initializing data, environment:', process.env.NODE_ENV);
       
       // In development, try to fetch from API first
       const isServerRunning = await checkServerStatus();
