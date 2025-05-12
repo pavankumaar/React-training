@@ -33,7 +33,7 @@ const Main = styled.main`
 `;
 
 const Layout = ({ children }) => {
-  const { logout, isAdmin } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   
   const handleLogout = () => {
