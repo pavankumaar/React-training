@@ -170,7 +170,7 @@ const HomePage = () => {
       let response;
       try {
         response = await axios.get(`${API_URL}/stats/days`, {
-          signal: controller.signal
+          timeout: 5000
         });
         
         clearTimeout(timeoutId);
