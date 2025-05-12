@@ -46,7 +46,7 @@ const Layout = ({ children }) => {
       <GlobalStyles />
       <Header>
         <LogoutButton onClick={handleLogout}>
-          Logout {isAdmin() ? '(Admin)' : '(Guest)'}
+          Logout (Admin)
         </LogoutButton>
       </Header>
       <Main>

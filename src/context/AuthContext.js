@@ -19,10 +19,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
   
   // Login function
-  const login = (isAdmin = false) => {
+  const login = () => {
     setIsAuthenticated(true);
     localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('isAdmin', isAdmin ? 'true' : 'false');
+    localStorage.setItem('isAdmin', 'true');
   };
   
   // Logout function

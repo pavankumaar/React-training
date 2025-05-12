@@ -28,46 +28,6 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  padding: 12px 20px;
-  border-radius: 4px;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const AdminButton = styled(Button)`
-  background-color: var(--primary-color);
-  color: white;
-  
-  &:hover {
-    background-color: var(--primary-dark);
-  }
-`;
-
-const GuestButton = styled(Button)`
-  background-color: var(--light-gray);
-  color: var(--dark-gray);
-  
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
 const PasscodeContainer = styled.div`
   margin-top: 20px;
 `;
@@ -85,6 +45,18 @@ const PasscodeInput = styled.input`
     border-color: var(--primary-color);
     outline: none;
   }
+  
+  /* Remove increment/decrement buttons for number inputs */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
 `;
 
 const ErrorMessage = styled.p`
@@ -93,24 +65,9 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-size: 14px;
-  margin-top: 15px;
-  cursor: pointer;
-  text-decoration: underline;
-  
-  &:hover {
-    color: var(--primary-dark);
-  }
-`;
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
-  const [showPasscode, setShowPasscode] = useState(false);
   const [passcode, setPasscode] = useState(['', '', '', '']);
   const [error, setError] = useState('');
   
@@ -120,18 +77,6 @@ const LoginPage = () => {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
-  
-  // Handle admin button click
-  const handleAdminClick = () => {
-    setShowPasscode(true);
-    setError('');
-  };
-  
-  // Handle guest button click
-  const handleGuestClick = () => {
-    login(false); // Login as guest
-    navigate('/');
-  };
   
   // Handle passcode input change
   const handlePasscodeChange = (index, value) => {
@@ -171,7 +116,7 @@ const LoginPage = () => {
   // Validate passcode
   const validatePasscode = (code) => {
     if (code === '3194') {
-      login(true); // Login as admin
+      login(); // Login as admin
       navigate('/');
     } else {
       setError('Invalid passcode. Please try again.');
@@ -181,44 +126,29 @@ const LoginPage = () => {
     }
   };
   
-  // Go back to login options
-  const handleBack = () => {
-    setShowPasscode(false);
-    setPasscode(['', '', '', '']);
-    setError('');
-  };
-  
   return (
     <LoginContainer>
       <LoginCard>
         <Title>React Training</Title>
-        
-        {!showPasscode ? (
-          <ButtonContainer>
-            <AdminButton onClick={handleAdminClick}>Login as Admin</AdminButton>
-            <GuestButton onClick={handleGuestClick}>Continue as Guest</GuestButton>
-          </ButtonContainer>
-        ) : (
-          <PasscodeContainer>
-            <h3>Enter Admin Passcode</h3>
-            <div>
-              {passcode.map((digit, index) => (
-                <PasscodeInput
-                  key={index}
-                  id={`passcode-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handlePasscodeChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  autoFocus={index === 0}
-                />
-              ))}
-            </div>
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-            <BackButton onClick={handleBack}>Back to Login Options</BackButton>
-          </PasscodeContainer>
-        )}
+        <PasscodeContainer>
+          <h3>Enter Passcode</h3>
+          <div>
+            {passcode.map((digit, index) => (
+              <PasscodeInput
+                key={index}
+                id={`passcode-${index}`}
+                type="number"
+                min="0"
+                max="9"
+                value={digit}
+                onChange={(e) => handlePasscodeChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                autoFocus={index === 0}
+              />
+            ))}
+          </div>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+        </PasscodeContainer>
       </LoginCard>
     </LoginContainer>
   );
