@@ -163,8 +163,8 @@ const HomePage = () => {
       }
       
       // Add a timeout to ensure we don't wait forever
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      // const controller = new AbortController();
+      // const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       console.log('Now fetching stats...');
       let response;
@@ -173,7 +173,7 @@ const HomePage = () => {
           timeout: 5000
         });
         
-        clearTimeout(timeoutId);
+        // clearTimeout(timeoutId);
         
         console.log('Stats response:', response.data);
         
@@ -201,7 +201,7 @@ const HomePage = () => {
         setError(null);
       } catch (statsErr) {
         console.error('Stats API error:', statsErr);
-        clearTimeout(timeoutId);
+        // clearTimeout(timeoutId);
         
         // Show error
         setError('Error fetching statistics. Please try again later.');
