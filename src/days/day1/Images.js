@@ -4,8 +4,8 @@ import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 
-// Define a constant for the public URL path
-const PUBLIC_URL = process.env.PUBLIC_URL || '';
+// Define the image path with the correct public URL
+const imagePath = process.env.PUBLIC_URL + '/image.jpg';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -71,7 +71,7 @@ const Figcaption = styled.figcaption`
 const BackgroundImageDiv = styled.div`
   width: 500px;
   height: 400px;
-  background-image: url(${PUBLIC_URL}/image.jpg);
+  background-image: url(${imagePath});
   background-size: cover;
   background-position: center;
   border-radius: 5px;
@@ -92,7 +92,7 @@ const Images = () => {
         <p>The <code>&lt;img&gt;</code> tag is used to embed images in an HTML page:</p>
         
         <ImageContainer>
-          <img src={`${PUBLIC_URL}/image.jpg`} alt="Placeholder Img" />
+          <img src={imagePath} alt="Placeholder Img" />
         </ImageContainer>
         
         <CodeBlock>
@@ -110,7 +110,7 @@ const Images = () => {
         <p>You can specify the width and height of an image using the <code>width</code> and <code>height</code> attributes:</p>
         
         <ImageContainer>
-          <img src={`${PUBLIC_URL}/image.jpg`} alt="Resized Img" width="300" height="200" />
+          <img src={imagePath} alt="Resized Img" width="300" height="200" />
         </ImageContainer>
         
         <CodeBlock>
@@ -124,7 +124,7 @@ const Images = () => {
         <p>To make images responsive (scale with the browser window), you can use CSS:</p>
         
         <ImageContainer>
-          <ResponsiveImage src={`${PUBLIC_URL}/image.jpg`} alt="Responsive Image" />
+          <ResponsiveImage src={imagePath} alt="Responsive Image" />
         </ImageContainer>
         
         <CodeBlock>
@@ -145,7 +145,7 @@ const Images = () => {
         
         <ImageContainer>
           <a href="https://example.com">
-            <img src={`${PUBLIC_URL}/image.jpg`} alt="Clickable Img" width="200" height="100" />
+            <img src={imagePath} alt="Clickable Img" width="200" height="100" />
           </a>
         </ImageContainer>
         
@@ -197,7 +197,7 @@ const Images = () => {
         <p>The <code>&lt;figure&gt;</code> and <code>&lt;figcaption&gt;</code> elements provide a semantic way to associate captions with images:</p>
         
         <Figure>
-          <img src={`${PUBLIC_URL}/image.jpg`} alt="Figure Example" width="400" height="300" />
+          <img src={imagePath} alt="Figure Example" width="400" height="300" />
           <Figcaption>Fig.1 - This is a caption for the image above.</Figcaption>
         </Figure>
         
@@ -231,19 +231,19 @@ const Images = () => {
         <p>Images can be floated to allow text to wrap around them:</p>
         
         <ClearFix>
-          <FloatLeftImage src={`${PUBLIC_URL}/image.jpg`} alt="Left Floating Image" width="150" height="150" />
+          <FloatLeftImage src={imagePath} alt="Left Floating Image" width="150" height="150" />
           <p>This is an example of text wrapping around an image that is floated to the left. The float property is commonly used to create text wrapping around images. This creates a nice layout where the image is positioned on one side and the text flows around it. You can use this technique for things like article layouts, blog posts, or any content where you want to combine images with text in a visually appealing way.</p>
         </ClearFix>
         
         <ClearFix>
-          <FloatRightImage src={`${PUBLIC_URL}/image.jpg`} alt="Right Floating Image" width="150" height="150" />
+          <FloatRightImage src={imagePath} alt="Right Floating Image" width="150" height="150" />
           <p>This is an example of text wrapping around an image that is floated to the right. Notice how the text flows around the left side of the image. Floating elements to the right is useful when you want the image to appear on the right side of your content. Remember to use a clearfix to prevent layout issues when using floated elements.</p>
         </ClearFix>
         
         <CodeBlock>
 {`<!-- Left float -->
 <div class="clearfix">
-  <img src="image.jpg" alt="Left Floating Image" class="img-float-left">
+  <img src="/image.jpg" alt="Left Floating Image" class="img-float-left">
   <p>This is an example of text wrapping around an image...</p>
 </div>
 
@@ -266,12 +266,12 @@ const Images = () => {
         <p>A simple image gallery using CSS Flexbox:</p>
         
         <ImageGallery>
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 1" />
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 2" />
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 3" />
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 4" />
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 5" />
-          <GalleryImage src={`${PUBLIC_URL}/image.jpg`} alt="Gallery Image 6" />
+          <GalleryImage src={imagePath} alt="Gallery Image 1" />
+          <GalleryImage src={imagePath} alt="Gallery Image 2" />
+          <GalleryImage src={imagePath} alt="Gallery Image 3" />
+          <GalleryImage src={imagePath} alt="Gallery Image 4" />
+          <GalleryImage src={imagePath} alt="Gallery Image 5" />
+          <GalleryImage src={imagePath} alt="Gallery Image 6" />
         </ImageGallery>
         
         <CodeBlock>
