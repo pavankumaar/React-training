@@ -4,9 +4,8 @@ import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 
-// Define the image path with the correct public URL
-const imagePath = process.env.PUBLIC_URL + '/image.jpg';
-console.log("imagepath", imagePath);
+// Define the image path - hardcoded to ensure it works in all environments
+const imagePath = '/image.jpg';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -72,7 +71,7 @@ const Figcaption = styled.figcaption`
 const BackgroundImageDiv = styled.div`
   width: 500px;
   height: 400px;
-  background-image: url(${imagePath});
+  background-image: url('/image.jpg');
   background-size: cover;
   background-position: center;
   border-radius: 5px;
