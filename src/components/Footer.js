@@ -3,9 +3,13 @@ import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
   background-color: var(--light-gray);
+  color: var(--text-color);
   padding: 2rem 0;
   margin-top: 3rem;
-  border-top: 1px solid var(--medium-gray);
+  border-top: 1px solid var(--border-color);
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
 `;
 
 const FooterContent = styled.div`

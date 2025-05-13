@@ -75,7 +75,9 @@ const ResponsiveDesign = () => {
       <Navigation 
         prevLink="/day3/styling-forms-buttons" 
         nextLink="/day1" 
-        indexLink="/day3" 
+        indexLink="/day3"
+        title="Responsive Design"
+        subtitle="Learn how to create websites that adapt to different screen sizes"
       />
       
       <Title>Responsive Design Overview</Title>

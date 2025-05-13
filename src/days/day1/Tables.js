@@ -14,19 +14,49 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   width: 100%;
   margin-bottom: 15px;
+  color: var(--text-color);
   
   th, td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     padding: 8px;
     text-align: left;
   }
   
   th {
-    background-color: #f2f2f2;
+    background-color: var(--light-gray);
+    color: var(--text-color);
   }
   
   tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: var(--code-background);
+  }
+  
+  tr:hover {
+    background-color: var(--medium-gray);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    
+    th, td {
+      padding: 6px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+    
+    th, td {
+      padding: 5px;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    font-size: 0.85rem;
+    
+    th, td {
+      padding: 4px;
+    }
   }
 `;
 
@@ -35,6 +65,7 @@ const StyledTableWithCaption = styled(StyledTable)`
     padding: 10px;
     font-weight: bold;
     font-size: 1.2em;
+    color: var(--text-color);
   }
 `;
 
@@ -59,10 +90,10 @@ const Tables = () => {
       <Navigation 
         prevLink="/day1/attributes" 
         nextLink="/day1/forms" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Tables"
+        subtitle="Learn how to create and structure tables in HTML"
       />
-      
-      <Title>HTML Tables</Title>
       
       <Example title="Basic Table Structure">
         <p>A basic HTML table consists of the <code>&lt;table&gt;</code> element and one or more <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, and <code>&lt;td&gt;</code> elements:</p>
@@ -395,7 +426,9 @@ const Tables = () => {
       <Navigation 
         prevLink="/day1/attributes" 
         nextLink="/day1/forms" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Tables"
+        subtitle="Learn how to create and structure tables in HTML"
       />
     </Layout>
   );

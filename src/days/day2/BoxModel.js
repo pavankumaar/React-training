@@ -180,10 +180,10 @@ const BoxModel = () => {
       <Navigation 
         prevLink="/day2/div-span" 
         nextLink="/day3/flexbox-grid" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Box Model"
+        subtitle="Learn how CSS treats elements as boxes with content, padding, border, and margin"
       />
-      
-      <Title>CSS Box Model</Title>
       
       <Example>
         <SectionTitle>What is the Box Model?</SectionTitle>
@@ -461,7 +461,9 @@ box-sizing: border-box;`}
       <Navigation 
         prevLink="/day2/div-span" 
         nextLink="/day3/flexbox-grid" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Box Model"
+        subtitle="Learn how CSS treats elements as boxes with content, padding, border, and margin"
       />
     </Layout>
   );

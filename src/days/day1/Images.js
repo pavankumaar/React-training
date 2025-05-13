@@ -9,10 +9,6 @@ import { day1EditorContent } from './day1_editor_content';
 // Define the image path - hardcoded to ensure it works in all environments
 const imagePath = '/image.jpg';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const ImageContainer = styled.div`
   margin: 15px 0;
 `;
@@ -85,10 +81,10 @@ const Images = () => {
       <Navigation 
         prevLink="/day1/forms" 
         nextLink="/day2/css-introduction" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Images"
+        subtitle="Learn how to add and optimize images in your HTML documents"
       />
-      
-      <Title>HTML Images</Title>
       
       <Example title="Basic Image Syntax">
         <p>The <code>&lt;img&gt;</code> tag is used to embed images in an HTML page:</p>

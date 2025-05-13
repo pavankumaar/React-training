@@ -24,7 +24,9 @@ const DataTypes = () => {
       <Navigation 
         prevLink="/day4/variables" 
         nextLink="/day4/operators-conditionals" 
-        indexLink="/day4" 
+        indexLink="/day4"
+        title="JavaScript Data Types"
+        subtitle="Learn about the different types of data in JavaScript"
       />
       
       <Title>JavaScript Data Types</Title>

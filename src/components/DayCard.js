@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Card = styled.div`
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   overflow: hidden;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  background-color: var(--card-background);
+  box-shadow: var(--box-shadow);
+  transition: transform var(--transition-speed) ease, 
+              box-shadow var(--transition-speed) ease, 
+              background-color var(--transition-speed) ease;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -23,6 +26,8 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 `;
 
 const CardContent = styled.div`
@@ -44,7 +49,7 @@ const ViewButton = styled(Link)`
   background-color: var(--primary-color);
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   transition: background-color var(--transition-speed) ease;
   
   &:hover {
@@ -63,6 +68,7 @@ const CompletionBadge = styled.div`
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const ProgressContainer = styled.div`

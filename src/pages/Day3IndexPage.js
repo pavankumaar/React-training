@@ -41,12 +41,12 @@ const Day3IndexPage = () => {
   
   return (
     <Layout>
-      <Navigation prevLink="/day2" nextLink="/" />
-      
-      <Title>Day 3: Advanced CSS</Title>
-      <Description>
-        Master advanced CSS techniques for modern web design.
-      </Description>
+      <Navigation 
+        prevLink="/day2" 
+        nextLink="/"
+        title="Day 3: Advanced CSS"
+        subtitle="Master advanced CSS techniques for modern web design."
+      />
       
       <TopicsContainer>
         <TopicCard 

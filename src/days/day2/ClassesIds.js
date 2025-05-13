@@ -7,10 +7,6 @@ import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 import { classesIdsContent } from './classes_ids_content';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const SectionTitle = styled.h2`
   margin-bottom: 1rem;
 `;
@@ -109,10 +105,10 @@ const ClassesIds = () => {
       <Navigation 
         prevLink="/day2/css-selectors" 
         nextLink="/day2/div-span" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Classes and IDs"
+        subtitle="Learn how to use CSS classes and IDs to target and style HTML elements"
       />
-      
-      <Title>CSS Classes and IDs</Title>
       
       <Example>
         <SectionTitle>Understanding Classes and IDs</SectionTitle>
@@ -251,7 +247,9 @@ const ClassesIds = () => {
       <Navigation 
         prevLink="/day2/css-selectors" 
         nextLink="/day2/div-span" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Classes and IDs"
+        subtitle="Learn how to use CSS classes and IDs to target and style HTML elements"
       />
     </Layout>
   );

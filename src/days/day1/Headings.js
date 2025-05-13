@@ -7,10 +7,6 @@ import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 import { day1EditorContent } from './day1_editor_content';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const Section = styled.section`
   margin-bottom: 2rem;
 `;
@@ -29,10 +25,10 @@ const Headings = () => {
       <Navigation 
         prevLink="/day1/html-basics" 
         nextLink="/day1/paragraphs-text" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Headings"
+        subtitle="Learn about HTML heading elements and their usage"
       />
-      
-      <Title>HTML Headings</Title>
       
       <Example>
         <p>HTML provides six levels of headings, from h1 (most important) to h6 (least important):</p>
@@ -109,7 +105,9 @@ const Headings = () => {
       <Navigation 
         prevLink="/day1/html-basics" 
         nextLink="/day1/paragraphs-text" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Headings"
+        subtitle="Learn about HTML heading elements and their usage"
       />
     </Layout>
   );

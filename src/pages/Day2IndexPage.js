@@ -43,12 +43,12 @@ const Day2IndexPage = () => {
   
   return (
     <Layout>
-      <Navigation prevLink="/day1" nextLink="/day3" />
-      
-      <Title>Day 2: CSS Fundamentals</Title>
-      <Description>
-        Learn how to style HTML elements using CSS.
-      </Description>
+      <Navigation 
+        prevLink="/day1" 
+        nextLink="/day3"
+        title="Day 2: CSS Fundamentals"
+        subtitle="Learn how to style HTML elements using CSS."
+      />
       
       <TopicsContainer>
         <TopicCard 

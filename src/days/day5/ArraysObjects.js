@@ -24,7 +24,9 @@ const ArraysObjects = () => {
       <Navigation 
         prevLink="/day5/functions" 
         nextLink="/day5/loops" 
-        indexLink="/day5" 
+        indexLink="/day5"
+        title="JavaScript Arrays and Objects"
+        subtitle="Learn about arrays and objects for storing complex data"
       />
       
       <Title>JavaScript Arrays and Objects</Title>

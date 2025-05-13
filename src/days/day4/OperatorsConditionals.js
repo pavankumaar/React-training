@@ -24,7 +24,9 @@ const OperatorsConditionals = () => {
       <Navigation 
         prevLink="/day4/data-types" 
         nextLink="/day5" 
-        indexLink="/day4" 
+        indexLink="/day4"
+        title="JavaScript Operators and Conditionals"
+        subtitle="Learn about operators and conditional statements in JavaScript"
       />
       
       <Title>JavaScript Operators and Conditionals</Title>

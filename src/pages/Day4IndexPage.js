@@ -41,12 +41,12 @@ const Day4IndexPage = () => {
   
   return (
     <Layout>
-      <Navigation prevLink="/day3" nextLink="/day5" />
-      
-      <Title>Day 4: JavaScript Fundamentals - Part 1</Title>
-      <Description>
-        Introduction to JavaScript variables, data types, operators, and conditional statements.
-      </Description>
+      <Navigation 
+        prevLink="/day3" 
+        nextLink="/day5"
+        title="Day 4: JavaScript Fundamentals - Part 1"
+        subtitle="Introduction to JavaScript variables, data types, operators, and conditional statements."
+      />
       
       <TopicsContainer>
         <TopicCard 

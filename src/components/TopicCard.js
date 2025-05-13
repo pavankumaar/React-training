@@ -4,15 +4,18 @@ import styled from 'styled-components';
 import { useCompletion } from '../context/CompletionContext';
 
 const Card = styled.div`
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  background-color: var(--card-background);
+  box-shadow: var(--box-shadow);
+  transition: transform var(--transition-speed) ease, 
+              box-shadow var(--transition-speed) ease, 
+              background-color var(--transition-speed) ease;
   
   &:hover {
     transform: translateY(-3px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -47,6 +50,7 @@ const CompletedTag = styled.span`
   padding: 0.25rem 0.5rem;
   border-radius: 20px;
   margin-left: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const Description = styled.p`
@@ -63,7 +67,7 @@ const ViewButton = styled(Link)`
   background-color: var(--primary-color);
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   transition: background-color var(--transition-speed) ease;
   
   &:hover {
@@ -78,7 +82,7 @@ const CompleteButton = styled.button`
   color: white;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color var(--transition-speed) ease;
   

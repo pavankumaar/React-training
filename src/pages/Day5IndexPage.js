@@ -41,12 +41,12 @@ const Day5IndexPage = () => {
   
   return (
     <Layout>
-      <Navigation prevLink="/day4" nextLink="/" />
-      
-      <Title>Day 5: JavaScript Fundamentals - Part 2</Title>
-      <Description>
-        Advanced JavaScript concepts including functions, arrays, objects, and loops.
-      </Description>
+      <Navigation 
+        prevLink="/day4" 
+        nextLink="/"
+        title="Day 5: JavaScript Fundamentals - Part 2"
+        subtitle="Advanced JavaScript concepts including functions, arrays, objects, and loops."
+      />
       
       <TopicsContainer>
         <TopicCard 

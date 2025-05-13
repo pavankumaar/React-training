@@ -6,10 +6,6 @@ import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 import { day2EditorContent } from './day2_editor_content';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const Section = styled.section`
   margin-bottom: 2rem;
 `;
@@ -41,10 +37,10 @@ const CssIntroduction = () => {
       <Navigation 
         prevLink="/day2" 
         nextLink="/day2/css-selectors" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Introduction"
+        subtitle="Learn the basics of CSS and how to apply styles to HTML elements"
       />
-      
-      <Title>CSS Introduction</Title>
       
       <Section>
         <SectionTitle>What is CSS?</SectionTitle>
@@ -235,7 +231,9 @@ const CssIntroduction = () => {
       <Navigation 
         prevLink="/day2" 
         nextLink="/day2/css-selectors" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Introduction"
+        subtitle="Learn the basics of CSS and how to apply styles to HTML elements"
       />
     </Layout>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -14,13 +15,17 @@ const LoginContainer = styled.div`
 `;
 
 const LoginCard = styled.div`
-  background-color: white;
+  background-color: var(--card-background);
+  color: var(--text-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   padding: 30px;
   width: 100%;
   max-width: 400px;
   text-align: center;
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease;
 `;
 
 const Title = styled.h1`
@@ -38,8 +43,10 @@ const PasscodeInput = styled.input`
   margin: 0 8px;
   font-size: 24px;
   text-align: center;
-  border: 2px solid var(--medium-gray);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
+  background-color: var(--card-background);
+  color: var(--text-color);
   
   &:focus {
     border-color: var(--primary-color);
@@ -57,6 +64,31 @@ const PasscodeInput = styled.input`
   &[type=number] {
     -moz-appearance: textfield;
   }
+  
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 45px;
+    font-size: 20px;
+    margin: 0 6px;
+  }
+  
+  @media (max-width: 576px) {
+    width: 32px;
+    height: 40px;
+    font-size: 18px;
+    margin: 0 5px;
+  }
+  
+  @media (max-width: 375px) {
+    width: 28px;
+    height: 35px;
+    font-size: 16px;
+    margin: 0 4px;
+  }
+  
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
 `;
 
 const ErrorMessage = styled.p`
@@ -68,6 +100,7 @@ const ErrorMessage = styled.p`
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [passcode, setPasscode] = useState(['', '', '', '']);
   const [error, setError] = useState('');
   
@@ -126,8 +159,46 @@ const LoginPage = () => {
     }
   };
   
+  const ThemeToggleButton = styled.button`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    transition: background-color var(--transition-speed) ease;
+    
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.2);
+    }
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  `;
+
   return (
     <LoginContainer>
+      <ThemeToggleButton onClick={() => toggleTheme()} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+        {theme === 'light' ? (
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+          </svg>
+        )}
+      </ThemeToggleButton>
       <LoginCard>
         <Title>React Training</Title>
         <PasscodeContainer>

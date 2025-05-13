@@ -102,10 +102,10 @@ const CssSelectors = () => {
       <Navigation 
         prevLink="/day2/css-introduction" 
         nextLink="/day2/classes-ids" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Selectors"
+        subtitle="Learn how to target HTML elements with different types of CSS selectors"
       />
-      
-      <Title>CSS Selectors</Title>
       
       <Example>
         <SectionTitle>What are CSS Selectors?</SectionTitle>
@@ -362,7 +362,9 @@ const CssSelectors = () => {
       <Navigation 
         prevLink="/day2/css-introduction" 
         nextLink="/day2/classes-ids" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="CSS Selectors"
+        subtitle="Learn how to target HTML elements with different types of CSS selectors"
       />
     </Layout>
   );

@@ -97,10 +97,10 @@ const DivSpan = () => {
       <Navigation 
         prevLink="/day2/classes-ids" 
         nextLink="/day2/box-model" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="Div and Span Elements"
+        subtitle="Understand how to use div and span elements for grouping and styling content"
       />
-      
-      <Title>Div and Span Elements</Title>
       
       <Example>
         <SectionTitle>Introduction to Div and Span</SectionTitle>
@@ -271,7 +271,9 @@ const DivSpan = () => {
       <Navigation 
         prevLink="/day2/classes-ids" 
         nextLink="/day2/box-model" 
-        indexLink="/day2" 
+        indexLink="/day2"
+        title="Div and Span Elements"
+        subtitle="Understand how to use div and span elements for grouping and styling content"
       />
     </Layout>
   );

@@ -84,10 +84,10 @@ const FlexboxGrid = () => {
       <Navigation 
         prevLink="/day2/box-model" 
         nextLink="/day3/styling-forms-buttons" 
-        indexLink="/day3" 
+        indexLink="/day3"
+        title="Flexbox Basics"
+        subtitle="Learn how to create flexible and responsive layouts using CSS Flexbox"
       />
-      
-      <Title>Flexbox Basics</Title>
       
       <Example>
         <SectionTitle>What is Flexbox?</SectionTitle>
@@ -243,7 +243,9 @@ const FlexboxGrid = () => {
       <Navigation 
         prevLink="/day2/box-model" 
         nextLink="/day3/styling-forms-buttons" 
-        indexLink="/day3" 
+        indexLink="/day3"
+        title="Flexbox Basics"
+        subtitle="Learn how to create flexible and responsive layouts using CSS Flexbox"
       />
     </Layout>
   );

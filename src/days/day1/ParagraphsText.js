@@ -19,10 +19,10 @@ const ParagraphsText = () => {
       <Navigation 
         prevLink="/day1/headings" 
         nextLink="/day1/attributes" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Paragraphs and Text Formatting"
+        subtitle="Learn how to work with paragraphs and text formatting in HTML"
       />
-      
-      <Title>HTML Paragraphs and Text Formatting</Title>
       
       <Example title="Paragraphs">
         <p>This is a paragraph. Paragraphs are defined with the &lt;p&gt; tag.</p>
@@ -448,7 +448,9 @@ pre {
       <Navigation 
         prevLink="/day1/headings" 
         nextLink="/day1/attributes" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Paragraphs and Text Formatting"
+        subtitle="Learn how to work with paragraphs and text formatting in HTML"
       />
     </Layout>
   );

@@ -5,11 +5,6 @@ import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 
-
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const Section = styled.section`
   margin-bottom: 2rem;
 `;
@@ -24,10 +19,10 @@ const Functions = () => {
       <Navigation 
         prevLink="/day5" 
         nextLink="/day5/arrays-objects" 
-        indexLink="/day5" 
+        indexLink="/day5"
+        title="JavaScript Functions"
+        subtitle="Learn about JavaScript functions, including declarations, expressions, and arrow functions"
       />
-      
-      <Title>JavaScript Functions</Title>
       
       <Section>
         <SectionTitle>What are Functions?</SectionTitle>
@@ -334,7 +329,9 @@ console.log(counter.getCount()); // 1`}
       <Navigation 
         prevLink="/day5" 
         nextLink="/day5/arrays-objects" 
-        indexLink="/day5" 
+        indexLink="/day5"
+        title="JavaScript Functions"
+        subtitle="Learn about JavaScript functions, including declarations, expressions, and arrow functions"
       />
     </Layout>
   );

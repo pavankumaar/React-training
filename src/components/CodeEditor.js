@@ -4,6 +4,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { javascript } from '@codemirror/lang-javascript';
+import { useTheme } from '../context/ThemeContext';
 
 const EditorContainer = styled.div`
   position: fixed;
@@ -21,11 +22,12 @@ const EditorContainer = styled.div`
 const EditorContent = styled.div`
   width: 90%;
   height: 90%;
-  background-color: white;
+  background-color: var(--card-background);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const EditorHeader = styled.div`
@@ -65,12 +67,14 @@ const EditorBody = styled.div`
 const EditorPane = styled.div`
   flex: 1;
   overflow: auto;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
   min-height: 200px;
+  background-color: var(--code-background);
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
   
   @media (min-width: 768px) {
     border-bottom: none;
-    border-right: ${props => props.last ? 'none' : '1px solid #ddd'};
+    border-right: ${props => props.last ? 'none' : '1px solid var(--border-color)'};
     min-height: auto;
   }
 `;
@@ -81,6 +85,8 @@ const PreviewPane = styled.div`
   padding: 10px;
   position: relative;
   min-height: 300px;
+  background-color: var(--background-color);
+  transition: background-color var(--transition-speed) ease;
   
   @media (min-width: 768px) {
     min-height: auto;
@@ -92,19 +98,21 @@ const LoadingMessage = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: ${props => props.theme === 'dark' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.8)'};
   padding: 10px;
   text-align: center;
   font-style: italic;
-  color: #666;
+  color: var(--text-color);
   z-index: 1;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  background-color: #f5f5f5;
+  background-color: var(--light-gray);
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const Button = styled.button`
@@ -133,6 +141,7 @@ const CodeEditor = ({
   enabledTabs = { html: true, css: true, js: true },
   onClose 
 }) => {
+  const { theme } = useTheme();
   // Set the initial active tab to the first enabled tab
   const getInitialActiveTab = () => {
     if (enabledTabs.html) return 'html';
@@ -254,7 +263,7 @@ const CodeEditor = ({
                 height="100%"
                 extensions={[html()]}
                 onChange={(value) => setHtmlCode(value)}
-                theme="light"
+                theme={theme === 'dark' ? 'dark' : 'light'}
               />
             </EditorPane>
           )}
@@ -266,7 +275,7 @@ const CodeEditor = ({
                 height="100%"
                 extensions={[css()]}
                 onChange={(value) => setCssCode(value)}
-                theme="light"
+                theme={theme === 'dark' ? 'dark' : 'light'}
               />
             </EditorPane>
           )}
@@ -278,13 +287,13 @@ const CodeEditor = ({
                 height="100%"
                 extensions={[javascript()]}
                 onChange={(value) => setJsCode(value)}
-                theme="light"
+                theme={theme === 'dark' ? 'dark' : 'light'}
               />
             </EditorPane>
           )}
           
           <PreviewPane>
-            {isLoading && <LoadingMessage>Loading preview...</LoadingMessage>}
+            {isLoading && <LoadingMessage theme={theme}>Loading preview...</LoadingMessage>}
             <iframe
               id="preview-iframe"
               title="Preview"

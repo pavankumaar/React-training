@@ -4,10 +4,6 @@ import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const Section = styled.section`
   margin-bottom: 2rem;
 `;
@@ -25,23 +21,40 @@ const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #555;
+  color: var(--text-color);
 `;
 
 const Input = styled.input`
   display: block;
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
   
   &:focus {
-    border-color: #3498db;
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px;
+    font-size: 13px;
   }
 `;
 
@@ -49,16 +62,33 @@ const Textarea = styled.textarea`
   display: block;
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
   
   &:focus {
-    border-color: #3498db;
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px;
+    font-size: 13px;
   }
 `;
 
@@ -66,16 +96,38 @@ const Select = styled.select`
   display: block;
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
   
   &:focus {
-    border-color: #3498db;
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  
+  option {
+    background-color: var(--card-background);
+    color: var(--text-color);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px;
+    font-size: 13px;
   }
 `;
 
@@ -96,6 +148,21 @@ const Button = styled.button`
   
   &:active {
     background-color: #1f6da8;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px 14px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 `;
 
@@ -147,10 +214,10 @@ const StylingFormsButtons = () => {
       <Navigation 
         prevLink="/day3/flexbox-grid" 
         nextLink="/day3/responsive-design" 
-        indexLink="/day3" 
+        indexLink="/day3"
+        title="Styling Forms & Buttons"
+        subtitle="Learn how to create attractive and user-friendly forms and buttons with CSS"
       />
-      
-      <Title>Styling Forms & Buttons</Title>
       
       <Section>
         <SectionTitle>Form Styling Basics</SectionTitle>
@@ -440,7 +507,9 @@ label {
       <Navigation 
         prevLink="/day3/flexbox-grid" 
         nextLink="/day3/responsive-design" 
-        indexLink="/day3" 
+        indexLink="/day3"
+        title="Styling Forms & Buttons"
+        subtitle="Learn how to create attractive and user-friendly forms and buttons with CSS"
       />
     </Layout>
   );

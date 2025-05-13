@@ -4,11 +4,6 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
 
-const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 0.5rem;
-`;
-
 const Subtitle = styled.p`
   text-align: center;
   font-size: 1.2rem;
@@ -39,12 +34,13 @@ const shimmer = keyframes`
 `;
 
 const ShimmerCardWrapper = styled.div`
-  background: #f6f7f8;
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--card-background);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
   overflow: hidden;
   position: relative;
   height: 380px;
+  transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
   
   &::after {
     content: '';
@@ -54,9 +50,9 @@ const ShimmerCardWrapper = styled.div`
     width: 100%;
     height: 100%;
     background: linear-gradient(to right, 
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.5) 50%,
-      rgba(255, 255, 255, 0) 100%
+      rgba(128, 128, 128, 0) 0%,
+      rgba(128, 128, 128, 0.2) 50%,
+      rgba(128, 128, 128, 0) 100%
     );
     background-size: 468px 100%;
     animation: ${shimmer} 1.5s infinite linear;
@@ -65,42 +61,47 @@ const ShimmerCardWrapper = styled.div`
 
 const ShimmerHeader = styled.div`
   height: 24px;
-  background: #e0e0e0;
+  background: var(--medium-gray);
   margin: 20px 20px 15px;
   border-radius: 4px;
   width: 70%;
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const ShimmerSubheader = styled.div`
   height: 16px;
-  background: #e0e0e0;
+  background: var(--medium-gray);
   margin: 0 20px 20px;
   border-radius: 4px;
   width: 90%;
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const ShimmerLine = styled.div`
   height: 12px;
-  background: #e0e0e0;
+  background: var(--medium-gray);
   margin: 10px 20px;
   border-radius: 4px;
   width: ${props => props.width || '85%'};
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const ShimmerProgressBar = styled.div`
   height: 8px;
-  background: #e0e0e0;
+  background: var(--medium-gray);
   margin: 30px 20px 15px;
   border-radius: 4px;
   width: 80%;
+  transition: background-color var(--transition-speed) ease;
 `;
 
 const ShimmerButton = styled.div`
   height: 36px;
-  background: #e0e0e0;
+  background: var(--medium-gray);
   margin: 30px 20px 20px;
   border-radius: 18px;
   width: 120px;
+  transition: background-color var(--transition-speed) ease;
 `;
 
 // Shimmer Card Component
@@ -149,9 +150,8 @@ const HomePage = () => {
       const timestamp = new Date().getTime();
       
       // First try to get the topics to see if the server is responding at all
-      let topicsResponse;
       try {
-        topicsResponse = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
+        await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
           timeout: 5000,
           headers: {
             'Cache-Control': 'no-cache',
@@ -277,7 +277,6 @@ const HomePage = () => {
   
   return (
     <Layout>
-      <Title>React Training Course</Title>
       <Subtitle>A comprehensive journey from HTML basics to React mastery</Subtitle>
       
       {error && (
@@ -286,10 +285,12 @@ const HomePage = () => {
           textAlign: 'center', 
           marginBottom: '1rem',
           padding: '1rem',
-          backgroundColor: '#ffeeee',
+          backgroundColor: 'var(--light-gray)',
           borderRadius: 'var(--border-radius)',
           maxWidth: '800px',
-          margin: '0 auto 1.5rem'
+          margin: '0 auto 1.5rem',
+          border: '1px solid var(--danger-color)',
+          transition: 'background-color var(--transition-speed) ease'
         }}>
           <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
             Error Loading Statistics
@@ -309,9 +310,14 @@ const HomePage = () => {
           <div style={{ 
             textAlign: 'center', 
             margin: '1rem auto 2rem',
-            color: 'var(--dark-gray)'
+            color: 'var(--text-secondary)',
+            transition: 'color var(--transition-speed) ease'
           }}>
-            <div style={{ fontSize: '1.2rem', color: 'var(--primary-color)' }}>
+            <div style={{ 
+              fontSize: '1.2rem', 
+              color: 'var(--primary-color)',
+              transition: 'color var(--transition-speed) ease'
+            }}>
               Loading course content...
             </div>
           </div>
@@ -408,19 +414,20 @@ const HomePage = () => {
           maxWidth: '600px', 
           margin: '2rem auto', 
           padding: '1rem', 
-          backgroundColor: '#f8f9fa', 
+          backgroundColor: 'var(--card-background)', 
           borderRadius: 'var(--border-radius)',
-          border: '1px solid var(--medium-gray)'
+          border: '1px solid var(--border-color)',
+          transition: 'background-color var(--transition-speed) ease, border-color var(--transition-speed) ease'
         }}>
           <h3 style={{ marginBottom: '1rem' }}>Server Connection Instructions</h3>
-          <ol style={{ textAlign: 'left', paddingLeft: '1.5rem' }}>
+          <ol style={{ textAlign: 'left', paddingLeft: '1.5rem', color: 'var(--text-color)' }}>
             <li>Open a terminal or command prompt</li>
-            <li>Navigate to the project directory: <code>cd "C:\Users\PP2107\Documents\React training\react-version"</code></li>
-            <li>Start the server: <code>npm run server</code></li>
+            <li>Navigate to the project directory: <code style={{ backgroundColor: 'var(--code-background)', padding: '2px 4px', borderRadius: '3px' }}>cd "C:\Users\PP2107\Documents\React training\react-version"</code></li>
+            <li>Start the server: <code style={{ backgroundColor: 'var(--code-background)', padding: '2px 4px', borderRadius: '3px' }}>npm run server</code></li>
             <li>Keep the terminal window open</li>
             <li>Refresh the page to try again</li>
           </ol>
-          <p style={{ marginTop: '1rem', fontStyle: 'italic' }}>
+          <p style={{ marginTop: '1rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
             The server needs to be running to fetch completion statistics from the database.
           </p>
         </div>

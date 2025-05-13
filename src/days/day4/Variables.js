@@ -24,10 +24,10 @@ const Variables = () => {
       <Navigation 
         prevLink="/day4" 
         nextLink="/day4/data-types" 
-        indexLink="/day4" 
+        indexLink="/day4"
+        title="Variables in JavaScript"
+        subtitle="Learn about JavaScript variables, including declaration, initialization, and scope"
       />
-      
-      <Title>Variables in JavaScript</Title>
       
       <Section>
         <SectionTitle>What are Variables?</SectionTitle>
@@ -157,7 +157,9 @@ count += 1;`}
       <Navigation 
         prevLink="/day4" 
         nextLink="/day4/data-types" 
-        indexLink="/day4" 
+        indexLink="/day4"
+        title="Variables in JavaScript"
+        subtitle="Learn about JavaScript variables, including declaration, initialization, and scope"
       />
     </Layout>
   );

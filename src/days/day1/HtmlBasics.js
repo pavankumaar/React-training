@@ -7,10 +7,6 @@ import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const Section = styled.section`
   margin-bottom: 2rem;
 `;
@@ -26,9 +22,9 @@ const HtmlBasics = () => {
         prevLink="/day1"
         nextLink="/day1/headings"
         indexLink="/day1"
+        title="HTML Basics"
+        subtitle="Learn the fundamentals of HTML, including document structure and basic elements"
       />
-
-      <Title>HTML Basics</Title>
 
       <Section>
         <SectionTitle>What is HTML?</SectionTitle>
@@ -470,6 +466,8 @@ document.addEventListener("DOMContentLoaded", function() {
         prevLink="/day1"
         nextLink="/day1/headings"
         indexLink="/day1"
+        title="HTML Basics"
+        subtitle="Learn the fundamentals of HTML, including document structure and basic elements"
       />
     </Layout>
   );

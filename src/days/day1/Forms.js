@@ -5,10 +5,6 @@ import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const FormContainer = styled.form`
   max-width: 600px;
   margin: 0 auto;
@@ -22,33 +18,117 @@ const Label = styled.label`
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: var(--text-color);
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: 8px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  
+  &:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 7px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 6px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 5px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
 `;
 
 const Select = styled.select`
   width: 100%;
   padding: 8px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  
+  &:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  option {
+    background-color: var(--card-background);
+    color: var(--text-color);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 7px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 6px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 5px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
 `;
 
 const Textarea = styled.textarea`
   width: 100%;
   padding: 8px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  
+  &:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 7px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 6px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 5px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
 `;
 
 const RadioGroup = styled.div`
@@ -80,29 +160,64 @@ const CheckboxInput = styled.input`
 `;
 
 const Button = styled.button`
-  background-color: #4CAF50;
-  color: white;
+  background-color: var(--success-color);
+  color: var(--button-text);
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
+  transition: background-color 0.3s ease;
   
   &:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-dark);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    margin-right: 8px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px 10px;
+    font-size: 0.9rem;
+    margin-right: 6px;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    margin-right: 5px;
   }
 `;
 
 const SubmitInput = styled.input`
-  background-color: #4CAF50;
-  color: white;
+  background-color: var(--success-color);
+  color: var(--button-text);
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
   
   &:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-dark);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 7px 10px;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 375px) {
+    padding: 6px 8px;
+    font-size: 0.85rem;
   }
 `;
 
@@ -124,10 +239,10 @@ const Forms = () => {
       <Navigation 
         prevLink="/day1/tables" 
         nextLink="/day1/images" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Forms"
+        subtitle="Understand how to create interactive forms with various input types"
       />
-      
-      <Title>HTML Forms</Title>
       
       <Example title="Basic Form Structure">
         <p>HTML forms are used to collect user input. The <code>&lt;form&gt;</code> element defines a form:</p>
@@ -185,12 +300,15 @@ const Forms = () => {
         
         input[type="text"],
         input[type="email"],
+        input[type="password"],
         textarea {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             box-sizing: border-box;
+            background-color: var(--card-background);
+            color: var(--text-color);
         }
         
         button {
@@ -428,14 +546,17 @@ input:focus, textarea:focus {
             input[type="search"] {
               border-radius: 20px;
               padding-left: 15px;
+              background-color: var(--card-background);
+              color: var(--text-color);
+              border: 1px solid var(--border-color);
             }
 
             input[type="email"]:valid {
-              border-color: #4CAF50;
+              border-color: var(--success-color);
             }
 
             input[type="email"]:invalid {
-              border-color: #f44336;
+              border-color: var(--danger-color);
             }
 
             .form-group:hover .note {
@@ -1121,13 +1242,16 @@ input:focus, textarea:focus {
         
         input[type="text"],
         input[type="email"],
+        input[type="password"],
         input[type="tel"],
         select {
             width: 100%;
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             box-sizing: border-box;
+            background-color: var(--card-background);
+            color: var(--text-color);
         }
         
         .button-group {
@@ -1252,22 +1376,26 @@ input:focus, textarea:focus {
 
 .modern-form input[type="text"],
 .modern-form input[type="email"],
+.modern-form input[type="password"],
 .modern-form input[type="tel"],
 .modern-form select,
 .modern-form textarea {
     border: none;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid var(--border-color);
     border-radius: 0;
     padding: 10px 5px;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    background-color: var(--card-background);
+    color: var(--text-color);
 }
 
 .modern-form input[type="text"]:focus,
 .modern-form input[type="email"]:focus,
+.modern-form input[type="password"]:focus,
 .modern-form input[type="tel"]:focus,
 .modern-form select:focus,
 .modern-form textarea:focus {
-    border-color: #2196F3;
+    border-color: var(--primary-color);
     outline: none;
 }
 
@@ -1293,7 +1421,9 @@ input:focus, textarea:focus {
       <Navigation 
         prevLink="/day1/tables" 
         nextLink="/day1/images" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Forms"
+        subtitle="Understand how to create interactive forms with various input types"
       />
     </Layout>
   );

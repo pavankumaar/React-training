@@ -5,10 +5,6 @@ import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
 import TryEditorButton from '../../components/TryEditorButton';
 
-const Title = styled.h1`
-  margin-bottom: 1rem;
-`;
-
 const SectionTitle = styled.h3`
   margin-bottom: 1rem;
 `;
@@ -35,10 +31,10 @@ const Attributes = () => {
       <Navigation 
         prevLink="/day1/paragraphs-text" 
         nextLink="/day1/tables" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Attributes"
+        subtitle="Understand how to use HTML attributes to provide additional information about elements"
       />
-      
-      <Title>HTML Attributes</Title>
       
       <Example title="What are HTML Attributes?">
         <p>HTML attributes provide additional information about HTML elements:</p>
@@ -569,7 +565,9 @@ document.addEventListener("DOMContentLoaded", function() {
       <Navigation 
         prevLink="/day1/paragraphs-text" 
         nextLink="/day1/tables" 
-        indexLink="/day1" 
+        indexLink="/day1"
+        title="HTML Attributes"
+        subtitle="Understand how to use HTML attributes to provide additional information about elements"
       />
     </Layout>
   );

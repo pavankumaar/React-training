@@ -24,7 +24,9 @@ const Loops = () => {
       <Navigation 
         prevLink="/day5/arrays-objects" 
         nextLink="/" 
-        indexLink="/day5" 
+        indexLink="/day5"
+        title="JavaScript Loops"
+        subtitle="Learn about different types of loops for iterating through data"
       />
       
       <Title>JavaScript Loops</Title>

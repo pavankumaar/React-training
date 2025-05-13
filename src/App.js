@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { CompletionProvider } from './context/CompletionContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -52,9 +53,10 @@ function App() {
   return (
     <AuthProvider>
       <CompletionProvider>
-        <Router>
-          <ScrollToTop />
-          <Routes>
+        <ThemeProvider>
+          <Router>
+            <ScrollToTop />
+            <Routes>
             {/* Main routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={
@@ -105,6 +107,7 @@ function App() {
           <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />
         </Routes>
       </Router>
+        </ThemeProvider>
       </CompletionProvider>
     </AuthProvider>
   );
