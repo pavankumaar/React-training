@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day1EditorContent } from './day1_editor_content';
 
 // Define the image path - hardcoded to ensure it works in all environments
 const imagePath = '/image.jpg';
@@ -104,6 +106,12 @@ const Images = () => {
           <li><code>src</code> - Specifies the path to the image</li>
           <li><code>alt</code> - Provides alternative text for the image (for accessibility and if the image cannot be displayed)</li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.basic_image.html}
+          cssCode={day1EditorContent.images.basic_image.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Image Size Attributes">
@@ -118,6 +126,13 @@ const Images = () => {
         </CodeBlock>
         
         <p>Note: It's a good practice to specify both width and height to prevent layout shifts during page loading.</p>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.image_size.html}
+          cssCode={day1EditorContent.images.image_size.css}
+          jsCode={day1EditorContent.images.image_size.js}
+          enabledTabs={{ html: true, css: true, js: true }}
+        />
       </Example>
 
       <Example title="Responsive Images">
@@ -138,6 +153,12 @@ const Images = () => {
   height: auto;
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.responsive_image.html}
+          cssCode={day1EditorContent.images.responsive_image.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Image as a Link">
@@ -154,6 +175,12 @@ const Images = () => {
   <img src="/image.jpg" alt="Clickable Image">
 </a>`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.image_as_link.html}
+          cssCode={day1EditorContent.images.image_as_link.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Image Formats">
@@ -207,6 +234,12 @@ const Images = () => {
   <figcaption>Fig.1 - This is a caption for the image above.</figcaption>
 </figure>`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.figure_caption.html}
+          cssCode={day1EditorContent.images.figure_caption.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Background Images with CSS">
@@ -225,6 +258,12 @@ const Images = () => {
           <li><code>background-position</code> - Sets the starting position of the background image</li>
           <li><code>background-repeat</code> - Controls if/how the background image repeats</li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.background_image.html}
+          cssCode={day1EditorContent.images.background_image.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Image Floating">
@@ -260,6 +299,12 @@ const Images = () => {
   display: table;
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.image_floating.html}
+          cssCode={day1EditorContent.images.image_floating.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Image Gallery Example">
@@ -297,6 +342,12 @@ const Images = () => {
   object-fit: cover;
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.image_gallery.html}
+          cssCode={day1EditorContent.images.image_gallery.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Accessibility Best Practices">
@@ -318,9 +369,13 @@ const Images = () => {
 <!-- Lazy loading -->
 <img src="/image.jpg" alt="Description" loading="lazy">`}
         </CodeBlock>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.images.accessibility.html}
+          cssCode={day1EditorContent.images.accessibility.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
-      
-      
       
       <Navigation 
         prevLink="/day1/forms" 

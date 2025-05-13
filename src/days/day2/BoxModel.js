@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day2EditorContent } from './day2_editor_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -207,6 +209,13 @@ const BoxModel = () => {
             </BorderBox>
           </MarginBox>
         </BoxModelDemo>
+        
+        <p>Try it yourself:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.boxModelIntro.html}
+          cssCode={day2EditorContent.boxModel.boxModelIntro.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -270,6 +279,13 @@ margin: 0 auto;`}
     margin-top: 20px;
 }`}
         </CodeBlock>
+        
+        <p>Try it yourself:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.marginExamples.html}
+          cssCode={day2EditorContent.boxModel.marginExamples.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -307,6 +323,13 @@ padding: 10px 20px;`}
         </DemoArea>
         
         <p><strong>Note:</strong> Unlike margins, padding values do not collapse.</p>
+        
+        <p>Try it yourself:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.paddingExamples.html}
+          cssCode={day2EditorContent.boxModel.paddingExamples.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -347,6 +370,13 @@ border-radius: 10px;`}
             <p>This box has rounded corners with a border-radius of 15px.</p>
           </BorderRadius>
         </DemoArea>
+        
+        <p>Try it yourself:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.borderExamples.html}
+          cssCode={day2EditorContent.boxModel.borderExamples.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -390,6 +420,13 @@ box-sizing: border-box;`}
 }`}
           </CodeBlock>
         </DemoArea>
+        
+        <p>Try it yourself:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.boxSizingExamples.html}
+          cssCode={day2EditorContent.boxModel.boxSizingExamples.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -411,7 +448,15 @@ box-sizing: border-box;`}
         <p>In both cases, margins are not included in the element's dimensions but affect its position and the space around it.</p>
       </Example>
       
-      
+      <Example title="Interactive Box Model">
+        <p>Experiment with the CSS box model properties interactively:</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.boxModel.interactiveBoxModel.html}
+          cssCode={day2EditorContent.boxModel.interactiveBoxModel.css}
+          jsCode={day2EditorContent.boxModel.interactiveBoxModel.js}
+          enabledTabs={{ html: true, css: true, js: true }}
+        />
+      </Example>
       
       <Navigation 
         prevLink="/day2/div-span" 

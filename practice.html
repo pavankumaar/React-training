@@ -3,12 +3,37 @@
 <head>
     <title>Page Title</title>
     <style>
-        p {
-            text-decoration: underline;
+        body {
+            padding: 20px;
+        }
+        .container {
+            width: 400px;
+            height: 200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: lightgray;
+            border: 50px solid black;
+            box-sizing: border-box;
+        }
+        .container2 {
+            width: 400px;
+            height: 200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: lightgray;
+            border: 20px solid black;
+            box-sizing: content-box;
         }
     </style>
 </head>
 <body>
-    <p><span style="color: red;">M</span>yfirst paragraph 2.</p>
+    <div class="container">
+        content 1
+    </div>
+
+    <div class="container2">
+        content 2
+    </div>
+    
 </body>
 </html>

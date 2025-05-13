@@ -40,6 +40,37 @@ const HtmlBasics = () => {
           HTML elements tell the browser how to display the content. They label pieces of content
           such as "this is a heading", "this is a paragraph", "this is a link", etc.
         </p>
+        
+        <TryEditorButton
+          htmlCode={`<!DOCTYPE html>
+<html>
+<head>
+    <title>What is HTML</title>
+</head>
+<body>
+    <h1>Learning HTML</h1>
+    <p>HTML (HyperText Markup Language) is the standard markup language for creating web pages.</p>
+    <p>It describes the structure of a web page using a series of elements or tags.</p>
+</body>
+</html>`}
+          cssCode={`/* Basic styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+p {
+  line-height: 1.6;
+  color: #555;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Section>
 
       <Section>
@@ -71,6 +102,42 @@ const HtmlBasics = () => {
           <li><strong>h1</strong> - Defines a large heading</li>
           <li><strong>p</strong> - Defines a paragraph</li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={`<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Document Structure</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Understanding HTML Structure</h1>
+    <p>This is a basic HTML document showing the essential structure.</p>
+    <p>Try modifying this content to see how it affects the page!</p>
+</body>
+</html>`}
+          cssCode={`/* You can add CSS to style your HTML */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+}
+
+h1 {
+  color: #0066cc;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+p {
+  color: #333;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Section>
 
       <Example title="Basic HTML Document Example">
@@ -134,6 +201,87 @@ document.addEventListener("DOMContentLoaded", function() {
           <li><strong>Divisions</strong>: <code>&lt;div&gt;</code></li>
           <li><strong>Spans</strong>: <code>&lt;span&gt;</code></li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={`<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Elements</title>
+</head>
+<body>
+    <!-- Headings -->
+    <h1>This is a Heading 1</h1>
+    <h2>This is a Heading 2</h2>
+    <h3>This is a Heading 3</h3>
+    
+    <!-- Paragraph -->
+    <p>This is a paragraph element. It contains text content.</p>
+    
+    <!-- Link -->
+    <a href="https://www.example.com">This is a link to Example.com</a>
+    
+    <!-- Lists -->
+    <h3>Unordered List:</h3>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+    
+    <h3>Ordered List:</h3>
+    <ol>
+        <li>First item</li>
+        <li>Second item</li>
+        <li>Third item</li>
+    </ol>
+    
+    <!-- Div and Span -->
+    <div>This is a div element - a block-level container</div>
+    <p>This paragraph contains a <span style="color: red;">span element</span> which is an inline container.</p>
+</body>
+</html>`}
+          cssCode={`/* Styling for HTML elements */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+h2 {
+  color: #3498db;
+}
+
+h3 {
+  color: #e74c3c;
+}
+
+ul, ol {
+  background-color: #f8f9fa;
+  padding: 15px 15px 15px 40px;
+  border-radius: 5px;
+}
+
+div {
+  background-color: #e8f4f8;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Section>
 
       <Section>
@@ -155,6 +303,101 @@ document.addEventListener("DOMContentLoaded", function() {
           <li><strong>class</strong>: Specifies one or more class names for CSS styling</li>
           <li><strong>id</strong>: Specifies a unique id for an element</li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={`<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Attributes</title>
+</head>
+<body>
+    <h1>HTML Attributes Examples</h1>
+    
+    <!-- Link with href attribute -->
+    <p><a href="https://www.example.com" target="_blank">Visit Example.com</a></p>
+    
+    <!-- Image with src, alt, width, and height attributes -->
+    <img src="https://via.placeholder.com/150" alt="Placeholder Image" width="150" height="150">
+    
+    <!-- Element with style attribute -->
+    <p style="color: blue; font-size: 18px; background-color: #f0f0f0; padding: 10px;">
+        This paragraph has inline styles applied using the style attribute.
+    </p>
+    
+    <!-- Elements with class and id attributes -->
+    <div id="container" class="content-box highlight">
+        This div has both id and class attributes.
+    </div>
+    
+    <!-- Form input with various attributes -->
+    <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <br><br>
+        <input type="submit" value="Submit" disabled>
+    </form>
+</body>
+</html>`}
+          cssCode={`/* CSS to style elements with class and id attributes */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+/* Styling using class selector */
+.content-box {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+}
+
+.highlight {
+  background-color: #ffffd0;
+}
+
+/* Styling using id selector */
+#container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Form styling */
+form {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Section>
 
       <Example title="HTML Element with Attributes">

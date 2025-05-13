@@ -103,6 +103,9 @@ const GlobalStyles = createGlobalStyle`
     margin-bottom: 1.5rem;
     border-radius: var(--border-radius);
   }
+  .example ul,ol {
+    margin-left: 20px;
+  }
 
   .completed {
     color: var(--success-color);

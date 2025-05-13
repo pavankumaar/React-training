@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day2EditorContent } from './day2_editor_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -55,6 +57,15 @@ const CssIntroduction = () => {
           CSS saves a lot of work by allowing you to control the layout of multiple web pages all at once.
           It can control the layout of multiple web pages all at once.
         </p>
+        
+        <Example title="Try CSS Basics">
+          <p>See how CSS transforms a plain page - try modifying the styles:</p>
+          <TryEditorButton
+            htmlCode={day2EditorContent.cssIntroductionBasics.html}
+            cssCode={day2EditorContent.cssIntroductionBasics.css}
+            enabledTabs={{ html: true, css: true, js: false }}
+          />
+        </Example>
       </Section>
       
       <Section>
@@ -77,23 +88,32 @@ const CssIntroduction = () => {
           <li><strong>Property</strong>: The style attribute you want to change</li>
           <li><strong>Value</strong>: The value of the property</li>
         </ul>
-      </Section>
-      
-      <Example title="Basic CSS Example">
-        <p>Here's a simple CSS rule that styles all paragraphs:</p>
-        <CodeBlock>
+        
+        <Example title="Basic CSS Example">
+          <p>Here's a simple CSS rule that styles all paragraphs:</p>
+          <CodeBlock>
 {`p {
     color: blue;
     font-size: 18px;
     font-weight: bold;
 }`}
-        </CodeBlock>
+          </CodeBlock>
+          
+          <p>Result:</p>
+          <CssExample>
+            <StyledParagraph>This paragraph is styled with CSS!</StyledParagraph>
+          </CssExample>
+        </Example>
         
-        <p>Result:</p>
-        <CssExample>
-          <StyledParagraph>This paragraph is styled with CSS!</StyledParagraph>
-        </CssExample>
-      </Example>
+        <Example title="Try CSS Syntax">
+          <p>Practical examples of CSS selectors and properties - modify them to see changes:</p>
+          <TryEditorButton
+            htmlCode={day2EditorContent.cssSyntax.html}
+            cssCode={day2EditorContent.cssSyntax.css}
+            enabledTabs={{ html: true, css: true, js: false }}
+          />
+        </Example>
+      </Section>
       
       <Section>
         <SectionTitle>Ways to Insert CSS</SectionTitle>
@@ -160,6 +180,15 @@ const CssIntroduction = () => {
 </body>
 </html>`}
         </CodeBlock>
+        
+        <Example title="Try CSS Insertion Methods">
+          <p>Compare external, internal, and inline CSS methods side by side:</p>
+          <TryEditorButton
+            htmlCode={day2EditorContent.cssInsertionMethods.html}
+            cssCode={day2EditorContent.cssInsertionMethods.css}
+            enabledTabs={{ html: true, css: true, js: false }}
+          />
+        </Example>
       </Section>
       
       <Section>
@@ -175,26 +204,33 @@ const CssIntroduction = () => {
           <li><strong>HSL</strong>: Like "hsl(0, 100%, 50%)" for red</li>
           <li><strong>HSLA</strong>: Like "hsla(0, 100%, 50%, 0.5)" for semi-transparent red</li>
         </ul>
+        
+        <Example title="CSS Color Examples">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+            <div style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
+              Color Name: red
+            </div>
+            <div style={{ backgroundColor: '#00ff00', color: 'black', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
+              Hex: #00ff00
+            </div>
+            <div style={{ backgroundColor: 'rgb(0, 0, 255)', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
+              RGB: rgb(0, 0, 255)
+            </div>
+            <div style={{ backgroundColor: 'rgba(255, 0, 0, 0.5)', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
+              RGBA: rgba(255, 0, 0, 0.5)
+            </div>
+          </div>
+        </Example>
+        
+        <Example title="Try CSS Colors">
+          <p>Interactive color examples - change values to see different colors:</p>
+          <TryEditorButton
+            htmlCode={day2EditorContent.cssColors.html}
+            cssCode={day2EditorContent.cssColors.css}
+            enabledTabs={{ html: true, css: true, js: false }}
+          />
+        </Example>
       </Section>
-      
-      <Example title="CSS Color Examples">
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
-          <div style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
-            Color Name: red
-          </div>
-          <div style={{ backgroundColor: '#00ff00', color: 'black', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
-            Hex: #00ff00
-          </div>
-          <div style={{ backgroundColor: 'rgb(0, 0, 255)', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
-            RGB: rgb(0, 0, 255)
-          </div>
-          <div style={{ backgroundColor: 'rgba(255, 0, 0, 0.5)', color: 'white', padding: '10px', borderRadius: '4px', width: '150px', textAlign: 'center' }}>
-            RGBA: rgba(255, 0, 0, 0.5)
-          </div>
-        </div>
-      </Example>
-      
-      
       
       <Navigation 
         prevLink="/day2" 

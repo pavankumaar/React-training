@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day1EditorContent } from './day1_editor_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -84,23 +86,23 @@ const Tables = () => {
         </StyledTable>
         
         <CodeBlock>
-{`<table>
-  <tr>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Age</th>
-  </tr>
-  <tr>
-    <td>John</td>
-    <td>Doe</td>
-    <td>25</td>
-  </tr>
-  <tr>
-    <td>Jane</td>
-    <td>Smith</td>
-    <td>30</td>
-  </tr>
-</table>`}
+          {`<table>
+          <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Age</th>
+          </tr>
+          <tr>
+          <td>John</td>
+          <td>Doe</td>
+          <td>25</td>
+          </tr>
+          <tr>
+          <td>Jane</td>
+          <td>Smith</td>
+          <td>30</td>
+          </tr>
+          </table>`}
         </CodeBlock>
         
         <h3>Table Elements Explained:</h3>
@@ -110,6 +112,12 @@ const Tables = () => {
           <li><code>&lt;th&gt;</code> - Defines a table header cell</li>
           <li><code>&lt;td&gt;</code> - Defines a table data cell</li>
         </ul>
+        
+        <TryEditorButton
+          htmlCode={day1EditorContent.tables.basic_table.html}
+          cssCode={day1EditorContent.tables.basic_table.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example title="Table with Header, Body, and Footer">
@@ -156,29 +164,35 @@ const Tables = () => {
         </StyledTableWithCaption>
         
         <CodeBlock>
-{`<table>
-  <caption>Monthly Savings</caption>
-  <thead>
-    <tr>
-      <th>Month</th>
-      <th>Income</th>
-      <th>Expenses</th>
-      <th>Savings</th>
-    </tr>
-  </thead>
-  <tbody>
-    ... table rows ...
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>Total</td>
-      <td>$15700</td>
-      <td>$9300</td>
-      <td>$6400</td>
-    </tr>
-  </tfoot>
-</table>`}
+          {`<table>
+            <caption>Monthly Savings</caption>
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Income</th>
+                <th>Expenses</th>
+                <th>Savings</th>
+              </tr>
+            </thead>
+            <tbody>
+              ... table rows ...
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td>$15700</td>
+                <td>$9300</td>
+                <td>$6400</td>
+              </tr>
+            </tfoot>
+          </table>`}
         </CodeBlock>
+
+        <TryEditorButton
+          htmlCode={day1EditorContent.tables.table_with_header_body_footer.html}
+          enabledTabs={{ html: true }}
+        />
+
       </Example>
 
       <Example title="Spanning Rows and Columns">
@@ -202,22 +216,22 @@ const Tables = () => {
         </StyledTable>
         
         <CodeBlock>
-{`<table>
-  <tr>
-    <th>Name</th>
-    <th colspan="2">Contact</th>
-  </tr>
-  <tr>
-    <td>John Doe</td>
-    <td>555-1234</td>
-    <td>john@example.com</td>
-  </tr>
-  <tr>
-    <td>Jane Smith</td>
-    <td>555-5678</td>
-    <td>jane@example.com</td>
-  </tr>
-</table>`}
+          {`<table>
+            <tr>
+              <th>Name</th>
+              <th colspan="2">Contact</th>
+            </tr>
+            <tr>
+              <td>John Doe</td>
+              <td>555-1234</td>
+              <td>john@example.com</td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>555-5678</td>
+              <td>jane@example.com</td>
+            </tr>
+          </table>`}
         </CodeBlock>
         
         <h3>Example with rowspan:</h3>
@@ -236,20 +250,24 @@ const Tables = () => {
         </StyledTable>
         
         <CodeBlock>
-{`<table>
-  <tr>
-    <th>Name</th>
-    <td>John Doe</td>
-  </tr>
-  <tr>
-    <th rowspan="2">Contact</th>
-    <td>555-1234</td>
-  </tr>
-  <tr>
-    <td>john@example.com</td>
-  </tr>
-</table>`}
+          {`<table>
+            <tr>
+              <th>Name</th>
+              <td>John Doe</td>
+            </tr>
+            <tr>
+              <th rowspan="2">Contact</th>
+              <td>555-1234</td>
+            </tr>
+            <tr>
+              <td>john@example.com</td>
+            </tr>
+          </table>`}
         </CodeBlock>
+        <TryEditorButton
+          htmlCode={day1EditorContent.tables.colspan_rowspan.html}
+          enabledTabs={{ html: true }}
+        />
       </Example>
 
       <Example title="Styled Table Example">
@@ -297,6 +315,12 @@ const Tables = () => {
             </tr>
           </tbody>
         </FancyTable>
+
+        <TryEditorButton
+          htmlCode={day1EditorContent.tables.styled_tables.html}
+          cssCode={day1EditorContent.tables.styled_tables.css}
+          enabledTabs={{ html: true, css: true }}
+        />
       </Example>
 
       <Example title="Table Accessibility">
@@ -335,36 +359,39 @@ const Tables = () => {
         </StyledTable>
         
         <CodeBlock>
-{`<table>
-  <caption>Employee Schedule</caption>
-  <thead>
-    <tr>
-      <th scope="col">Employee</th>
-      <th scope="col">Monday</th>
-      <th scope="col">Tuesday</th>
-      <th scope="col">Wednesday</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">John</th>
-      <td>9 AM - 5 PM</td>
-      <td>9 AM - 5 PM</td>
-      <td>9 AM - 5 PM</td>
-    </tr>
-    <tr>
-      <th scope="row">Jane</th>
-      <td>10 AM - 6 PM</td>
-      <td>10 AM - 6 PM</td>
-      <td>10 AM - 6 PM</td>
-    </tr>
-  </tbody>
-</table>`}
+          {`<table>
+            <caption>Employee Schedule</caption>
+            <thead>
+              <tr>
+                <th scope="col">Employee</th>
+                <th scope="col">Monday</th>
+                <th scope="col">Tuesday</th>
+                <th scope="col">Wednesday</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">John</th>
+                <td>9 AM - 5 PM</td>
+                <td>9 AM - 5 PM</td>
+                <td>9 AM - 5 PM</td>
+              </tr>
+              <tr>
+                <th scope="row">Jane</th>
+                <td>10 AM - 6 PM</td>
+                <td>10 AM - 6 PM</td>
+                <td>10 AM - 6 PM</td>
+              </tr>
+            </tbody>
+          </table>`}
         </CodeBlock>
+        <TryEditorButton
+          htmlCode={day1EditorContent.tables.interactive_tables.html}
+          jsCode={day1EditorContent.tables.interactive_tables.js}
+          enabledTabs={{ html: true, js: true }}
+        />
       </Example>
-      
-      
-      
+          
       <Navigation 
         prevLink="/day1/attributes" 
         nextLink="/day1/forms" 

@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { classesIdsContent } from './classes_ids_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -153,6 +155,11 @@ const ClassesIds = () => {
             </Shadow>
           </Rounded>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={classesIdsContent.classExample.html}
+          cssCode={classesIdsContent.classExample.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -194,6 +201,11 @@ const ClassesIds = () => {
             <p>This is the footer section</p>
           </Footer>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={classesIdsContent.idExample.html}
+          cssCode={classesIdsContent.idExample.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -235,9 +247,7 @@ const ClassesIds = () => {
           <li>Consider using a naming convention like BEM (Block Element Modifier) for complex projects</li>
         </ul>
       </Example>
-      
-      
-      
+
       <Navigation 
         prevLink="/day2/css-selectors" 
         nextLink="/day2/div-span" 

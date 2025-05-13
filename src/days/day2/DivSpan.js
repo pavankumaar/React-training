@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day2EditorContent } from './day2_editor_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -151,6 +153,11 @@ const DivSpan = () => {
           <li>Building grid systems and flexible layouts</li>
           <li>Creating card-like components</li>
         </ul>
+        <TryEditorButton
+          htmlCode={day2EditorContent.divSpan.divElement.html}
+          cssCode={day2EditorContent.divSpan.divElement.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -192,6 +199,11 @@ const DivSpan = () => {
           <li>Creating tooltips or popups</li>
           <li>Targeting specific text for JavaScript manipulation</li>
         </ul>
+        <TryEditorButton
+          htmlCode={day2EditorContent.divSpan.spanElement.html}
+          cssCode={day2EditorContent.divSpan.spanElement.css}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -255,8 +267,6 @@ const DivSpan = () => {
           <li>You don't want to create a new line or block</li>
         </ul>
       </Example>
-      
-      
       
       <Navigation 
         prevLink="/day2/classes-ids" 

@@ -3,6 +3,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day2EditorContent } from './day2_editor_content';
 
 const Title = styled.h1`
   margin-bottom: 1rem;
@@ -125,6 +127,12 @@ const CssSelectors = () => {
             <p>This paragraph is selected by the element selector.</p>
           </DemoElement>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.elementSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.elementSelector.css}
+          jsCode={day2EditorContent.cssSelectors.elementSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -141,6 +149,12 @@ const CssSelectors = () => {
           <p>This is a normal paragraph.</p>
           <p>This paragraph has a <Highlight>highlighted</Highlight> word.</p>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.classSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.classSelector.css}
+          jsCode={day2EditorContent.cssSelectors.classSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -158,6 +172,12 @@ const CssSelectors = () => {
           <p>This is a normal paragraph.</p>
           <UniqueElement id="unique-element">This paragraph has a unique ID and is styled differently.</UniqueElement>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.idSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.idSelector.css}
+          jsCode={day2EditorContent.cssSelectors.idSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -175,6 +195,12 @@ const CssSelectors = () => {
           <p>This is a normal paragraph.</p>
           <SpecialElement data-type="special">This paragraph has a data-type attribute and is styled differently.</SpecialElement>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.attributeSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.attributeSelector.css}
+          jsCode={day2EditorContent.cssSelectors.attributeSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -195,6 +221,12 @@ const CssSelectors = () => {
             </div>
           </Parent>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.descendantSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.descendantSelector.css}
+          jsCode={day2EditorContent.cssSelectors.descendantSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -215,6 +247,12 @@ const CssSelectors = () => {
             </div>
           </DirectParent>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.childSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.childSelector.css}
+          jsCode={day2EditorContent.cssSelectors.childSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -234,6 +272,12 @@ const CssSelectors = () => {
             <p>This paragraph is not adjacent to the sibling and won't be green.</p>
           </SiblingContainer>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.adjacentSiblingSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.adjacentSiblingSelector.css}
+          jsCode={day2EditorContent.cssSelectors.adjacentSiblingSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -255,6 +299,12 @@ const CssSelectors = () => {
             <p>This is not the first child and won't be bold.</p>
           </FirstChildContainer>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.pseudoClassSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.pseudoClassSelector.css}
+          jsCode={day2EditorContent.cssSelectors.pseudoClassSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -283,6 +333,12 @@ const CssSelectors = () => {
             This paragraph has its first letter styled differently.
           </FirstLetterDemo>
         </DemoArea>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.pseudoElementSelector.html} 
+          cssCode={day2EditorContent.cssSelectors.pseudoElementSelector.css}
+          jsCode={day2EditorContent.cssSelectors.pseudoElementSelector.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
 
       <Example>
@@ -295,9 +351,13 @@ const CssSelectors = () => {
           <li>Element selectors and pseudo-elements (lowest specificity)</li>
         </ol>
         <p>When specificity is equal, the last rule defined wins.</p>
+        <TryEditorButton
+          htmlCode={day2EditorContent.cssSelectors.selectorSpecificity.html} 
+          cssCode={day2EditorContent.cssSelectors.selectorSpecificity.css}
+          jsCode={day2EditorContent.cssSelectors.selectorSpecificity.js}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
-      
-      
       
       <Navigation 
         prevLink="/day2/css-introduction" 
