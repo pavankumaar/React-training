@@ -3,8 +3,12 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
   :root {
     --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --primary-darker: #1a5e8a;
     --secondary-color: #2ecc71;
+    --secondary-dark: #27ae60;
     --accent-color: #f39c12;
+    --accent-dark: #e67e22;
     --text-color: #333;
     --light-gray: #f5f5f5;
     --medium-gray: #ddd;
@@ -73,7 +77,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   button:hover, .button:hover {
-    background-color: #2980b9;
+    background-color: var(--primary-dark);
+    color: white;
   }
 
   .container {
