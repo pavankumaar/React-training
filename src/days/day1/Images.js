@@ -6,6 +6,7 @@ import CodeBlock from '../../components/CodeBlock';
 
 // Define the image path with the correct public URL
 const imagePath = process.env.PUBLIC_URL + '/image.jpg';
+console.log("imagepath", imagePath);
 
 const Title = styled.h1`
   margin-bottom: 1rem;
