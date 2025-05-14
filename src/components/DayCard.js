@@ -18,16 +18,23 @@ const Card = styled.div`
 `;
 
 const CardHeader = styled.div`
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
   color: white;
-  padding: 1rem;
+  padding: 1.25rem 1.25rem 1.5rem;
   font-size: 1.25rem;
   font-weight: bold;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const HeaderTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
 `;
 
 const CardContent = styled.div`
@@ -59,7 +66,7 @@ const ViewButton = styled(Link)`
 `;
 
 const CompletionBadge = styled.div`
-  background-color: ${props => props.completed === props.total ? 'var(--success-color)' : 'var(--medium-gray)'};
+  background-color: ${props => props.completed === props.total ? 'var(--success-color)' : 'rgba(255, 255, 255, 0.2)'};
   color: white;
   border-radius: 20px;
   padding: 0.25rem 0.75rem;
@@ -67,42 +74,85 @@ const CompletionBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  ${props => props.completed === props.total && `
+    animation: pulse 1.5s infinite;
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+      }
+    }
+  `}
 `;
 
 const ProgressContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  width: 100%;
+  position: relative;
 `;
 
 const ProgressBar = styled.div`
-  height: 8px;
-  background-color: var(--light-gray);
-  border-radius: 4px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
   flex-grow: 1;
   margin-right: 1rem;
   overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1px;
 `;
 
 const ProgressFill = styled.div`
   height: 100%;
   width: ${props => (props.completed / props.total) * 100}%;
-  background-color: ${props => 
+  background: ${props => 
     props.completed === props.total 
-      ? 'var(--success-color)' 
+      ? 'linear-gradient(to right, #2ecc71, #27ae60)' 
       : props.completed > 0 
-        ? 'var(--primary-color)' 
-        : 'var(--medium-gray)'
+        ? 'linear-gradient(to right, #f7f7f7, #ffffff)' 
+        : 'rgba(255, 255, 255, 0.1)'
   };
-  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 20px;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props => 
+      props.completed === props.total 
+        ? 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))' 
+        : 'linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1))'
+    };
+    border-radius: 20px;
+  }
 `;
 
 const ProgressText = styled.div`
-  font-size: 0.9rem;
-  color: var(--dark-gray);
+  font-size: 0.85rem;
+  color: white;
   white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  letter-spacing: 0.5px;
 `;
 
 const DayCard = ({ day, title, description, topics, link, completedTopics = [], stats = null }) => {
@@ -130,26 +180,31 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   return (
     <Card>
       <CardHeader>
-        <span>Day {day}: {title}</span>
-        <CompletionBadge completed={safeStats.completed || completedCount} total={safeStats.total || totalTopics}>
-          {safeStats.completed || completedCount}/{safeStats.total || totalTopics}
-        </CompletionBadge>
-      </CardHeader>
-      <CardContent>
-        <Description>{description}</Description>
+        <HeaderTop>
+          <span>Day {day}: {title}</span>
+          <CompletionBadge completed={safeStats.completed || completedCount} total={safeStats.total || totalTopics}>
+            {safeStats.completed || completedCount}/{safeStats.total || totalTopics}
+          </CompletionBadge>
+        </HeaderTop>
         
-        {/* Progress bar */}
+        {/* Enhanced progress bar in header */}
         <ProgressContainer>
           <ProgressBar>
-            <ProgressFill completed={safeStats.completed || completedCount} total={safeStats.total || totalTopics} />
+            <ProgressFill 
+              completed={safeStats.completed || completedCount} 
+              total={safeStats.total || totalTopics} 
+            />
           </ProgressBar>
           <ProgressText>
             {(safeStats.completed || completedCount) === (safeStats.total || totalTopics) ? 
-              'Completed!' : 
-              `${safeStats.completed || completedCount}/${safeStats.total || totalTopics} completed`
+              '✓ Complete!' : 
+              `${Math.round((safeStats.completed || completedCount) / (safeStats.total || totalTopics) * 100)}%`
             }
           </ProgressText>
         </ProgressContainer>
+      </CardHeader>
+      <CardContent>
+        <Description>{description}</Description>
         
         <TopicsList>
           {topics.map((topic, index) => {
