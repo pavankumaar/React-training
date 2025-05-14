@@ -152,7 +152,6 @@ const HomePage = () => {
       // First try to get the topics to see if the server is responding at all
       try {
         await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
-          timeout: 5000,
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -173,7 +172,6 @@ const HomePage = () => {
       let response;
       try {
         response = await axios.get(`${API_URL}/stats/days?t=${timestamp}`, {
-          timeout: 5000,
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -256,7 +254,6 @@ const HomePage = () => {
       const timestamp = new Date().getTime();
       
       const response = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
-        timeout: 5000,
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
