@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
 
 const Section = styled.section`
   margin-bottom: 2rem;
@@ -289,6 +290,71 @@ label {
             <Button type="submit">Submit</Button>
           </form>
         </div>
+        
+        <TryEditorButton 
+          htmlCode={`<form>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" class="form-control" placeholder="Enter your name">
+  </div>
+  
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" class="form-control" placeholder="Enter your email">
+  </div>
+  
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" class="form-control" rows="4" placeholder="Enter your message"></textarea>
+  </div>
+  
+  <button type="submit" class="btn">Submit</button>
+</form>`}
+          cssCode={`.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
       
       <Section>
@@ -339,6 +405,80 @@ label {
             </Select>
           </FormGroup>
         </div>
+        
+        <TryEditorButton 
+          htmlCode={`<div class="form-container">
+  <div class="form-group">
+    <label for="text-input">Text Input</label>
+    <input type="text" id="text-input" class="form-control" placeholder="Enter text">
+  </div>
+  
+  <div class="form-group">
+    <label for="email-input">Email Input</label>
+    <input type="email" id="email-input" class="form-control" placeholder="Enter email">
+  </div>
+  
+  <div class="form-group">
+    <label for="password-input">Password Input</label>
+    <input type="password" id="password-input" class="form-control" placeholder="Enter password">
+  </div>
+  
+  <div class="form-group">
+    <label for="select-input">Select Input</label>
+    <select id="select-input" class="form-control">
+      <option value="">Select an option</option>
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option value="option3">Option 3</option>
+    </select>
+  </div>
+</div>`}
+          cssCode={`.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 30px;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
       
       <Section>
@@ -414,6 +554,96 @@ label {
             <DangerButton>Danger Button</DangerButton>
           </ButtonGroup>
         </div>
+        
+        <TryEditorButton 
+          htmlCode={`<h3>Button Examples:</h3>
+<div class="button-group">
+  <button class="btn">Default Button</button>
+  <button class="btn btn-success">Success Button</button>
+  <button class="btn btn-warning">Warning Button</button>
+  <button class="btn btn-danger">Danger Button</button>
+</div>
+
+<h3>Button States:</h3>
+<div class="button-group">
+  <button class="btn">Normal</button>
+  <button class="btn" disabled>Disabled</button>
+</div>
+
+<h3>Button Sizes:</h3>
+<div class="button-group">
+  <button class="btn btn-sm">Small</button>
+  <button class="btn">Medium</button>
+  <button class="btn btn-lg">Large</button>
+</div>`}
+          cssCode={`.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}
+
+.btn:active {
+  background-color: #1f6da8;
+}
+
+.btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn-warning {
+  background-color: #f39c12;
+}
+
+.btn-warning:hover {
+  background-color: #e67e22;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 18px;
+}`}
+          enabledTabs={{ html: true, css: true, js: false }}
+        />
       </Example>
       
       <Section>

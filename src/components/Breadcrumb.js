@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -32,6 +32,7 @@ const BreadcrumbItem = styled.span`
   display: flex;
   align-items: center;
   white-space: nowrap;
+  position: relative;
   
   &:not(:last-child)::after {
     content: '';
@@ -73,6 +74,7 @@ const BreadcrumbLink = styled(Link)`
   border-radius: 3px;
   transition: all 0.2s ease;
   display: flex;
+  align-items: center;
   
   &:hover {
     background-color: var(--primary-color);
@@ -94,9 +96,85 @@ const CurrentPage = styled.span`
   background-color: var(--card-background);
   border-radius: 3px;
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  cursor: ${props => props.hasDropdown ? 'pointer' : 'default'};
   
   @media (max-width: 576px) {
     padding: 0.15rem 0.3rem;
+  }
+`;
+
+const DropdownIcon = styled.span`
+  display: inline-flex;
+  margin-left: 4px;
+  align-items: center;
+  transition: transform 0.2s ease;
+  transform: ${props => props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+  
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 180px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  
+  @media (max-width: 576px) {
+    min-width: 150px;
+    max-height: 250px;
+  }
+`;
+
+const DropdownItem = styled(Link)`
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  
+  &:hover {
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+  }
+  
+  &.active {
+    background-color: var(--primary-color-light);
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+`;
+
+const DropdownHeader = styled.div`
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  
+  @media (max-width: 576px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -122,19 +200,31 @@ const getMobileFriendlyName = (name, isMobile) => {
 const Breadcrumb = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const isMobile = windowWidth <= 576;
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const dropdownRefs = useRef({});
   
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
     
+    const handleClickOutside = (event) => {
+      if (openDropdown && dropdownRefs.current[openDropdown] && 
+          !dropdownRefs.current[openDropdown].contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+    
     window.addEventListener('resize', handleResize);
+    document.addEventListener('mousedown', handleClickOutside);
+    
     return () => {
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [openDropdown]);
   
   // Map of route paths to readable names
   const routeNames = {
@@ -168,6 +258,98 @@ const Breadcrumb = () => {
     'login': 'Login'
   };
 
+  // Map of days to their topics
+  const dayTopics = {
+    'day1': [
+      { path: '/day1/html-basics', name: 'HTML Basics' },
+      { path: '/day1/headings', name: 'Headings' },
+      { path: '/day1/paragraphs-text', name: 'Paragraphs & Text' },
+      { path: '/day1/attributes', name: 'Attributes' },
+      { path: '/day1/tables', name: 'Tables' },
+      { path: '/day1/forms', name: 'Forms' },
+      { path: '/day1/images', name: 'Images' }
+    ],
+    'day2': [
+      { path: '/day2/css-introduction', name: 'CSS Introduction' },
+      { path: '/day2/css-selectors', name: 'CSS Selectors' },
+      { path: '/day2/classes-ids', name: 'Classes & IDs' },
+      { path: '/day2/div-span', name: 'Div & Span' },
+      { path: '/day2/box-model', name: 'Box Model' }
+    ],
+    'day3': [
+      { path: '/day3/flexbox-grid', name: 'Flexbox & Grid' },
+      { path: '/day3/styling-forms-buttons', name: 'Styling Forms & Buttons' },
+      { path: '/day3/responsive-design', name: 'Responsive Design' }
+    ],
+    'day4': [
+      { path: '/day4/variables', name: 'Variables' },
+      { path: '/day4/data-types', name: 'Data Types' },
+      { path: '/day4/operators-conditionals', name: 'Operators & Conditionals' }
+    ],
+    'day5': [
+      { path: '/day5/functions', name: 'Functions' },
+      { path: '/day5/arrays-objects', name: 'Arrays & Objects' },
+      { path: '/day5/loops', name: 'Loops' }
+    ]
+  };
+
+  // List of all days
+  const allDays = [
+    { path: '/day1', name: 'Day 1: HTML Fundamentals' },
+    { path: '/day2', name: 'Day 2: CSS Basics' },
+    { path: '/day3', name: 'Day 3: CSS Advanced' },
+    { path: '/day4', name: 'Day 4: JavaScript Basics' },
+    { path: '/day5', name: 'Day 5: JavaScript Advanced' }
+  ];
+
+  // Get dropdown items based on breadcrumb type
+  const getDropdownItems = (name, index) => {
+    // For day breadcrumbs (day1, day2, etc.), show all days
+    if (index === 0 && name.match(/^day[1-5]$/)) {
+      return {
+        header: 'All Days',
+        items: allDays
+      };
+    } 
+    // For topic breadcrumbs, show all topics from the same day
+    else if (index === 1 && pathnames[0].match(/^day[1-5]$/)) {
+      const day = pathnames[0]; // e.g., 'day1'
+      return {
+        header: `${routeNames[day]} Topics`,
+        items: dayTopics[day]
+      };
+    } 
+    // Default fallback
+    else {
+      return {
+        header: 'Navigation',
+        items: allDays
+      };
+    }
+  };
+
+  // Check if a breadcrumb should have a dropdown
+  const shouldHaveDropdown = (name, index) => {
+    // Day breadcrumbs (day1, day2, etc.)
+    if (index === 0 && name.match(/^day[1-5]$/)) {
+      return true;
+    }
+    
+    // Topic breadcrumbs (html-basics, css-selectors, etc.) - including the active one
+    if (pathnames[0].match(/^day[1-5]$/) && index === 1) {
+      return true;
+    }
+    
+    return false;
+  };
+
+  // Toggle dropdown visibility
+  const toggleDropdown = (name, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
+
   // Don't show breadcrumbs on login page or home page
   if (location.pathname === '/login' || location.pathname === '/') {
     return null;
@@ -189,15 +371,81 @@ const Breadcrumb = () => {
         const isLast = index === pathnames.length - 1;
         const displayName = routeNames[name] || name;
         const mobileFriendlyName = getMobileFriendlyName(displayName, isMobile);
+        const hasDropdown = shouldHaveDropdown(name, index);
+        const isDropdownOpen = openDropdown === name;
+        const dropdownData = hasDropdown ? getDropdownItems(name, index) : null;
         
         return (
-          <BreadcrumbItem key={name}>
+          <BreadcrumbItem 
+            key={name} 
+            ref={el => hasDropdown && (dropdownRefs.current[name] = el)}
+          >
             {isLast ? (
-              <CurrentPage title={displayName}>{mobileFriendlyName}</CurrentPage>
+              <>
+                <CurrentPage 
+                  title={displayName} 
+                  hasDropdown={hasDropdown}
+                  onClick={hasDropdown ? (e) => toggleDropdown(name, e) : undefined}
+                >
+                  {mobileFriendlyName}
+                  {hasDropdown && (
+                    <DropdownIcon isOpen={isDropdownOpen}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 11L3 6h10l-5 5z"/>
+                      </svg>
+                    </DropdownIcon>
+                  )}
+                </CurrentPage>
+                
+                {hasDropdown && (
+                  <DropdownMenu isOpen={isDropdownOpen}>
+                    <DropdownHeader>{dropdownData.header}</DropdownHeader>
+                    {dropdownData.items.map((item) => (
+                      <DropdownItem 
+                        key={item.path} 
+                        to={item.path}
+                        className={location.pathname === item.path ? 'active' : ''}
+                        onClick={() => setOpenDropdown(null)}
+                      >
+                        {item.name}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                )}
+              </>
             ) : (
-              <BreadcrumbLink to={routeTo} title={displayName}>
-                {mobileFriendlyName}
-              </BreadcrumbLink>
+              <>
+                <BreadcrumbLink 
+                  to={routeTo} 
+                  title={displayName}
+                  onClick={hasDropdown ? (e) => toggleDropdown(name, e) : undefined}
+                >
+                  {mobileFriendlyName}
+                  {hasDropdown && (
+                    <DropdownIcon isOpen={isDropdownOpen}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 11L3 6h10l-5 5z"/>
+                      </svg>
+                    </DropdownIcon>
+                  )}
+                </BreadcrumbLink>
+                
+                {hasDropdown && (
+                  <DropdownMenu isOpen={isDropdownOpen}>
+                    <DropdownHeader>{dropdownData.header}</DropdownHeader>
+                    {dropdownData.items.map((item) => (
+                      <DropdownItem 
+                        key={item.path} 
+                        to={item.path}
+                        className={location.pathname === item.path ? 'active' : ''}
+                        onClick={() => setOpenDropdown(null)}
+                      >
+                        {item.name}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                )}
+              </>
             )}
           </BreadcrumbItem>
         );

@@ -157,9 +157,11 @@ const GlobalStyles = createGlobalStyle`
     transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
   }
   
-  .example ul,ol {
-    margin-left: 20px;
+  .example {
     color: var(--text-color);
+  }
+  ul,ol {
+    margin-left: 20px;
   }
 
   .completed {
