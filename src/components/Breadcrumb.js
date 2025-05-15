@@ -16,15 +16,15 @@ const BreadcrumbContainer = styled.div`
   transition: background-color var(--transition-speed) ease;
   
   @media (max-width: 768px) {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 1.25rem;
-    padding: 0.6rem 0.8rem;
+    padding: 0.7rem 0.9rem;
   }
   
   @media (max-width: 576px) {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     margin-bottom: 1rem;
-    padding: 0.5rem 0.7rem;
+    padding: 0.7rem 0.8rem;
   }
 `;
 
@@ -46,21 +46,22 @@ const BreadcrumbItem = styled.span`
     opacity: 0.7;
     
     @media (max-width: 576px) {
-      width: 5px;
-      height: 5px;
-      margin: 0 0.4rem;
+      width: 7px;
+      height: 7px;
+      margin: 0 0.5rem;
+      border-width: 2.5px;
     }
   }
   
   @media (max-width: 576px) {
     &:not(:last-child):not(:first-child) {
-      max-width: 100px;
+      max-width: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     
     &:last-child {
-      max-width: 150px;
+      max-width: 180px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -83,7 +84,8 @@ const BreadcrumbLink = styled(Link)`
   }
   
   @media (max-width: 576px) {
-    padding: 0.15rem 0.3rem;
+    padding: 0.3rem 0.5rem;
+    font-weight: 500;
   }
 `;
 
@@ -101,7 +103,8 @@ const CurrentPage = styled.span`
   cursor: ${props => props.hasDropdown ? 'pointer' : 'default'};
   
   @media (max-width: 576px) {
-    padding: 0.15rem 0.3rem;
+    padding: 0.3rem 0.5rem;
+    font-weight: 600;
   }
 `;
 
@@ -134,17 +137,17 @@ const DropdownMenu = styled.div`
   display: ${props => props.isOpen ? 'block' : 'none'};
   
   @media (max-width: 576px) {
-    min-width: 150px;
-    max-height: 250px;
-    position: fixed;
-    top: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 300px;
-    bottom: 20%;
+    min-width: 200px;
+    max-height: 300px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: none;
+    width: auto;
+    max-width: 90vw;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 1px solid var(--border-color);
+    margin-top: 0.3rem;
   }
 `;
 
@@ -183,8 +186,13 @@ const DropdownItem = styled(Link)`
   }
   
   @media (max-width: 576px) {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--border-color-light, rgba(0,0,0,0.05));
+    
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
