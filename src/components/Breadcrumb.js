@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -136,6 +136,30 @@ const DropdownMenu = styled.div`
   @media (max-width: 576px) {
     min-width: 150px;
     max-height: 250px;
+    position: fixed;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 300px;
+    bottom: 20%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+  }
+`;
+
+const DropdownBackdrop = styled.div`
+  display: none;
+  
+  @media (max-width: 576px) {
+    display: ${props => props.isOpen ? 'block' : 'none'};
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9;
   }
 `;
 
@@ -159,22 +183,74 @@ const DropdownItem = styled(Link)`
   }
   
   @media (max-width: 576px) {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
 `;
 
-const DropdownHeader = styled.div`
+// Dropdown component to handle rendering the dropdown menu
+const BreadcrumbDropdown = ({ isOpen, header, items, currentPath, onClose }) => {
+  if (!isOpen) return null;
+  
+  return (
+    <DropdownMenu isOpen={isOpen}>
+      <StyledDropdownHeader>
+        <span>{header}</span>
+        <CloseButton onClick={onClose}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+        </CloseButton>
+      </StyledDropdownHeader>
+      {items.map((item) => (
+        <DropdownItem 
+          key={item.path} 
+          to={item.path}
+          className={currentPath === item.path ? 'active' : ''}
+          onClick={onClose}
+        >
+          {item.name}
+        </DropdownItem>
+      ))}
+    </DropdownMenu>
+  );
+};
+
+const StyledDropdownHeader = styled.div`
   padding: 0.5rem 1rem;
   font-weight: 600;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   
   @media (max-width: 576px) {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0;
+  display: none;
+  width: 24px;
+  height: 24px;
+  
+  &:hover {
+    color: var(--primary-color);
+  }
+  
+  @media (max-width: 576px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -356,15 +432,17 @@ const Breadcrumb = () => {
   }
 
   return (
-    <BreadcrumbContainer aria-label="Breadcrumb navigation">
-      <BreadcrumbItem>
-        <BreadcrumbLink to="/" title="Home">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
-            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
-          </svg>
-        </BreadcrumbLink>
-      </BreadcrumbItem>
+    <>
+      <DropdownBackdrop isOpen={openDropdown !== null} onClick={() => setOpenDropdown(null)} />
+      <BreadcrumbContainer aria-label="Breadcrumb navigation">
+        <BreadcrumbItem>
+          <BreadcrumbLink to="/" title="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+              <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+            </svg>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
       
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
@@ -381,7 +459,7 @@ const Breadcrumb = () => {
             ref={el => hasDropdown && (dropdownRefs.current[name] = el)}
           >
             {isLast ? (
-              <>
+              <Fragment>
                 <CurrentPage 
                   title={displayName} 
                   hasDropdown={hasDropdown}
@@ -398,23 +476,17 @@ const Breadcrumb = () => {
                 </CurrentPage>
                 
                 {hasDropdown && (
-                  <DropdownMenu isOpen={isDropdownOpen}>
-                    <DropdownHeader>{dropdownData.header}</DropdownHeader>
-                    {dropdownData.items.map((item) => (
-                      <DropdownItem 
-                        key={item.path} 
-                        to={item.path}
-                        className={location.pathname === item.path ? 'active' : ''}
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        {item.name}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
+                  <BreadcrumbDropdown
+                    isOpen={isDropdownOpen}
+                    header={dropdownData.header}
+                    items={dropdownData.items}
+                    currentPath={location.pathname}
+                    onClose={() => setOpenDropdown(null)}
+                  />
                 )}
-              </>
+              </Fragment>
             ) : (
-              <>
+              <Fragment>
                 <BreadcrumbLink 
                   to={routeTo} 
                   title={displayName}
@@ -431,26 +503,21 @@ const Breadcrumb = () => {
                 </BreadcrumbLink>
                 
                 {hasDropdown && (
-                  <DropdownMenu isOpen={isDropdownOpen}>
-                    <DropdownHeader>{dropdownData.header}</DropdownHeader>
-                    {dropdownData.items.map((item) => (
-                      <DropdownItem 
-                        key={item.path} 
-                        to={item.path}
-                        className={location.pathname === item.path ? 'active' : ''}
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        {item.name}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
+                  <BreadcrumbDropdown
+                    isOpen={isDropdownOpen}
+                    header={dropdownData.header}
+                    items={dropdownData.items}
+                    currentPath={location.pathname}
+                    onClose={() => setOpenDropdown(null)}
+                  />
                 )}
-              </>
+              </Fragment>
             )}
           </BreadcrumbItem>
         );
       })}
     </BreadcrumbContainer>
+    </>
   );
 };
 

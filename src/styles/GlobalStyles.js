@@ -159,9 +159,10 @@ const GlobalStyles = createGlobalStyle`
   
   .example {
     color: var(--text-color);
-  }
-  ul,ol {
-    margin-left: 20px;
+    }
+  
+  .example ul,ol {
+      margin-left: 20px;
   }
 
   .completed {
