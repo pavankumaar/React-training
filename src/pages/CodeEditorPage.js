@@ -360,16 +360,6 @@ const CodeEditorPage = () => {
     setOutput(fullCode);
   }, [htmlCode, cssCode, jsCode]);
   
-  const updatePreview = () => {
-    // Create a complete HTML document with embedded CSS and JS
-    const fullCode = `
-      ${htmlCode}
-      <style>${cssCode}</style>
-      <script>${jsCode}</script>
-    `;
-    setOutput(fullCode);
-  };
-  
   const handleRun = () => {
     // Create a complete HTML document with embedded CSS and JS
     const fullCode = `

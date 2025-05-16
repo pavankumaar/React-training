@@ -97,16 +97,6 @@ const TopicTitle = styled.h3`
   flex-grow: 1;
 `;
 
-const CompletedTag = styled.span`
-  background-color: var(--success-color);
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 20px;
-  margin-left: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
 const Description = styled.p`
   margin-bottom: 1.5rem;
 `;

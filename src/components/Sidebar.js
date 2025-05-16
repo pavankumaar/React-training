@@ -43,8 +43,8 @@ const SidebarContainer = styled.div`
   }
   
   @media (max-width: 576px) {
-    width: 240px;
-    left: ${props => props.isOpen ? '0' : '-240px'};
+    width: 250px;
+    left: ${props => props.isOpen ? '0' : '-250px'};
   }
 `;
 

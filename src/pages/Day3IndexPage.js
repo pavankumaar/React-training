@@ -4,15 +4,6 @@ import Layout from '../components/Layout';
 import TopicCard from '../components/TopicCard';
 import Navigation from '../components/Navigation';
 
-const Title = styled.h1`
-  margin-bottom: 0.5rem;
-`;
-
-const Description = styled.p`
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-`;
-
 const TopicsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
