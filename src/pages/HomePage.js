@@ -171,7 +171,7 @@ const HomePage = () => {
         });
       } catch (topicsErr) {
         // If we can't even get the topics, show an error toast
-        toast.showError('Internal server error. Please try again later.');
+        toast.showError('Internal server error. Please try again.');
         setLoading(false);
         return;
       }
@@ -230,11 +230,11 @@ const HomePage = () => {
         clearTimeout(timeoutId);
         
         // Show error toast
-        toast.showError('Internal server error. Please try again later.');
+        toast.showError('Internal server error. Please try again.');
       }
     } catch (err) {
       // Show error toast
-      toast.showError('Internal server error. Please try again later.');
+      toast.showError('Error fetching statistics. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -249,7 +249,7 @@ const HomePage = () => {
       if (isServerRunning) {
         fetchDayStats();
       } else {
-        toast.showError('Internal server error. Please try again later.');
+        toast.showError('Internal server error. Please try again.');
         setLoading(false);
       }
     };

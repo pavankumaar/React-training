@@ -76,6 +76,8 @@ export const CompletionProvider = ({ children }) => {
       await axios.post(`${API_URL}/topics`, {
         topicPath,
         completed: true
+      }, {
+        timeout: 10000
       });
       
       // Fetch the updated list from the database
@@ -98,6 +100,8 @@ export const CompletionProvider = ({ children }) => {
       await axios.post(`${API_URL}/topics`, {
         topicPath,
         completed: false
+      }, {
+        timeout: 10000
       });
       
       // Fetch the updated list from the database
