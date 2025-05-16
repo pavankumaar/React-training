@@ -4,6 +4,7 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const Subtitle = styled.p`
   text-align: center;
@@ -125,6 +126,7 @@ const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const HomePage = () => {
   const { isAdmin } = useAuth();
+  const toast = useToast();
   const [completedTopics, setCompletedTopics] = useState({
     day1: [],
     day2: [],
@@ -160,6 +162,7 @@ const HomePage = () => {
       // First try to get the topics to see if the server is responding at all
       try {
         await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
+          timeout: 10000,
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -167,8 +170,8 @@ const HomePage = () => {
           }
         });
       } catch (topicsErr) {
-        // If we can't even get the topics, show an error
-        setError('Cannot connect to the server API. Please check if the server is running.');
+        // If we can't even get the topics, show an error toast
+        toast.showError('Cannot connect to the server API. Please check if the server is running.');
         setLoading(false);
         return;
       }
@@ -180,6 +183,7 @@ const HomePage = () => {
       let response;
       try {
         response = await axios.get(`${API_URL}/stats/days?t=${timestamp}`, {
+          timeout: 10000,
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -220,19 +224,17 @@ const HomePage = () => {
         setCompletedTopics(updatedCompletedTopics);
         
         if (!hasCompletedTopics) {
-          setError('No completed topics found in the server response. This may be due to a database issue.');
-        } else {
-          setError(null);
+          toast.showWarning('No completed topics found in the server response. This may be due to a database issue.');
         }
       } catch (statsErr) {
         clearTimeout(timeoutId);
         
-        // Show error
-        setError('Error fetching statistics. Please try again later.');
+        // Show error toast
+        toast.showError('Error fetching statistics. Please try again later.');
       }
     } catch (err) {
-      // Show error
-      setError('Error fetching statistics. Please try again later.');
+      // Show error toast
+      toast.showError('Error fetching statistics. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -247,7 +249,7 @@ const HomePage = () => {
       if (isServerRunning) {
         fetchDayStats();
       } else {
-        setError('Server is not running. Please start the server with "npm run server" and try again.');
+        toast.showError('Server is not running. Please start the server with "npm run server" and try again.');
         setLoading(false);
       }
     };
@@ -257,11 +259,17 @@ const HomePage = () => {
   
   // Function to check if the server is running
   const checkServerStatus = async () => {
+    // For normal users, always return true to avoid unnecessary API calls
+    if (!isAdmin()) {
+      return true;
+    }
+    
     try {
       // Add timestamp to prevent caching
       const timestamp = new Date().getTime();
       
       const response = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
+        timeout: 10000,
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

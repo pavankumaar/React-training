@@ -27,7 +27,7 @@ export const CompletionProvider = ({ children }) => {
       
       // Only fetch completed topics if user is admin
       if (auth && auth.isAdmin()) {
-        const response = await axios.get(`${API_URL}/topics`, { timeout: 8000 });
+        const response = await axios.get(`${API_URL}/topics`, { timeout: 10000 });
         
         const topics = {};
         if (Array.isArray(response.data)) {

@@ -3,6 +3,7 @@ import './App.css';
 import { CompletionProvider } from './context/CompletionContext';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -55,9 +56,10 @@ function App() {
     <AuthProvider>
       <CompletionProvider>
         <ThemeProvider>
-          <Router>
-            <ScrollToTop />
-            <Routes>
+          <ToastProvider>
+            <Router>
+              <ScrollToTop />
+              <Routes>
             {/* Main routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={
@@ -112,7 +114,8 @@ function App() {
           {/* 404 route */}
           <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />
         </Routes>
-      </Router>
+            </Router>
+          </ToastProvider>
         </ThemeProvider>
       </CompletionProvider>
     </AuthProvider>
