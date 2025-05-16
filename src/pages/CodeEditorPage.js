@@ -1,75 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Layout from '../components/Layout';
-import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-javascript';
+import CodeMirror from '@uiw/react-codemirror';
+import { html } from '@codemirror/lang-html';
+import { css } from '@codemirror/lang-css';
+import { javascript } from '@codemirror/lang-javascript';
+import { useTheme } from '../context/ThemeContext';
 
-// Add global styles for the editor
-const globalStyles = `
-  .token.comment,
-  .token.prolog,
-  .token.doctype,
-  .token.cdata {
-    color: #6a9955;
-  }
-  
-  .token.punctuation {
-    color: #d4d4d4;
-  }
-  
-  .token.property,
-  .token.tag,
-  .token.boolean,
-  .token.number,
-  .token.constant,
-  .token.symbol,
-  .token.deleted {
-    color: #569cd6;
-  }
-  
-  .token.selector,
-  .token.attr-name,
-  .token.string,
-  .token.char,
-  .token.builtin,
-  .token.inserted {
-    color: #ce9178;
-  }
-  
-  .token.operator,
-  .token.entity,
-  .token.url,
-  .language-css .token.string,
-  .style .token.string {
-    color: #d4d4d4;
-  }
-  
-  .token.atrule,
-  .token.attr-value,
-  .token.keyword {
-    color: #c586c0;
-  }
-  
-  .token.function,
-  .token.class-name {
-    color: #dcdcaa;
-  }
-  
-  .token.regex,
-  .token.important,
-  .token.variable {
-    color: #d16969;
-  }
-`;
-
-// Global styles will be added inside the component
+// No need for global styles as CodeMirror handles its own styling
 
 const EditorContainer = styled.div`
   width: 100%;
-  height: calc(100vh);
+  height: calc(100vh - 100px); /* Adjust for header and margins */
   border-radius: 8px;
   overflow: hidden;
   margin-top: 20px;
@@ -180,73 +122,24 @@ const EditorsContainer = styled.div`
   display: flex;
   flex-direction: ${props => props.isMobile ? 'column' : 'row'};
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
+  height: calc(100% - 50px); /* Adjust for header height */
 `;
 
 const EditorPanel = styled.div`
   flex: 1;
   height: 100%;
-  display: ${props => props.active ? 'flex' : 'none'};
-  position: relative;
-  background-color: ${props => props.theme === 'light' 
-    ? 'var(--code-bg-light, #f5f5f5)' 
-    : 'var(--code-bg, #1e1e1e)'};
-  overflow: hidden;
-`;
-
-const LineNumbers = styled.div`
-  width: 50px;
-  padding: 15px 0;
-  background-color: ${props => props.theme === 'light' 
-    ? 'var(--code-line-bg-light, #e8e8e8)' 
-    : 'var(--code-line-bg, #252526)'};
-  color: ${props => props.theme === 'light' 
-    ? 'var(--code-line-color-light, #555)' 
-    : 'var(--code-line-color, #858585)'};
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: right;
-  user-select: none;
-  border-right: 1px solid ${props => props.theme === 'light' 
-    ? 'var(--border-color-light, #ccc)' 
-    : 'var(--border-color, #333)'};
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  overflow-y: hidden;
-`;
-
-const LineNumber = styled.div`
-  padding-right: 10px;
-  height: 21px;
-`;
-
-const EditorContent = styled.div`
-  flex: 1;
+  display: ${props => props.active ? 'block' : 'none'};
   position: relative;
   overflow: auto;
-`;
-
-const CodeTextarea = styled.textarea`
-  width: 100%;
-  height: 100%;
-  padding: 15px;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  border: none;
-  resize: none;
-  background-color: ${props => props.theme === 'light' 
-    ? 'var(--code-bg-light, #f5f5f5)' 
-    : 'var(--code-bg, #1e1e1e)'};
-  color: ${props => props.theme === 'light' 
-    ? 'var(--code-text-light, #333)' 
-    : 'var(--code-text, #d4d4d4)'};
-  outline: none;
-  white-space: pre;
-  tab-size: 2;
-  overflow: auto;
+  
+  .cm-editor {
+    height: 100%;
+  }
+  
+  .cm-scroller {
+    overflow: auto;
+  }
 `;
 
 const PreviewContainer = styled.div`
@@ -259,6 +152,7 @@ const PreviewContainer = styled.div`
   min-height: ${props => props.isMobile ? '300px' : 'auto'};
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const PreviewFrame = styled.iframe`
@@ -381,25 +275,9 @@ const CodeEditorPage = () => {
   const [output, setOutput] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [theme, setTheme] = useState(() => {
-    // Check if we're in light mode by looking at CSS variables or system preference
-    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return isDarkMode ? 'dark' : 'light';
-  });
+  const { theme } = useTheme();
   
-  // Add the global styles to the document when component mounts
-  useEffect(() => {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = globalStyles;
-    document.head.appendChild(styleElement);
-    
-    return () => {
-      // Clean up when component unmounts
-      if (styleElement && document.head.contains(styleElement)) {
-        document.head.removeChild(styleElement);
-      }
-    };
-  }, []);
+  // No need to add global styles for CodeMirror
   
   // Check for mobile screen size
   useEffect(() => {
@@ -519,59 +397,19 @@ const CodeEditorPage = () => {
     }
   };
   
-  const handleHtmlChange = (e) => {
-    setHtmlCode(e.target.value);
+  const handleHtmlChange = (value) => {
+    setHtmlCode(value);
   };
   
-  const handleCssChange = (e) => {
-    setCssCode(e.target.value);
+  const handleCssChange = (value) => {
+    setCssCode(value);
   };
   
-  const handleJsChange = (e) => {
-    setJsCode(e.target.value);
+  const handleJsChange = (value) => {
+    setJsCode(value);
   };
   
-  // Handle tab key in editors
-  const handleKeyDown = (e) => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const target = e.target;
-      const start = target.selectionStart;
-      const end = target.selectionEnd;
-      
-      // Insert 2 spaces for tab
-      const newValue = target.value.substring(0, start) + '  ' + target.value.substring(end);
-      
-      // Update the text and cursor position
-      target.value = newValue;
-      target.selectionStart = target.selectionEnd = start + 2;
-      
-      // Trigger the change event
-      if (activeTab === 'html') {
-        setHtmlCode(newValue);
-      } else if (activeTab === 'css') {
-        setCssCode(newValue);
-      } else if (activeTab === 'js') {
-        setJsCode(newValue);
-      }
-    }
-  };
-  
-  // Generate line numbers based on code content
-  const getLineNumbers = (code) => {
-    const lines = code.split('\n');
-    return lines.map((_, index) => (
-      <LineNumber key={index}>{index + 1}</LineNumber>
-    ));
-  };
-  
-  // Sync scrolling between textarea and line numbers
-  const syncScroll = (e) => {
-    const lineNumbers = e.target.parentElement.previousSibling;
-    if (lineNumbers) {
-      lineNumbers.scrollTop = e.target.scrollTop;
-    }
-  };
+  // CodeMirror handles tab key, line numbers, and scrolling internally
   
   const editorContent = (
     <>
@@ -621,52 +459,100 @@ const CodeEditorPage = () => {
       </TabsContainer>
       
       <EditorsContainer isMobile={isMobile}>
-        <EditorPanel active={activeTab === 'html'} theme={theme}>
-          <LineNumbers theme={theme}>
-            {getLineNumbers(htmlCode)}
-          </LineNumbers>
-          <EditorContent>
-            <CodeTextarea 
-              value={htmlCode}
-              onChange={handleHtmlChange}
-              onKeyDown={handleKeyDown}
-              onScroll={syncScroll}
-              spellCheck="false"
-              theme={theme}
-            />
-          </EditorContent>
+        <EditorPanel active={activeTab === 'html'}>
+          <CodeMirror
+            value={htmlCode}
+            height="100%"
+            extensions={[html()]}
+            onChange={handleHtmlChange}
+            theme={theme === 'dark' ? 'dark' : 'light'}
+            basicSetup={{
+              lineNumbers: true,
+              highlightActiveLineGutter: true,
+              highlightSpecialChars: true,
+              foldGutter: true,
+              dropCursor: true,
+              allowMultipleSelections: true,
+              indentOnInput: true,
+              syntaxHighlighting: true,
+              bracketMatching: true,
+              closeBrackets: true,
+              autocompletion: true,
+              rectangularSelection: true,
+              crosshairCursor: true,
+              highlightActiveLine: true,
+              highlightSelectionMatches: true,
+              closeBracketsKeymap: true,
+              searchKeymap: true,
+              foldKeymap: true,
+              completionKeymap: true,
+              lintKeymap: true
+            }}
+          />
         </EditorPanel>
         
-        <EditorPanel active={activeTab === 'css'} theme={theme}>
-          <LineNumbers theme={theme}>
-            {getLineNumbers(cssCode)}
-          </LineNumbers>
-          <EditorContent>
-            <CodeTextarea 
-              value={cssCode}
-              onChange={handleCssChange}
-              onKeyDown={handleKeyDown}
-              onScroll={syncScroll}
-              spellCheck="false"
-              theme={theme}
-            />
-          </EditorContent>
+        <EditorPanel active={activeTab === 'css'}>
+          <CodeMirror
+            value={cssCode}
+            height="100%"
+            extensions={[css()]}
+            onChange={handleCssChange}
+            theme={theme === 'dark' ? 'dark' : 'light'}
+            basicSetup={{
+              lineNumbers: true,
+              highlightActiveLineGutter: true,
+              highlightSpecialChars: true,
+              foldGutter: true,
+              dropCursor: true,
+              allowMultipleSelections: true,
+              indentOnInput: true,
+              syntaxHighlighting: true,
+              bracketMatching: true,
+              closeBrackets: true,
+              autocompletion: true,
+              rectangularSelection: true,
+              crosshairCursor: true,
+              highlightActiveLine: true,
+              highlightSelectionMatches: true,
+              closeBracketsKeymap: true,
+              searchKeymap: true,
+              foldKeymap: true,
+              completionKeymap: true,
+              lintKeymap: true
+            }}
+          />
         </EditorPanel>
         
-        <EditorPanel active={activeTab === 'js'} theme={theme}>
-          <LineNumbers theme={theme}>
-            {getLineNumbers(jsCode)}
-          </LineNumbers>
-          <EditorContent>
-            <CodeTextarea 
-              value={jsCode}
-              onChange={handleJsChange}
-              onKeyDown={handleKeyDown}
-              onScroll={syncScroll}
-              spellCheck="false"
-              theme={theme}
-            />
-          </EditorContent>
+        <EditorPanel active={activeTab === 'js'}>
+          <CodeMirror
+            value={jsCode}
+            height="100%"
+            extensions={[javascript()]}
+            onChange={handleJsChange}
+            theme={theme === 'dark' ? 'dark' : 'light'}
+            basicSetup={{
+              lineNumbers: true,
+              highlightActiveLineGutter: true,
+              highlightSpecialChars: true,
+              foldGutter: true,
+              dropCursor: true,
+              allowMultipleSelections: true,
+              indentOnInput: true,
+              syntaxHighlighting: true,
+              bracketMatching: true,
+              closeBrackets: true,
+              autocompletion: true,
+              rectangularSelection: true,
+              crosshairCursor: true,
+              highlightActiveLine: true,
+              highlightSelectionMatches: true,
+              closeBracketsKeymap: true,
+              searchKeymap: true,
+              foldKeymap: true,
+              completionKeymap: true,
+              lintKeymap: true
+            }}
+          />
         </EditorPanel>
         
         <PreviewContainer isMobile={isMobile}>
