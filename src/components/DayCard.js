@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Card = styled.div`
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   overflow: hidden;
   background-color: var(--card-background);
   box-shadow: var(--box-shadow);
@@ -13,7 +13,7 @@ const Card = styled.div`
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   }
 `;
 
@@ -25,8 +25,8 @@ const CardHeader = styled.div`
   font-weight: bold;
   display: flex;
   flex-direction: column;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.1);
 `;
 
@@ -56,7 +56,7 @@ const ViewButton = styled(Link)`
   background-color: var(--primary-color);
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 20px;
   transition: background-color var(--transition-speed) ease;
   
   &:hover {

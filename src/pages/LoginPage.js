@@ -17,7 +17,7 @@ const LoginContainer = styled.div`
 const LoginCard = styled.div`
   background-color: var(--card-background);
   color: var(--text-color);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 30px;
   width: 100%;
@@ -44,7 +44,7 @@ const PasscodeInput = styled.input`
   font-size: 24px;
   text-align: center;
   border: 2px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: var(--form-border-radius);
   background-color: var(--card-background);
   color: var(--text-color);
   

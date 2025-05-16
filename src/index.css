@@ -27,7 +27,7 @@ code::-webkit-scrollbar-track,
 main::-webkit-scrollbar-track,
 .container::-webkit-scrollbar-track {
   background: transparent !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
 }
 
 html::-webkit-scrollbar-thumb,
@@ -40,7 +40,7 @@ code::-webkit-scrollbar-thumb,
 main::-webkit-scrollbar-thumb,
 .container::-webkit-scrollbar-thumb {
   background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
   transition: background 0.3s ease !important;
 }
 
@@ -80,12 +80,12 @@ main, .container {
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

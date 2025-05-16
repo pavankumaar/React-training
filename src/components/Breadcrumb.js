@@ -72,7 +72,7 @@ const BreadcrumbLink = styled(Link)`
   color: var(--primary-color);
   text-decoration: none;
   padding: 0.2rem 0.4rem;
-  border-radius: 3px;
+  border-radius: 10px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -96,8 +96,8 @@ const CurrentPage = styled.span`
   text-overflow: ellipsis;
   padding: 0.2rem 0.4rem;
   background-color: var(--card-background);
-  border-radius: 3px;
-  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  border-radius: var(--form-border-radius);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   cursor: ${props => props.hasDropdown ? 'pointer' : 'default'};
@@ -145,7 +145,7 @@ const DropdownMenu = styled.div`
     transform: translate(-50%, -50%);
     width: auto;
     max-width: 90vw;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--border-color);
     margin-top: 0;
     z-index: 11;

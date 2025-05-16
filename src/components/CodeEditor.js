@@ -23,7 +23,7 @@ const EditorContent = styled.div`
   width: 90%;
   height: 90%;
   background-color: var(--card-background);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
   overflow: hidden;

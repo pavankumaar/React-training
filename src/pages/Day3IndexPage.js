@@ -16,7 +16,7 @@ const Description = styled.p`
 const TopicsContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 0.5rem;
 `;
 
 const Day3IndexPage = () => {

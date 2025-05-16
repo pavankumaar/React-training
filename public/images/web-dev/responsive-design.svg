@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100" height="100">
+  <title>Responsive Design</title>
+  <rect x="32" y="128" width="448" height="256" rx="16" fill="#2196F3" stroke="#0D47A1" stroke-width="16"/>
+  <rect x="64" y="160" width="384" height="192" fill="#BBDEFB"/>
+  <rect x="144" y="416" width="224" height="32" rx="8" fill="#0D47A1"/>
+  <rect x="240" y="384" width="32" height="32" fill="#0D47A1"/>
+  <rect x="160" y="64" width="192" height="32" rx="8" fill="#0D47A1"/>
+  <rect x="240" y="96" width="32" height="32" fill="#0D47A1"/>
+  <rect x="112" y="192" width="288" height="128" rx="8" fill="#FFFFFF" stroke="#0D47A1" stroke-width="8"/>
+  <line x1="112" y1="224" x2="400" y2="224" stroke="#0D47A1" stroke-width="8"/>
+  <circle cx="128" cy="208" r="8" fill="#F44336"/>
+  <circle cx="160" cy="208" r="8" fill="#FFC107"/>
+  <circle cx="192" cy="208" r="8" fill="#4CAF50"/>
+</svg>

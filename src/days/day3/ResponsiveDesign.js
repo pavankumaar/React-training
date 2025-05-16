@@ -834,7 +834,7 @@ button:hover {
     .features {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: 0.5rem;
       margin-bottom: 2rem;
     }
     

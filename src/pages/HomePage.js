@@ -35,7 +35,7 @@ const shimmer = keyframes`
 
 const ShimmerCardWrapper = styled.div`
   background: var(--card-background);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
   position: relative;

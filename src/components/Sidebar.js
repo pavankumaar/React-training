@@ -27,8 +27,9 @@ const SidebarContainer = styled.div`
   left: ${props => props.isOpen ? '0' : '-280px'};
   width: 280px;
   height: calc(100vh - 64px);
-  background-color: var(--card-background);
-  border-right: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
   transition: left var(--transition-speed) ease;
   overflow-y: auto;
   z-index: 999;
@@ -71,35 +72,40 @@ const SidebarContent = styled.div`
   }
 `;
 
-const HomeLink = styled(Link)`
-  margin: 0;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 1.1rem;
-  color: var(--text-color);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+const HomeIcon = styled.div`
   display: flex;
   align-items: center;
-  background: linear-gradient(to right, var(--card-background), var(--light-gray));
+  justify-content: center;
+  margin-right: 8px;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+`;
+
+const HomeLink = styled(Link)`
+  margin: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  transition: all var(--transition-speed) ease;
   
   &:hover {
-    color: var(--primary-color);
-  }
-  
-  &:before {
-    content: '🏠';
-    display: inline-block;
-    margin-right: 10px;
-    font-size: 1.2rem;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
   }
   
   ${props => props.active === true && `
-    color: var(--primary-color);
-    background: var(--light-gray);
-    border-left: 3px solid var(--primary-color);
-    padding-left: calc(1rem - 3px);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
   `}
 `;
 
@@ -109,32 +115,33 @@ const NavGroup = styled.div`
 
 const NavGroupHeader = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   padding: 0.75rem;
   cursor: pointer;
   transition: all var(--transition-speed) ease;
-  border-bottom: 1px solid var(--border-color);
   width: 100%;
+  border-radius: 12px;
+  margin: 0.2rem 0.4rem;
+  width: calc(100% - 0.8rem);
+  color: white;
   
   &:hover {
-    background-color: var(--light-gray);
-    color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
   }
   
   ${props => props.active && `
-    background-color: var(--light-gray);
+    background-color: rgba(255, 255, 255, 0.15);
     font-weight: bold;
-    color: var(--primary-color);
-    border-left: 3px solid var(--primary-color);
-    padding-left: calc(0.75rem - 3px);
+    color: white;
   `}
   
   svg {
-    color: var(--primary-color);
+    color: white;
     opacity: 0.8;
     transition: transform var(--transition-speed) ease;
-    margin-top: 0.25rem;
+    font-size: 0.9rem;
   }
   
   &:hover svg {
@@ -145,19 +152,19 @@ const NavGroupHeader = styled.div`
 
 const NavGroupTitle = styled.div`
   font-weight: ${props => props.active ? 'bold' : 'normal'};
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: color var(--transition-speed) ease;
   display: flex;
-  flex-direction: column;
+  align-items: center;
 `;
 
 const DayNumber = styled.span`
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+  margin-right: 0.4rem;
 `;
 
 const DayTitle = styled.span`
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   opacity: 0.85;
   font-weight: normal;
 `;
@@ -166,37 +173,32 @@ const NavGroupContent = styled.div`
   max-height: ${props => props.isOpen ? '500px' : '0'};
   overflow: hidden;
   transition: max-height var(--transition-speed) ease;
-  padding-left: 1rem;
-  background-color: ${props => props.isOpen ? 'var(--light-gray)' : 'transparent'};
+  margin: 0 0.4rem 0.3rem 1.2rem;
+  background-color: ${props => props.isOpen ? 'rgba(0, 0, 0, 0.15)' : 'transparent'};
   transition: max-height var(--transition-speed) ease, background-color var(--transition-speed) ease;
-  border-bottom: ${props => props.isOpen ? '1px solid var(--border-color)' : 'none'};
+  border-radius: 12px;
+  padding: ${props => props.isOpen ? '0.3rem 0' : '0'};
 `;
 
 const NavItem = styled(Link)`
   display: block;
-  padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.6rem 0.8rem;
+  margin: 0.2rem 0.4rem;
+  border-radius: 10px;
   transition: all var(--transition-speed) ease;
-  color: var(--text-color);
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
   
   &:hover {
-    background-color: var(--card-background);
-    color: var(--primary-color);
-    padding-left: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
   }
   
   ${props => props.active && `
-    background-color: var(--card-background);
-    color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
     font-weight: bold;
-    border-left: 2px solid var(--primary-color);
-    padding-left: calc(0.75rem - 2px);
   `}
-  
-  &:last-child {
-    border-bottom: none;
-  }
 `;
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -314,7 +316,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <Backdrop isOpen={isOpen} onClick={toggleSidebar} />
       <SidebarContainer isOpen={isOpen} className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
         <SidebarContent>
-          <HomeLink to="/" active={location.pathname === "/" ? true : false}>Home</HomeLink>
+          <HomeLink to="/" active={location.pathname === "/" ? true : false}>
+            <HomeIcon>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
+              </svg>
+            </HomeIcon>
+            Home
+          </HomeLink>
         
         {navigation.map((navGroup) => {
           const isDayActive = location.pathname.startsWith(navGroup.path);
