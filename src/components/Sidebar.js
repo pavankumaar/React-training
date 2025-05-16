@@ -236,9 +236,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       case 'Day 3':
         return 'Advanced CSS';
       case 'Day 4':
-        return 'JavaScript Fundamentals - Part 1';
+        return 'JS Fundamentals - Part 1';
       case 'Day 5':
-        return 'JavaScript Fundamentals - Part 2';
+        return 'JS Fundamentals - Part 2';
       default:
         return '';
     }

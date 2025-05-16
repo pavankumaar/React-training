@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useAuth } from './AuthContext';
 
 // Create the context
 const CompletionContext = createContext();
@@ -17,27 +18,35 @@ export const CompletionProvider = ({ children }) => {
   const [completedTopics, setCompletedTopics] = useState({});
   const [loading, setLoading] = useState(true);
   const [usesFallback, setUsesFallback] = useState(false);
+  const auth = useAuth();
   
   // Function to fetch completed topics from the database
   const fetchCompletedTopics = async () => {
     try {
       setLoading(true);
       
-      const response = await axios.get(`${API_URL}/topics`, { timeout: 8000 });
-      
-      const topics = {};
-      if (Array.isArray(response.data)) {
-        response.data.forEach(topic => {
-          if (topic && topic.completed) {
-            topics[topic.topic_path] = true;
-          }
-        });
+      // Only fetch completed topics if user is admin
+      if (auth && auth.isAdmin()) {
+        const response = await axios.get(`${API_URL}/topics`, { timeout: 8000 });
         
-        // Always use the API data, even if empty
-        setCompletedTopics(topics);
-        setUsesFallback(false);
+        const topics = {};
+        if (Array.isArray(response.data)) {
+          response.data.forEach(topic => {
+            if (topic && topic.completed) {
+              topics[topic.topic_path] = true;
+            }
+          });
+          
+          // Always use the API data, even if empty
+          setCompletedTopics(topics);
+          setUsesFallback(false);
+        } else {
+          // Just set an empty object
+          setCompletedTopics({});
+          setUsesFallback(false);
+        }
       } else {
-        // Just set an empty object
+        // For non-admin users, just set an empty object
         setCompletedTopics({});
         setUsesFallback(false);
       }
@@ -50,13 +59,18 @@ export const CompletionProvider = ({ children }) => {
     }
   };
   
-  // Load completed topics from server on initial render
+  // Load completed topics from server on initial render and when auth changes
   useEffect(() => {
     fetchCompletedTopics();
-  }, []);
+  }, [auth?.isAdmin()]); // Re-fetch when admin status changes
   
   // Function to mark a topic as completed
   const markAsCompleted = async (topicPath) => {
+    // Only allow admin users to mark topics as completed
+    if (!auth || !auth.isAdmin()) {
+      return;
+    }
+    
     try {
       setLoading(true);
       await axios.post(`${API_URL}/topics`, {
@@ -74,6 +88,11 @@ export const CompletionProvider = ({ children }) => {
   
   // Function to mark a topic as not completed
   const markAsNotCompleted = async (topicPath) => {
+    // Only allow admin users to mark topics as not completed
+    if (!auth || !auth.isAdmin()) {
+      return;
+    }
+    
     try {
       setLoading(true);
       await axios.post(`${API_URL}/topics`, {
@@ -91,6 +110,10 @@ export const CompletionProvider = ({ children }) => {
   
   // Function to check if a topic is completed
   const isTopicCompleted = (topicPath) => {
+    // Only show completion status for admin users
+    if (!auth || !auth.isAdmin()) {
+      return false;
+    }
     return completedTopics[topicPath] === true;
   };
   

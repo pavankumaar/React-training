@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCompletion } from '../context/CompletionContext';
+import { useAuth } from '../context/AuthContext';
 import { getRandomWebDevImage } from '../utils/imageUtils';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -171,6 +172,7 @@ const CompleteButton = styled.button`
 
 const TopicCard = ({ title, description, link, completed: propCompleted = false }) => {
   const { isTopicCompleted, markAsCompleted, markAsNotCompleted, loading } = useCompletion();
+  const { isAdmin } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
   const [imageSize, setImageSize] = useState(0);
   const cardRef = React.useRef(null);
@@ -232,25 +234,31 @@ const TopicCard = ({ title, description, link, completed: propCompleted = false 
       </TopicImage>
       <CardContent>
         <TopicHeader>
-          <StatusIcon completed={isCompleted}>{isCompleted ? '✓' : ''}</StatusIcon>
+          {isAdmin() && (
+            <StatusIcon completed={isCompleted}>{isCompleted ? '✓' : ''}</StatusIcon>
+          )}
           <TopicTitle>{title}</TopicTitle>
-          {/* {isCompleted && <CompletedTag>Completed</CompletedTag>} */}
+          {/* {isAdmin() && isCompleted && <CompletedTag>Completed</CompletedTag>} */}
         </TopicHeader>
         <Description>{description}</Description>
         <ButtonContainer>
-          <CompleteButton 
-            completed={isCompleted} 
-            onClick={handleCompleteClick}
-            disabled={isUpdating || loading}
-          >
-            {isUpdating 
-              ? 'Updating...' 
-              : isCompleted 
-                ? 'Mark as Incomplete' 
-                : 'Mark as Done'
-            }
-          </CompleteButton>
-          <ViewButton to={link} aria-label="View Topic"><FaArrowRight /></ViewButton>
+          {isAdmin() && (
+            <CompleteButton 
+              completed={isCompleted} 
+              onClick={handleCompleteClick}
+              disabled={isUpdating || loading}
+            >
+              {isUpdating 
+                ? 'Updating...' 
+                : isCompleted 
+                  ? 'Mark as Incomplete' 
+                  : 'Mark as Done'
+              }
+            </CompleteButton>
+          )}
+          <ViewButton to={link} aria-label="View Topic" style={{ marginLeft: isAdmin() ? '0' : 'auto' }}>
+            <FaArrowRight />
+          </ViewButton>
         </ButtonContainer>
       </CardContent>
     </Card>

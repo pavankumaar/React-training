@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useCompletion } from '../context/CompletionContext';
+import { useAuth } from '../context/AuthContext';
 
 const Button = styled.button`
   display: inline-block;
@@ -24,7 +25,13 @@ const CompleteButton = () => {
   const location = useLocation();
   const topicPath = location.pathname;
   const { isTopicCompleted, markAsCompleted, markAsNotCompleted, loading } = useCompletion();
+  const { isAdmin } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
+  
+  // If user is not admin, don't render the button
+  if (!isAdmin()) {
+    return null;
+  }
   
   const completed = isTopicCompleted(topicPath);
   

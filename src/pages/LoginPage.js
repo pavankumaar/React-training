@@ -153,7 +153,11 @@ const LoginPage = () => {
   // Validate passcode
   const validatePasscode = (code) => {
     if (code === '3194') {
-      login(); // Login as admin
+      login('admin'); // Login as admin
+      // Navigate to the original page the user was trying to access
+      navigate(from, { replace: true });
+    } else if (code === '1234') {
+      login('user'); // Login as regular user
       // Navigate to the original page the user was trying to access
       navigate(from, { replace: true });
     } else {

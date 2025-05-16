@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
+import { useAuth } from '../context/AuthContext';
 
 const Subtitle = styled.p`
   text-align: center;
@@ -123,6 +124,7 @@ const ShimmerCard = () => (
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const HomePage = () => {
+  const { isAdmin } = useAuth();
   const [completedTopics, setCompletedTopics] = useState({
     day1: [],
     day2: [],
@@ -145,6 +147,12 @@ const HomePage = () => {
   const fetchDayStats = async () => {
     try {
       setLoading(true);
+      
+      // Only fetch stats for admin users
+      if (!isAdmin()) {
+        setLoading(false);
+        return;
+      }
       
       // Add timestamp to prevent caching
       const timestamp = new Date().getTime();

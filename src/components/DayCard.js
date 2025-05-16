@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth } from '../context/AuthContext';
 
 const Card = styled.div`
   border-radius: var(--border-radius);
@@ -156,6 +157,8 @@ const ProgressText = styled.div`
 `;
 
 const DayCard = ({ day, title, description, topics, link, completedTopics = [], stats = null }) => {
+  const { isAdmin } = useAuth();
+  
   // Calculate completion stats
   const totalTopics = topics.length;
   
@@ -182,26 +185,30 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
       <CardHeader>
         <HeaderTop>
           <span>Day {day}: {title}</span>
-          <CompletionBadge completed={safeStats.completed || completedCount} total={safeStats.total || totalTopics}>
-            {safeStats.completed || completedCount}/{safeStats.total || totalTopics}
-          </CompletionBadge>
+          {isAdmin() && (
+            <CompletionBadge completed={safeStats.completed || completedCount} total={safeStats.total || totalTopics}>
+              {safeStats.completed || completedCount}/{safeStats.total || totalTopics}
+            </CompletionBadge>
+          )}
         </HeaderTop>
         
-        {/* Enhanced progress bar in header */}
-        <ProgressContainer>
-          <ProgressBar>
-            <ProgressFill 
-              completed={safeStats.completed || completedCount} 
-              total={safeStats.total || totalTopics} 
-            />
-          </ProgressBar>
-          <ProgressText>
-            {(safeStats.completed || completedCount) === (safeStats.total || totalTopics) ? 
-              '✓ Complete!' : 
-              `${Math.round((safeStats.completed || completedCount) / (safeStats.total || totalTopics) * 100)}%`
-            }
-          </ProgressText>
-        </ProgressContainer>
+        {/* Enhanced progress bar in header - only for admin users */}
+        {isAdmin() && (
+          <ProgressContainer>
+            <ProgressBar>
+              <ProgressFill 
+                completed={safeStats.completed || completedCount} 
+                total={safeStats.total || totalTopics} 
+              />
+            </ProgressBar>
+            <ProgressText>
+              {(safeStats.completed || completedCount) === (safeStats.total || totalTopics) ? 
+                '✓ Complete!' : 
+                `${Math.round((safeStats.completed || completedCount) / (safeStats.total || totalTopics) * 100)}%`
+              }
+            </ProgressText>
+          </ProgressContainer>
+        )}
       </CardHeader>
       <CardContent>
         <Description>{description}</Description>
@@ -211,19 +218,19 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
             // Safely check if the topic is completed
             let isCompleted = false;
             
-            try {
-              // Use the actual data from props
-              isCompleted = 
-                (safeStats.topics && Array.isArray(safeStats.topics) && safeStats.topics.includes(topic)) || 
-                (Array.isArray(completedTopics) && completedTopics.includes(topic));
-            } catch (error) {
-              console.error(`Error checking completion for topic ${topic}:`, error);
-              // Only use fallback as a last resort
-              isCompleted = false;
+            if (isAdmin()) {
+              try {
+                // Use the actual data from props
+                isCompleted = 
+                  (safeStats.topics && Array.isArray(safeStats.topics) && safeStats.topics.includes(topic)) || 
+                  (Array.isArray(completedTopics) && completedTopics.includes(topic));
+              } catch (error) {
+                console.error(`Error checking completion for topic ${topic}:`, error);
+                // Only use fallback as a last resort
+                isCompleted = false;
+              }
             }
             
-            // Check if topic is completed
-              
             return (
               <li key={index} style={{
                 marginBottom: '10px',
@@ -233,44 +240,48 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
                 position: 'relative',
                 paddingLeft: '0px'
               }}>
-                {isCompleted ? (
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--success-color)',
-                    color: 'white',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    marginRight: '8px',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                  }}>
-                    ✓
-                  </div>
-                ): (
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    backgroundColor: 'lightgray',
-                    color: 'white',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    marginRight: '8px',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                  }}>
-                    
-                  </div>
+                {isAdmin() ? (
+                  isCompleted ? (
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--success-color)',
+                      color: 'white',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      marginRight: '8px',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                    }}>
+                      ✓
+                    </div>
+                  ) : (
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      backgroundColor: 'lightgray',
+                      color: 'white',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      marginRight: '8px',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                    }}>
+                      
+                    </div>
+                  )
+                ) : (
+                  <div style={{ width: '8px', marginRight: '8px' }}></div>
                 )}
                 
                 <span style={{
-                  fontWeight: isCompleted ? '500' : 'normal',
+                  fontWeight: isAdmin() && isCompleted ? '500' : 'normal',
                   flex: '1'
                 }}>
                   {topic}
