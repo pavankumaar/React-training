@@ -139,15 +139,16 @@ const DropdownMenu = styled.div`
   @media (max-width: 576px) {
     min-width: 200px;
     max-height: 300px;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    transform: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: auto;
     max-width: 90vw;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 1px solid var(--border-color);
-    margin-top: 0.3rem;
+    margin-top: 0;
+    z-index: 11;
   }
 `;
 
@@ -162,7 +163,7 @@ const DropdownBackdrop = styled.div`
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9;
+    z-index: 10;
   }
 `;
 
@@ -214,7 +215,7 @@ const BreadcrumbDropdown = ({ isOpen, header, items, currentPath, onClose }) => 
         <DropdownItem 
           key={item.path} 
           to={item.path}
-          className={currentPath === item.path ? 'active' : ''}
+          className={currentPath === item.path || currentPath.startsWith(item.path + '/') ? 'active' : ''}
           onClick={onClose}
         >
           {item.name}

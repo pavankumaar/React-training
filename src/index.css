@@ -1,5 +1,106 @@
+/* CSS Variables */
+:root {
+  --primary-color-rgb: 74, 144, 226; /* RGB values for #4a90e2 */
+}
+
+/* Custom Scrollbar Styles for the entire website - matching sidebar style */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+div::-webkit-scrollbar,
+pre::-webkit-scrollbar,
+code::-webkit-scrollbar,
+.code-block::-webkit-scrollbar,
+.example::-webkit-scrollbar,
+main::-webkit-scrollbar,
+.container::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track,
+pre::-webkit-scrollbar-track,
+code::-webkit-scrollbar-track,
+.code-block::-webkit-scrollbar-track,
+.example::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track,
+.container::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 10px !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb,
+code::-webkit-scrollbar-thumb,
+.code-block::-webkit-scrollbar-thumb,
+.example::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb,
+.container::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) !important;
+  border-radius: 10px !important;
+  transition: background 0.3s ease !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover,
+pre::-webkit-scrollbar-thumb:hover,
+code::-webkit-scrollbar-thumb:hover,
+.code-block::-webkit-scrollbar-thumb:hover,
+.example::-webkit-scrollbar-thumb:hover,
+main::-webkit-scrollbar-thumb:hover,
+.container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color, #4a90e2) !important;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) transparent;
+}
+
+/* For Edge and IE */
 body {
+  -ms-overflow-style: none;
+}
+
+/* Ensure main content scrollbar matches sidebar */
+main, .container {
+  overflow-y: auto;
+}
+
+/* Custom class for main content scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 10px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) !important;
+  border-radius: 10px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color, #4a90e2) !important;
+}
+
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

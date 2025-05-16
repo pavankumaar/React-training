@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from './Footer';
@@ -6,6 +6,9 @@ import GlobalStyles from '../styles/GlobalStyles';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import Breadcrumb from './Breadcrumb';
+import PageNavigation from './PageNavigation';
+import Sidebar from './Sidebar';
+import { FaBars } from 'react-icons/fa';
 
 const FixedHeader = styled.header`
   position: fixed;
@@ -15,7 +18,7 @@ const FixedHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
+  padding: 0 0.75rem 0 0.75rem ;
   background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -24,22 +27,19 @@ const FixedHeader = styled.header`
   transition: all var(--transition-speed) ease;
   
   @media (max-width: 768px) {
-    padding: 0 1.5rem;
+    padding: 0 1.5rem 0 0.5rem;
     height: 60px;
   }
   
   @media (max-width: 576px) {
-    padding: 0 1rem;
+    padding: 0 1rem 0 0.25rem;
   }
 `;
 
 const HeaderContent = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
 `;
 
 const LogoContainer = styled.div`
@@ -90,6 +90,50 @@ const HeaderControls = styled.div`
   gap: 0.75rem;
 `;
 
+const SidebarToggleButton = styled.button`
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.75rem;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    margin-right: 0.5rem;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    margin-right: 0.25rem;
+  }
+`;
+
 const LogoutButton = styled.button`
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
@@ -122,6 +166,36 @@ const Main = styled.main`
   min-height: calc(100vh - 140px);
   padding: 2rem 0;
   margin-top: 64px; /* Same as header height */
+  margin-left: ${props => props.sidebarOpen ? '280px' : '0'};
+  transition: margin-left var(--transition-speed) ease, padding var(--transition-speed) ease;
+  width: ${props => props.sidebarOpen ? 'calc(100% - 280px)' : '100%'};
+  overflow-y: auto;
+  
+  /* Custom scrollbar for main content - matching sidebar style */
+  &::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent !important;
+    border-radius: 10px !important;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) !important;
+    border-radius: 10px !important;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color, #4a90e2) !important;
+  }
+  
+  @media (max-width: 992px) {
+    width: 100%;
+    margin-left: 0;
+    padding-left: ${props => props.sidebarOpen ? '1rem' : '0'};
+  }
   
   @media (max-width: 768px) {
     margin-top: 60px;
@@ -131,10 +205,15 @@ const Main = styled.main`
 const Layout = ({ children }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+  
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
   
   return (
@@ -142,6 +221,9 @@ const Layout = ({ children }) => {
       <GlobalStyles />
       <FixedHeader>
         <HeaderContent>
+          <SidebarToggleButton onClick={toggleSidebar} aria-label="Toggle Sidebar" title="Toggle Sidebar">
+            <FaBars />
+          </SidebarToggleButton>
           <LogoContainer>
             <Logo to="/">
               <LogoIcon>
@@ -152,6 +234,7 @@ const Layout = ({ children }) => {
               React Training Course
             </Logo>
           </LogoContainer>
+          <div style={{ flexGrow: 1 }}></div>
           <HeaderControls>
             <ThemeToggle />
             <LogoutButton onClick={handleLogout} aria-label="Logout" title="Logout">
@@ -163,10 +246,16 @@ const Layout = ({ children }) => {
           </HeaderControls>
         </HeaderContent>
       </FixedHeader>
-      <Main>
-        <div className="container">
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <Main sidebarOpen={sidebarOpen} className="custom-scrollbar">
+        <div className="container custom-scrollbar" style={{
+          overflow: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) transparent'
+        }}>
           <Breadcrumb />
           {children}
+          <PageNavigation />
         </div>
       </Main>
       <Footer />

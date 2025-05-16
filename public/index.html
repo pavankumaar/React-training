@@ -25,6 +25,33 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React Training by Pavan Kumar P</title>
+    <style>
+      /* Direct scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 5px !important;
+        height: 5px !important;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: transparent !important;
+        border-radius: 10px !important;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: rgba(74, 144, 226, 0.5) !important;
+        border-radius: 10px !important;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4a90e2 !important;
+      }
+      
+      /* Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(74, 144, 226, 0.5) transparent;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

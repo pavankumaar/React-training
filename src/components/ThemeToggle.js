@@ -16,7 +16,6 @@ const ToggleButton = styled.button`
   width: 44px;
   height: 44px;
   transition: background-color var(--transition-speed) ease;
-  margin-right: 10px;
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);

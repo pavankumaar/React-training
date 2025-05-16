@@ -8,6 +8,7 @@ const GlobalStyles = createGlobalStyle`
     
     /* Light theme (default) */
     --primary-color: #3498db;
+    --primary-color-rgb: 52, 152, 219; /* RGB values for #3498db */
     --primary-dark: #2980b9;
     --primary-darker: #1a5e8a;
     --secondary-color: #2ecc71;
@@ -38,6 +39,7 @@ const GlobalStyles = createGlobalStyle`
   /* Dark theme variables */
   [data-theme='dark'] {
     --primary-color: #4fa3e0;
+    --primary-color-rgb: 79, 163, 224; /* RGB values for #4fa3e0 */
     --primary-dark: #3a8bc5;
     --primary-darker: #2a6b9c;
     --secondary-color: #3dd682;
@@ -135,6 +137,24 @@ const GlobalStyles = createGlobalStyle`
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+    
+    /* Custom scrollbar for container - matching sidebar style */
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5);
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-color, #4a90e2);
+    }
   }
 
   .code-block {
@@ -146,6 +166,24 @@ const GlobalStyles = createGlobalStyle`
     margin-bottom: 1rem;
     overflow-x: auto;
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    
+    /* Custom scrollbar for code blocks - matching sidebar style */
+    &::-webkit-scrollbar {
+      height: 5px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(var(--primary-color-rgb, 74, 144, 226), 0.5);
+      border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-color, #4a90e2);
+    }
   }
 
   .example {
@@ -162,7 +200,11 @@ const GlobalStyles = createGlobalStyle`
     }
   
   .example ul,ol {
-      margin-left: 20px;
+    margin-left: 20px;
+  }
+
+  section ul,ol {
+    margin-left: 20px;
   }
 
   .completed {
