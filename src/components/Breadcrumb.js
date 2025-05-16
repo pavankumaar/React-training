@@ -6,7 +6,7 @@ const BreadcrumbContainer = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-size: 0.9rem;
   color: var(--text-color);
   background-color: var(--light-gray);
@@ -17,13 +17,13 @@ const BreadcrumbContainer = styled.div`
   
   @media (max-width: 768px) {
     font-size: 0.9rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
     padding: 0.7rem 0.9rem;
   }
   
   @media (max-width: 576px) {
     font-size: 0.95rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     padding: 0.7rem 0.8rem;
   }
 `;

@@ -164,7 +164,7 @@ const LogoutButton = styled.button`
 
 const Main = styled.main`
   min-height: calc(100vh - 140px);
-  padding: 2rem 0;
+  padding: 1rem 0;
   margin-top: 64px; /* Same as header height */
   margin-left: ${props => props.sidebarOpen ? '280px' : '0'};
   transition: margin-left var(--transition-speed) ease, padding var(--transition-speed) ease;

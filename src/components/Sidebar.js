@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaCode } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 
 const Backdrop = styled.div`
@@ -323,6 +323,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </svg>
             </HomeIcon>
             Home
+          </HomeLink>
+          
+          <HomeLink to="/code-editor" active={location.pathname === "/code-editor" ? true : false}>
+            <HomeIcon>
+              <FaCode />
+            </HomeIcon>
+            Code Editor
           </HomeLink>
         
         {navigation.map((navGroup) => {

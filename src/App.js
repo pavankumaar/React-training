@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
+import CodeEditorPage from './pages/CodeEditorPage';
 
 // Day index pages
 import Day1IndexPage from './pages/Day1IndexPage';
@@ -62,6 +63,11 @@ function App() {
             <Route path="/" element={
               <ProtectedRoute>
                 <HomePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/code-editor" element={
+              <ProtectedRoute>
+                <CodeEditorPage />
               </ProtectedRoute>
             } />
           

@@ -16,6 +16,18 @@ export const AuthProvider = ({ children }) => {
     if (authStatus === 'true') {
       setIsAuthenticated(true);
     }
+    
+    // Listen for storage events to sync auth state across tabs
+    const handleStorageChange = (e) => {
+      if (e.key === 'isAuthenticated') {
+        setIsAuthenticated(e.newValue === 'true');
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
   
   // Login function

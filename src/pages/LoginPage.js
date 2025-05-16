@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -99,17 +99,21 @@ const ErrorMessage = styled.p`
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [passcode, setPasscode] = useState(['', '', '', '']);
   const [error, setError] = useState('');
   
+  // Get the redirect path from location state or default to home
+  const from = location.state?.from?.pathname || '/';
+  
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, from]);
   
   // Handle passcode input change
   const handlePasscodeChange = (index, value) => {
@@ -150,7 +154,8 @@ const LoginPage = () => {
   const validatePasscode = (code) => {
     if (code === '3194') {
       login(); // Login as admin
-      navigate('/');
+      // Navigate to the original page the user was trying to access
+      navigate(from, { replace: true });
     } else {
       setError('Invalid passcode. Please try again.');
       setPasscode(['', '', '', '']);
