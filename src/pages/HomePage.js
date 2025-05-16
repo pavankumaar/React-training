@@ -171,7 +171,7 @@ const HomePage = () => {
         });
       } catch (topicsErr) {
         // If we can't even get the topics, show an error toast
-        toast.showError('Cannot connect to the server API. Please check if the server is running.');
+        toast.showError('Internal server error. Please try again later.');
         setLoading(false);
         return;
       }
@@ -230,11 +230,11 @@ const HomePage = () => {
         clearTimeout(timeoutId);
         
         // Show error toast
-        toast.showError('Error fetching statistics. Please try again later.');
+        toast.showError('Internal server error. Please try again later.');
       }
     } catch (err) {
       // Show error toast
-      toast.showError('Error fetching statistics. Please try again later.');
+      toast.showError('Internal server error. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -249,12 +249,13 @@ const HomePage = () => {
       if (isServerRunning) {
         fetchDayStats();
       } else {
-        toast.showError('Server is not running. Please start the server with "npm run server" and try again.');
+        toast.showError('Internal server error. Please try again later.');
         setLoading(false);
       }
     };
-    
-    initializeData();
+    if(isAdmin) {
+      initializeData();
+    }
   }, []);
   
   // Function to check if the server is running
