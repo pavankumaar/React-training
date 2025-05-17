@@ -5,6 +5,8 @@ import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useCompletion } from '../context/CompletionContext';
+import { getFromCache, saveToCache } from '../utils/apiCache';
 
 const Subtitle = styled.p`
   text-align: center;
@@ -124,9 +126,13 @@ const ShimmerCard = () => (
 // API URL - Try to get from environment or use relative path
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
+// Cache keys
+const STATS_CACHE_KEY = 'dayStatsCache';
+
 const HomePage = () => {
   const { isAdmin } = useAuth();
   const toast = useToast();
+  const { statsUpdated } = useCompletion();
   const [completedTopics, setCompletedTopics] = useState({
     day1: [],
     day2: [],
@@ -145,50 +151,54 @@ const HomePage = () => {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [apiCallInProgress, setApiCallInProgress] = useState(false);
   
-  const fetchDayStats = async () => {
+  const fetchDayStats = async (forceRefresh = false) => {
+    // Prevent multiple simultaneous API calls
+    if (apiCallInProgress) {
+      return;
+    }
+    
     try {
       setLoading(true);
+      setApiCallInProgress(true);
       
       // Only fetch stats for admin users
       if (!isAdmin()) {
         setLoading(false);
+        setApiCallInProgress(false);
         return;
       }
       
-      // Add timestamp to prevent caching
-      const timestamp = new Date().getTime();
-      
-      // First try to get the topics to see if the server is responding at all
-      try {
-        await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
-          timeout: 10000,
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Expires': '0',
-          }
-        });
-      } catch (topicsErr) {
-        // If we can't even get the topics, show an error toast
-        toast.showError('Internal server error. Please try again.');
-        setLoading(false);
-        return;
+      // Try to get stats from cache if not forcing refresh
+      if (!forceRefresh) {
+        const cachedStats = getFromCache(STATS_CACHE_KEY);
+        if (cachedStats) {
+          setDayStats(cachedStats);
+          
+          // Update completed topics from the cached stats
+          const updatedCompletedTopics = {
+            day1: cachedStats.day1.topics || [],
+            day2: cachedStats.day2.topics || [],
+            day3: cachedStats.day3.topics || [],
+            day4: cachedStats.day4.topics || [],
+            day5: cachedStats.day5.topics || []
+          };
+          
+          setCompletedTopics(updatedCompletedTopics);
+          setLoading(false);
+          setApiCallInProgress(false);
+          return;
+        }
       }
       
       // Add a timeout to ensure we don't wait forever
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
-      let response;
       try {
-        response = await axios.get(`${API_URL}/stats/days?t=${timestamp}`, {
-          timeout: 10000,
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Expires': '0',
-          }
+        const response = await axios.get(`${API_URL}/stats/days`, {
+          timeout: 10000
         });
         
         clearTimeout(timeoutId);
@@ -210,6 +220,9 @@ const HomePage = () => {
           day5: response.data.day5 || { completed: 0, total: 3, topics: [] }
         };
         
+        // Save to localStorage cache
+        saveToCache(STATS_CACHE_KEY, completeStats);
+        
         setDayStats(completeStats);
         
         // Update completed topics from the stats
@@ -223,71 +236,72 @@ const HomePage = () => {
         
         setCompletedTopics(updatedCompletedTopics);
         
-        if (!hasCompletedTopics) {
+        if (!hasCompletedTopics && forceRefresh) {
           toast.showWarning('No completed topics found in the server response. This may be due to a database issue.');
         }
       } catch (statsErr) {
         clearTimeout(timeoutId);
         
-        // Show error toast
-        toast.showError('Internal server error. Please try again.');
+        // Try to use cached data if available
+        const cachedStats = getFromCache(STATS_CACHE_KEY);
+        if (cachedStats) {
+          setDayStats(cachedStats);
+          
+          // Update completed topics from the cached stats
+          const updatedCompletedTopics = {
+            day1: cachedStats.day1.topics || [],
+            day2: cachedStats.day2.topics || [],
+            day3: cachedStats.day3.topics || [],
+            day4: cachedStats.day4.topics || [],
+            day5: cachedStats.day5.topics || []
+          };
+          
+          setCompletedTopics(updatedCompletedTopics);
+        }
+        
+        if (forceRefresh) {
+          // Only show error toast when forcing refresh
+          toast.showError('Internal server error. Please try again.');
+        }
       }
     } catch (err) {
-      // Show error toast
-      toast.showError('Error fetching statistics. Please try again later.');
+      // Try to use cached data if available
+      const cachedStats = getFromCache(STATS_CACHE_KEY);
+      if (cachedStats) {
+        setDayStats(cachedStats);
+        
+        // Update completed topics from the cached stats
+        const updatedCompletedTopics = {
+          day1: cachedStats.day1.topics || [],
+          day2: cachedStats.day2.topics || [],
+          day3: cachedStats.day3.topics || [],
+          day4: cachedStats.day4.topics || [],
+          day5: cachedStats.day5.topics || []
+        };
+        
+        setCompletedTopics(updatedCompletedTopics);
+      }
+      
+      if (forceRefresh) {
+        // Only show error toast when forcing refresh
+        toast.showError('Error fetching statistics. Please try again later.');
+      }
     } finally {
       setLoading(false);
+      setApiCallInProgress(false);
     }
   };
   
-  // Fetch stats on component mount
+  // Fetch stats on component mount and when statsUpdated changes
   useEffect(() => {
-    const initializeData = async () => {
-      // Check if the server is running
-      const isServerRunning = await checkServerStatus();
-      
-      if (isServerRunning) {
-        fetchDayStats();
-      } else {
-        toast.showError('Internal server error. Please try again.');
-        setLoading(false);
-      }
-    };
-    if(isAdmin) {
-      initializeData();
+    if (isAdmin()) {
+      // Force refresh when statsUpdated changes (after mark as completed/incomplete)
+      const forceRefresh = statsUpdated > 0;
+      fetchDayStats(forceRefresh);
+    } else {
+      setLoading(false);
     }
-  }, []);
-  
-  // Function to check if the server is running
-  const checkServerStatus = async () => {
-    // For normal users, always return true to avoid unnecessary API calls
-    if (!isAdmin()) {
-      return true;
-    }
-    
-    try {
-      // Add timestamp to prevent caching
-      const timestamp = new Date().getTime();
-      
-      const response = await axios.get(`${API_URL}/topics?t=${timestamp}`, { 
-        timeout: 10000,
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        }
-      });
-      
-      // Check if the response is valid
-      if (response.data && Array.isArray(response.data)) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (err) {
-      return false;
-    }
-  };
+  }, [isAdmin, statsUpdated]);
   
   return (
     <Layout>

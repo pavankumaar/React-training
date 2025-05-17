@@ -1,12 +1,16 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { getFromCache, saveToCache, clearCache } from '../utils/apiCache';
 
 // Create the context
 const CompletionContext = createContext();
 
 // API URL - Try to get from environment or use relative path
 const API_URL = process.env.REACT_APP_API_URL || '/api';
+
+// Cache key for topics
+const TOPICS_CACHE_KEY = 'topicsCache';
 
 // Custom hook to use the completion context
 export const useCompletion = () => useContext(CompletionContext);
@@ -18,15 +22,26 @@ export const CompletionProvider = ({ children }) => {
   const [completedTopics, setCompletedTopics] = useState({});
   const [loading, setLoading] = useState(true);
   const [usesFallback, setUsesFallback] = useState(false);
+  const [statsUpdated, setStatsUpdated] = useState(0);
   const auth = useAuth();
   
   // Function to fetch completed topics from the database
-  const fetchCompletedTopics = async () => {
+  const fetchCompletedTopics = async (forceRefresh = false) => {
     try {
       setLoading(true);
       
       // Only fetch completed topics if user is admin
       if (auth && auth.isAdmin()) {
+        // Use cache if available and not forcing refresh
+        if (!forceRefresh) {
+          const cachedTopics = getFromCache(TOPICS_CACHE_KEY);
+          if (cachedTopics) {
+            setCompletedTopics(cachedTopics);
+            setLoading(false);
+            return;
+          }
+        }
+        
         const response = await axios.get(`${API_URL}/topics`, { timeout: 10000 });
         
         const topics = {};
@@ -39,6 +54,8 @@ export const CompletionProvider = ({ children }) => {
           
           // Always use the API data, even if empty
           setCompletedTopics(topics);
+          // Update cache
+          saveToCache(TOPICS_CACHE_KEY, topics);
           setUsesFallback(false);
         } else {
           // Just set an empty object
@@ -51,8 +68,14 @@ export const CompletionProvider = ({ children }) => {
         setUsesFallback(false);
       }
     } catch (error) {
-      // Just set an empty object if there's an error
-      setCompletedTopics({});
+      // If error, try to use cache
+      const cachedTopics = getFromCache(TOPICS_CACHE_KEY);
+      if (cachedTopics) {
+        setCompletedTopics(cachedTopics);
+      } else {
+        // Just set an empty object if there's an error and no cache
+        setCompletedTopics({});
+      }
       setUsesFallback(false);
     } finally {
       setLoading(false);
@@ -80,8 +103,14 @@ export const CompletionProvider = ({ children }) => {
         timeout: 10000
       });
       
-      // Fetch the updated list from the database
-      await fetchCompletedTopics();
+      // Clear the topics cache
+      clearCache(TOPICS_CACHE_KEY);
+      
+      // Force refresh the cache
+      await fetchCompletedTopics(true);
+      
+      // Increment statsUpdated to trigger a refresh of the stats
+      setStatsUpdated(prev => prev + 1);
     } catch (error) {
       // Handle error silently and ensure loading state is reset
       setLoading(false);
@@ -104,8 +133,14 @@ export const CompletionProvider = ({ children }) => {
         timeout: 10000
       });
       
-      // Fetch the updated list from the database
-      await fetchCompletedTopics();
+      // Clear the topics cache
+      clearCache(TOPICS_CACHE_KEY);
+      
+      // Force refresh the cache
+      await fetchCompletedTopics(true);
+      
+      // Increment statsUpdated to trigger a refresh of the stats
+      setStatsUpdated(prev => prev + 1);
     } catch (error) {
       // Handle error silently and ensure loading state is reset
       setLoading(false);
@@ -129,7 +164,8 @@ export const CompletionProvider = ({ children }) => {
     isTopicCompleted,
     loading,
     refreshTopics: fetchCompletedTopics,
-    usesFallback
+    usesFallback,
+    statsUpdated
   };
   
   return (
