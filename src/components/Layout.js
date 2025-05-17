@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from './Footer';
@@ -8,7 +8,7 @@ import ThemeToggle from './ThemeToggle';
 import Breadcrumb from './Breadcrumb';
 import PageNavigation from './PageNavigation';
 import Sidebar from './Sidebar';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaEllipsisV, FaHome, FaCode, FaSignOutAlt } from 'react-icons/fa';
 
 const FixedHeader = styled.header`
   position: fixed;
@@ -32,7 +32,7 @@ const FixedHeader = styled.header`
   }
   
   @media (max-width: 576px) {
-    padding: 0 1rem 0 0.25rem;
+    padding: 0 0.25rem 0 0.5rem;
   }
 `;
 
@@ -90,6 +90,57 @@ const HeaderControls = styled.div`
   gap: 0.75rem;
 `;
 
+const NavButton = styled(Link)`
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0 12px;
+  margin-right: 0.75rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+  
+  @media (max-width: 768px) {
+    display: none; /* Hide on mobile */
+  }
+  
+  @media (max-width: 576px) {
+    margin-right: 0.25rem;
+    padding: 0 8px;
+    
+    svg {
+      margin-right: 3px;
+    }
+  }
+`;
+
 const SidebarToggleButton = styled.button`
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
@@ -103,6 +154,7 @@ const SidebarToggleButton = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   margin-right: 0.75rem;
+  padding: 0.5rem 0.25rem;
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -147,6 +199,7 @@ const LogoutButton = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0px;
+  padding-left: 3px;
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -160,6 +213,102 @@ const LogoutButton = styled.button`
   svg {
     width: 20px;
     height: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    display: none; /* Hide on mobile */
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const MobileMenuDropdown = styled.div`
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background: var(--primary-darker);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  overflow: hidden;
+  width: 180px;
+  transition: all 0.3s ease;
+  transform-origin: top right;
+  transform: ${props => props.isOpen ? 'scale(1)' : 'scale(0)'};
+  opacity: ${props => props.isOpen ? '1' : '0'};
+  pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
+`;
+
+const MobileMenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  svg {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const MobileMenuLogoutItem = styled.button`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  color: white;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  svg {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -207,6 +356,8 @@ const Layout = ({ children }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
   
   const handleLogout = () => {
     logout();
@@ -216,6 +367,24 @@ const Layout = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+  
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+  
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   
   return (
     <>
@@ -236,14 +405,54 @@ const Layout = ({ children }) => {
             </Logo>
           </LogoContainer>
           <div style={{ flexGrow: 1 }}></div>
+          {/* Desktop Navigation Buttons - Hidden on Mobile */}
+          <NavButton to="/" title="Home">
+            <FaHome />
+            Home
+          </NavButton>
+          <NavButton to="/code-editor" title="Code Editor">
+            <FaCode />
+            Code Editor
+          </NavButton>
+          
           <HeaderControls>
             <ThemeToggle />
-            <LogoutButton onClick={handleLogout} aria-label="Logout" title="Logout">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
-                <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
-              </svg>
+            
+            {/* Desktop Logout Button - Hidden on Mobile */}
+            <LogoutButton 
+              onClick={handleLogout} 
+              aria-label="Logout" 
+              title="Logout"
+            >
+              <FaSignOutAlt />
             </LogoutButton>
+            
+            {/* Mobile Menu Button - Only visible on mobile */}
+            <MobileMenuButton 
+              onClick={toggleMobileMenu} 
+              aria-label="Menu" 
+              title="Menu"
+            >
+              <FaEllipsisV />
+            </MobileMenuButton>
+            
+            {/* Mobile Menu Dropdown */}
+            <div ref={mobileMenuRef}>
+              <MobileMenuDropdown isOpen={mobileMenuOpen}>
+                <MobileMenuItem to="/" onClick={() => setMobileMenuOpen(false)}>
+                  <FaHome />
+                  Home
+                </MobileMenuItem>
+                <MobileMenuItem to="/code-editor" onClick={() => setMobileMenuOpen(false)}>
+                  <FaCode />
+                  Code Editor
+                </MobileMenuItem>
+                <MobileMenuLogoutItem onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>
+                  <FaSignOutAlt />
+                  Logout
+                </MobileMenuLogoutItem>
+              </MobileMenuDropdown>
+            </div>
           </HeaderControls>
         </HeaderContent>
       </FixedHeader>

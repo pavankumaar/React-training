@@ -4,7 +4,6 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import DayCard from '../components/DayCard';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
 import { useCompletion } from '../context/CompletionContext';
 import { getFromCache, saveToCache } from '../utils/apiCache';
 
@@ -131,7 +130,6 @@ const STATS_CACHE_KEY = 'dayStatsCache';
 
 const HomePage = () => {
   const { isAdmin } = useAuth();
-  const toast = useToast();
   const { statsUpdated } = useCompletion();
   const [completedTopics, setCompletedTopics] = useState({
     day1: [],
@@ -151,64 +149,47 @@ const HomePage = () => {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [apiCallInProgress, setApiCallInProgress] = useState(false);
   
-  const fetchDayStats = async (forceRefresh = false) => {
-    // Prevent multiple simultaneous API calls
-    if (apiCallInProgress) {
+  // Fetch stats only once on mount and when statsUpdated changes
+  useEffect(() => {
+    // Only fetch stats for admin users
+    if (!isAdmin()) {
+      setLoading(false);
       return;
     }
     
-    try {
-      setLoading(true);
-      setApiCallInProgress(true);
-      
-      // Only fetch stats for admin users
-      if (!isAdmin()) {
-        setLoading(false);
-        setApiCallInProgress(false);
-        return;
-      }
-      
-      // Try to get stats from cache if not forcing refresh
-      if (!forceRefresh) {
-        const cachedStats = getFromCache(STATS_CACHE_KEY);
-        if (cachedStats) {
-          setDayStats(cachedStats);
-          
-          // Update completed topics from the cached stats
-          const updatedCompletedTopics = {
-            day1: cachedStats.day1.topics || [],
-            day2: cachedStats.day2.topics || [],
-            day3: cachedStats.day3.topics || [],
-            day4: cachedStats.day4.topics || [],
-            day5: cachedStats.day5.topics || []
-          };
-          
-          setCompletedTopics(updatedCompletedTopics);
-          setLoading(false);
-          setApiCallInProgress(false);
-          return;
-        }
-      }
-      
-      // Add a timeout to ensure we don't wait forever
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
+    // Determine if we should force refresh
+    const forceRefresh = statsUpdated > 0;
+    
+    // Function to fetch data
+    const fetchData = async () => {
       try {
+        setLoading(true);
+        
+        // Try to get stats from cache if not forcing refresh
+        if (!forceRefresh) {
+          const cachedStats = getFromCache(STATS_CACHE_KEY);
+          if (cachedStats) {
+            setDayStats(cachedStats);
+            
+            // Update completed topics from the cached stats
+            const updatedCompletedTopics = {
+              day1: cachedStats.day1.topics || [],
+              day2: cachedStats.day2.topics || [],
+              day3: cachedStats.day3.topics || [],
+              day4: cachedStats.day4.topics || [],
+              day5: cachedStats.day5.topics || []
+            };
+            
+            setCompletedTopics(updatedCompletedTopics);
+            setLoading(false);
+            return;
+          }
+        }
+        
+        // Make the API call
         const response = await axios.get(`${API_URL}/stats/days`, {
           timeout: 10000
-        });
-        
-        clearTimeout(timeoutId);
-        
-        // Check if the response has any completed topics
-        let hasCompletedTopics = false;
-        Object.keys(response.data).forEach(day => {
-          if (response.data[day]?.topics?.length > 0) {
-            hasCompletedTopics = true;
-          }
         });
         
         // Ensure all days are present in the response data
@@ -235,13 +216,7 @@ const HomePage = () => {
         };
         
         setCompletedTopics(updatedCompletedTopics);
-        
-        if (!hasCompletedTopics && forceRefresh) {
-          toast.showWarning('No completed topics found in the server response. This may be due to a database issue.');
-        }
-      } catch (statsErr) {
-        clearTimeout(timeoutId);
-        
+      } catch (err) {
         // Try to use cached data if available
         const cachedStats = getFromCache(STATS_CACHE_KEY);
         if (cachedStats) {
@@ -257,51 +232,20 @@ const HomePage = () => {
           };
           
           setCompletedTopics(updatedCompletedTopics);
+        } else {
+          setError("Failed to fetch data");
         }
-        
-        if (forceRefresh) {
-          // Only show error toast when forcing refresh
-          toast.showError('Internal server error. Please try again.');
-        }
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      // Try to use cached data if available
-      const cachedStats = getFromCache(STATS_CACHE_KEY);
-      if (cachedStats) {
-        setDayStats(cachedStats);
-        
-        // Update completed topics from the cached stats
-        const updatedCompletedTopics = {
-          day1: cachedStats.day1.topics || [],
-          day2: cachedStats.day2.topics || [],
-          day3: cachedStats.day3.topics || [],
-          day4: cachedStats.day4.topics || [],
-          day5: cachedStats.day5.topics || []
-        };
-        
-        setCompletedTopics(updatedCompletedTopics);
-      }
-      
-      if (forceRefresh) {
-        // Only show error toast when forcing refresh
-        toast.showError('Error fetching statistics. Please try again later.');
-      }
-    } finally {
-      setLoading(false);
-      setApiCallInProgress(false);
-    }
-  };
-  
-  // Fetch stats on component mount and when statsUpdated changes
-  useEffect(() => {
-    if (isAdmin()) {
-      // Force refresh when statsUpdated changes (after mark as completed/incomplete)
-      const forceRefresh = statsUpdated > 0;
-      fetchDayStats(forceRefresh);
-    } else {
-      setLoading(false);
-    }
-  }, [isAdmin, statsUpdated]);
+    };
+    
+    // Execute the fetch function
+    fetchData();
+    
+    // Only re-run when statsUpdated changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statsUpdated]);
   
   return (
     <Layout>

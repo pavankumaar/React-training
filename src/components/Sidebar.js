@@ -1,7 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaChevronDown, FaChevronRight, FaCode } from 'react-icons/fa';
+import { 
+  FaChevronDown, 
+  FaChevronRight,
+  FaHtml5, 
+  FaHeading, 
+  FaAlignLeft, 
+  FaTable, 
+  FaWpforms, 
+  FaImage, 
+  FaCss3Alt, 
+  FaListUl, 
+  FaIdCard, 
+  FaColumns, 
+  FaBoxOpen, 
+  FaLayerGroup, 
+  FaTabletAlt, 
+  FaDesktop, 
+  FaJs, 
+  FaVial, 
+  FaEquals, 
+  FaCodeBranch, 
+  FaDatabase, 
+  FaSyncAlt
+} from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 
 const Backdrop = styled.div`
@@ -34,6 +57,7 @@ const SidebarContainer = styled.div`
   overflow-y: auto;
   z-index: 999;
   box-shadow: ${props => props.isOpen ? 'var(--box-shadow)' : 'none'};
+  padding-top: 0.5rem;
   
   @media (max-width: 768px) {
     top: 60px;
@@ -72,42 +96,7 @@ const SidebarContent = styled.div`
   }
 `;
 
-const HomeIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-  
-  svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-  }
-`;
 
-const HomeLink = styled(Link)`
-  margin: 0.4rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: all var(--transition-speed) ease;
-  
-  &:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  ${props => props.active === true && `
-    color: white;
-    background-color: rgba(255, 255, 255, 0.15);
-  `}
-`;
 
 const NavGroup = styled.div`
   margin-bottom: 0;
@@ -181,7 +170,8 @@ const NavGroupContent = styled.div`
 `;
 
 const NavItem = styled(Link)`
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 0.6rem 0.8rem;
   margin: 0.2rem 0.4rem;
   border-radius: 10px;
@@ -199,6 +189,19 @@ const NavItem = styled(Link)`
     color: white;
     font-weight: bold;
   `}
+`;
+
+const TopicIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
 `;
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -256,57 +259,57 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     });
   };
   
-  // Define the navigation structure
+  // Define the navigation structure with icons
   const navigation = [
     {
       day: 'Day 1',
       path: '/day1',
       topics: [
-        { name: 'HTML Basics', path: '/day1/html-basics' },
-        { name: 'Headings', path: '/day1/headings' },
-        { name: 'Paragraphs & Text', path: '/day1/paragraphs-text' },
-        { name: 'Attributes', path: '/day1/attributes' },
-        { name: 'Tables', path: '/day1/tables' },
-        { name: 'Forms', path: '/day1/forms' },
-        { name: 'Images', path: '/day1/images' },
+        { name: 'HTML Basics', path: '/day1/html-basics', icon: <FaHtml5 /> },
+        { name: 'Headings', path: '/day1/headings', icon: <FaHeading /> },
+        { name: 'Paragraphs & Text', path: '/day1/paragraphs-text', icon: <FaAlignLeft /> },
+        { name: 'Attributes', path: '/day1/attributes', icon: <FaIdCard /> },
+        { name: 'Tables', path: '/day1/tables', icon: <FaTable /> },
+        { name: 'Forms', path: '/day1/forms', icon: <FaWpforms /> },
+        { name: 'Images', path: '/day1/images', icon: <FaImage /> },
       ]
     },
     {
       day: 'Day 2',
       path: '/day2',
       topics: [
-        { name: 'CSS Introduction', path: '/day2/css-introduction' },
-        { name: 'CSS Selectors', path: '/day2/css-selectors' },
-        { name: 'Classes & IDs', path: '/day2/classes-ids' },
-        { name: 'Div & Span', path: '/day2/div-span' },
-        { name: 'Box Model', path: '/day2/box-model' },
+        { name: 'CSS Introduction', path: '/day2/css-introduction', icon: <FaCss3Alt /> },
+        { name: 'CSS Selectors', path: '/day2/css-selectors', icon: <FaListUl /> },
+        { name: 'Classes & IDs', path: '/day2/classes-ids', icon: <FaIdCard /> },
+        { name: 'Div & Span', path: '/day2/div-span', icon: <FaColumns /> },
+        { name: 'Box Model', path: '/day2/box-model', icon: <FaBoxOpen /> },
       ]
     },
     {
       day: 'Day 3',
       path: '/day3',
       topics: [
-        { name: 'Flexbox & Grid', path: '/day3/flexbox-grid' },
-        { name: 'Styling Forms & Buttons', path: '/day3/styling-forms-buttons' },
-        { name: 'Responsive Design', path: '/day3/responsive-design' },
+        { name: 'Flexbox & Grid', path: '/day3/flexbox-grid', icon: <FaLayerGroup /> },
+        { name: 'Styling Forms & Buttons', path: '/day3/styling-forms-buttons', icon: <FaWpforms /> },
+        { name: 'Responsive Design', path: '/day3/responsive-design', icon: <FaTabletAlt /> },
       ]
     },
     {
       day: 'Day 4',
       path: '/day4',
       topics: [
-        { name: 'Variables', path: '/day4/variables' },
-        { name: 'Data Types', path: '/day4/data-types' },
-        { name: 'Operators & Conditionals', path: '/day4/operators-conditionals' },
+        { name: 'Variables', path: '/day4/variables', icon: <FaJs /> },
+        { name: 'Data Types', path: '/day4/data-types', icon: <FaVial /> },
+        { name: 'Operators & Conditionals', path: '/day4/operators-conditionals', icon: <FaEquals /> },
       ]
     },
     {
       day: 'Day 5',
       path: '/day5',
       topics: [
-        { name: 'Functions', path: '/day5/functions' },
-        { name: 'Arrays & Objects', path: '/day5/arrays-objects' },
-        { name: 'Loops', path: '/day5/loops' },
+        { name: 'Functions', path: '/day5/functions', icon: <FaCodeBranch /> },
+        { name: 'Arrays & Objects', path: '/day5/arrays-objects', icon: <FaDatabase /> },
+        { name: 'Loops', path: '/day5/loops', icon: <FaSyncAlt /> },
       ]
     },
   ];
@@ -316,22 +319,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <Backdrop isOpen={isOpen} onClick={toggleSidebar} />
       <SidebarContainer isOpen={isOpen} className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
         <SidebarContent>
-          <HomeLink to="/" active={location.pathname === "/" ? true : false}>
-            <HomeIcon>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                <path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
-              </svg>
-            </HomeIcon>
-            Home
-          </HomeLink>
-          
-          <HomeLink to="/code-editor" active={location.pathname === "/code-editor" ? true : false}>
-            <HomeIcon>
-              <FaCode />
-            </HomeIcon>
-            Code Editor
-          </HomeLink>
-        
         {navigation.map((navGroup) => {
           const isDayActive = location.pathname.startsWith(navGroup.path);
           // Group is only open if it's explicitly set to open in state
@@ -355,6 +342,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                   to={navGroup.path} 
                   active={location.pathname === navGroup.path}
                 >
+                  <TopicIcon>
+                    <FaDesktop />
+                  </TopicIcon>
                   Overview
                 </NavItem>
                 
@@ -364,6 +354,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     to={topic.path}
                     active={location.pathname === topic.path}
                   >
+                    <TopicIcon>
+                      {topic.icon}
+                    </TopicIcon>
                     {topic.name}
                   </NavItem>
                 ))}
