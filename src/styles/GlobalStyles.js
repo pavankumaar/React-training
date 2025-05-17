@@ -27,11 +27,14 @@ const GlobalStyles = createGlobalStyle`
     
     /* Light theme specific */
     --background-color: #ffffff;
+    --background: #ffffff;
     --card-background: #f8f9fa;
     --card-background-lighter: #ffffff;
     --card-background-darker: #e8e9ea;
     --image-background: #ffffff;
     --text-color: #333333;
+    --text: #333333;
+    --heading-text: #222222;
     --sidebar-background: #e8e9ea;
     --sidebar-hover-bg: rgba(52, 152, 219, 0.08);
     --sidebar-active-bg: rgba(52, 152, 219, 0.12);
@@ -49,6 +52,11 @@ const GlobalStyles = createGlobalStyle`
     --example-background: #f8f9fa;
     --header-text: #ffffff;
     --button-text: #ffffff;
+    --hover-bg: #f5f5f5;
+    --active-bg: #e5e5e5;
+    --tag-bg: #e0f0ff;
+    --highlight-bg: #fff3cd;
+    --highlight-text: #856404;
   }
 
   /* Dark theme variables */
@@ -67,11 +75,14 @@ const GlobalStyles = createGlobalStyle`
     
     /* Dark theme specific */
     --background-color: #1a1a1a;
+    --background: #1a1a1a;
     --card-background: #2d2d35;
     --card-background-lighter: #3a3a45;
     --card-background-darker: #242428;
     --image-background: #3a3a45;
     --text-color: #e0e0e0;
+    --text: #e0e0e0;
+    --heading-text: #ffffff;
     --sidebar-background: #242428;
     --sidebar-hover-bg: rgba(79, 163, 224, 0.15);
     --sidebar-active-bg: rgba(79, 163, 224, 0.2);
@@ -89,6 +100,11 @@ const GlobalStyles = createGlobalStyle`
     --example-background: #2d2d35;
     --header-text: #ffffff;
     --button-text: #ffffff;
+    --hover-bg: #333333;
+    --active-bg: #3a3a45;
+    --tag-bg: #2a6b9c;
+    --highlight-bg: #664d03;
+    --highlight-text: #fff3cd;
   }
 
   * {

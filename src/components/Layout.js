@@ -4,11 +4,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import Footer from './Footer';
 import GlobalStyles from '../styles/GlobalStyles';
 import { useAuth } from '../context/AuthContext';
-import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 import Breadcrumb from './Breadcrumb';
 import PageNavigation from './PageNavigation';
 import Sidebar from './Sidebar';
-import { FaBars, FaEllipsisV, FaHome, FaCode, FaSignOutAlt } from 'react-icons/fa';
+import ExpandableSearch from './ExpandableSearch';
+import { FaBars, FaEllipsisV, FaHome, FaCode, FaSignOutAlt, FaSearch } from 'react-icons/fa';
 
 const FixedHeader = styled.header`
   position: fixed;
@@ -40,6 +41,11 @@ const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 10px;
+  
+  @media (max-width: 576px) {
+    gap: 5px;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -87,7 +93,7 @@ const Logo = styled(Link)`
 const HeaderControls = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  position: relative;
 `;
 
 const NavButton = styled(Link)`
@@ -220,18 +226,20 @@ const LogoutButton = styled.button`
   }
 `;
 
-const MobileMenuButton = styled.button`
-  display: none;
+const MenuButton = styled.button`
+  display: flex;
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
   border: none;
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  min-width: 40px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin-left: 5px;
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -248,34 +256,57 @@ const MobileMenuButton = styled.button`
   }
   
   @media (max-width: 768px) {
-    display: flex;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
 `;
 
-const MobileMenuDropdown = styled.div`
+const MenuDropdown = styled.div`
   position: absolute;
   top: 60px;
-  right: 10px;
+  right: 0;
   background: var(--primary-darker);
-  border-radius: 8px;
+  border-radius: 12px; /* Increased border radius */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   overflow: hidden;
-  width: 180px;
+  width: 200px; /* Increased width */
   transition: all 0.3s ease;
   transform-origin: top right;
   transform: ${props => props.isOpen ? 'scale(1)' : 'scale(0)'};
   opacity: ${props => props.isOpen ? '1' : '0'};
   pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
+  padding: 6px; /* Add padding around all items */
+  
+  @media (max-width: 768px) {
+    top: 55px;
+  }
+  
+  @media (max-width: 576px) {
+    width: 180px; /* Increased width for mobile */
+    right: 0;
+  }
 `;
 
-const MobileMenuItem = styled(Link)`
+// Base menu item style to be shared by all menu items
+const baseMenuItemStyles = `
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px 16px; /* Consistent padding for all menu items */
   color: white;
-  text-decoration: none;
   transition: background-color 0.2s ease;
+  font-size: 0.9rem; /* Consistent font size */
+  font-weight: normal;
+  border-radius: 8px; /* Add border radius to each menu item */
+  border: none;
+  margin: 2px 0; /* Add small margin between items */
+  box-shadow: none; /* Remove any box shadow */
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -286,31 +317,51 @@ const MobileMenuItem = styled(Link)`
     margin-right: 10px;
     width: 16px;
     height: 16px;
+    fill: white;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 10px 14px; /* Consistent padding on mobile */
+    font-size: 0.85rem; /* Slightly smaller on mobile */
+    
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 `;
 
-const MobileMenuLogoutItem = styled.button`
-  display: flex;
-  align-items: center;
+// Common styles for all menu items
+const menuItemCommonStyles = `
   width: 100%;
-  padding: 12px 16px;
-  color: white;
   background: none;
-  border: none;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  svg {
-    margin-right: 10px;
-    width: 16px;
-    height: 16px;
-  }
+  box-shadow: none !important; /* Ensure no box shadow */
+  outline: none;
+  padding: 12px 16px !important; /* Force consistent padding */
+  margin: 2px 0 !important; /* Force consistent margin */
+  border: none !important;
 `;
+
+// Use the same component for all menu items to ensure consistent styling
+const MenuItem = styled(Link)`
+  ${baseMenuItemStyles}
+  ${menuItemCommonStyles}
+  text-decoration: none;
+`;
+
+const MenuLogoutItem = styled.button`
+  ${baseMenuItemStyles}
+  ${menuItemCommonStyles}
+`;
+
+const ThemeMenuItem = styled.button`
+  ${baseMenuItemStyles}
+  ${menuItemCommonStyles}
+`;
+
+
 
 const Main = styled.main`
   min-height: calc(100vh - 140px);
@@ -354,6 +405,7 @@ const Main = styled.main`
 
 const Layout = ({ children }) => {
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -371,6 +423,20 @@ const Layout = ({ children }) => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+  
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -404,54 +470,56 @@ const Layout = ({ children }) => {
               React Training Course
             </Logo>
           </LogoContainer>
+          
+          {/* Spacer to push items to the right */}
           <div style={{ flexGrow: 1 }}></div>
-          {/* Desktop Navigation Buttons - Hidden on Mobile */}
-          <NavButton to="/" title="Home">
-            <FaHome />
-            Home
-          </NavButton>
-          <NavButton to="/code-editor" title="Code Editor">
-            <FaCode />
-            Code Editor
-          </NavButton>
+          
+          {/* Expandable Search with Suggestions */}
+          <ExpandableSearch />
           
           <HeaderControls>
-            <ThemeToggle />
-            
-            {/* Desktop Logout Button - Hidden on Mobile */}
-            <LogoutButton 
-              onClick={handleLogout} 
-              aria-label="Logout" 
-              title="Logout"
-            >
-              <FaSignOutAlt />
-            </LogoutButton>
-            
-            {/* Mobile Menu Button - Only visible on mobile */}
-            <MobileMenuButton 
+            {/* Menu Button - Visible on all resolutions */}
+            <MenuButton 
               onClick={toggleMobileMenu} 
               aria-label="Menu" 
               title="Menu"
             >
               <FaEllipsisV />
-            </MobileMenuButton>
+            </MenuButton>
             
-            {/* Mobile Menu Dropdown */}
+            {/* Menu Dropdown */}
             <div ref={mobileMenuRef}>
-              <MobileMenuDropdown isOpen={mobileMenuOpen}>
-                <MobileMenuItem to="/" onClick={() => setMobileMenuOpen(false)}>
+              <MenuDropdown isOpen={mobileMenuOpen}>
+                <MenuItem to="/" onClick={() => setMobileMenuOpen(false)}>
                   <FaHome />
                   Home
-                </MobileMenuItem>
-                <MobileMenuItem to="/code-editor" onClick={() => setMobileMenuOpen(false)}>
+                </MenuItem>
+                <MenuItem to="/code-editor" onClick={() => setMobileMenuOpen(false)}>
                   <FaCode />
                   Code Editor
-                </MobileMenuItem>
-                <MobileMenuLogoutItem onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>
+                </MenuItem>
+                <MenuItem to="/search" onClick={() => setMobileMenuOpen(false)}>
+                  <FaSearch />
+                  Advanced Search
+                </MenuItem>
+                <ThemeMenuItem onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}>
+                  {/* Using SVG with explicit white fill color */}
+                  {theme === 'light' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="white">
+                      <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="white">
+                      <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                    </svg>
+                  )}
+                  Toggle Theme
+                </ThemeMenuItem>
+                <MenuLogoutItem onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>
                   <FaSignOutAlt />
                   Logout
-                </MobileMenuLogoutItem>
-              </MobileMenuDropdown>
+                </MenuLogoutItem>
+              </MenuDropdown>
             </div>
           </HeaderControls>
         </HeaderContent>

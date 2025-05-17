@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CodeEditorPage from './pages/CodeEditorPage';
+import SearchPage from './pages/SearchPage';
 
 // Day index pages
 import Day1IndexPage from './pages/Day1IndexPage';
@@ -70,6 +71,11 @@ function App() {
             <Route path="/code-editor" element={
               <ProtectedRoute>
                 <CodeEditorPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/search" element={
+              <ProtectedRoute>
+                <SearchPage />
               </ProtectedRoute>
             } />
           

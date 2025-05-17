@@ -11,14 +11,14 @@ const ToggleButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  padding: 8px;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  padding: 0;
+  border-radius: ${props => props.inMenu ? '0' : '50%'};
+  width: ${props => props.inMenu ? 'auto' : '44px'};
+  height: ${props => props.inMenu ? 'auto' : '44px'};
   transition: background-color var(--transition-speed) ease;
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: ${props => props.inMenu ? 'transparent' : 'rgba(255, 255, 255, 0.2)'};
   }
   
   svg {
@@ -27,11 +27,16 @@ const ToggleButton = styled.button`
   }
 `;
 
-const ThemeToggle = () => {
+const ThemeToggle = ({ inMenu }) => {
   const { theme, toggleTheme } = useTheme();
   
   return (
-    <ToggleButton onClick={toggleTheme} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+    <ToggleButton 
+      onClick={toggleTheme} 
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} 
+      title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      inMenu={inMenu}
+    >
       {theme === 'light' ? (
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
           <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
