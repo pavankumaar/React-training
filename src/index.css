@@ -1,6 +1,9 @@
 /* CSS Variables */
 :root {
   --primary-color-rgb: 74, 144, 226; /* RGB values for #4a90e2 */
+  --box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --content-padding: 10px;
 }
 
 /* Custom Scrollbar Styles for the entire website - matching sidebar style */
@@ -111,4 +114,41 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Content container styling */
+.content-container {
+  padding: var(--content-padding);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color, #ffffff);
+  box-shadow: var(--box-shadow-light);
+  margin-bottom: 1rem;
+}
+
+/* Apply border radius to common elements */
+.card, 
+.alert, 
+.btn, 
+.form-control, 
+.input-group, 
+.list-group, 
+.modal-content,
+.dropdown-menu,
+.navbar,
+.table,
+.code-block,
+.example {
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+}
+
+/* Add padding to content sections */
+.section, 
+.card-body, 
+.alert, 
+.modal-body,
+.tab-content,
+.code-block,
+.example {
+  padding: var(--content-padding) !important;
 }

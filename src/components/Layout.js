@@ -13,16 +13,16 @@ import { FaBars, FaEllipsisV, FaHome, FaCode, FaSignOutAlt, FaSearch } from 'rea
 
 const FixedHeader = styled.header`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  border-radius: var(--border-radius, 8px) var(--border-radius, 8px) 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0.75rem 0 0.75rem ;
+  padding: 0 0.75rem 0 0.75rem;
   background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   height: 64px;
   transition: all var(--transition-speed) ease;
@@ -365,12 +365,20 @@ const ThemeMenuItem = styled.button`
 
 const Main = styled.main`
   min-height: calc(100vh - 140px);
-  padding: 1rem 0;
-  margin-top: 64px; /* Same as header height */
+  padding: 0;
   margin-left: ${props => props.sidebarOpen ? '280px' : '0'};
   transition: margin-left var(--transition-speed) ease, padding var(--transition-speed) ease;
-  width: ${props => props.sidebarOpen ? 'calc(100% - 280px)' : '100%'};
+  width: ${props => props.sidebarOpen ? 'auto' : 'auto'};
   overflow-y: auto;
+  position: fixed;
+  top: 71px; /* 15px (header top) + 64px (header height) */
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  border-radius: 0 0 var(--border-radius, 8px) var(--border-radius, 8px);
+  border-bottom-left-radius: ${props => props.sidebarOpen ? '0' : 'var(--border-radius, 8px)'};
+  background-color: var(--card-background, #ffffff);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   
   /* Custom scrollbar for main content - matching sidebar style */
   &::-webkit-scrollbar {
@@ -393,13 +401,13 @@ const Main = styled.main`
   }
   
   @media (max-width: 992px) {
-    width: 100%;
+    width: auto;
     margin-left: 0;
     padding-left: ${props => props.sidebarOpen ? '1rem' : '0'};
   }
   
   @media (max-width: 768px) {
-    margin-top: 60px;
+    top: 65px; /* 15px (header top) + 60px (header height on mobile) */
   }
 `;
 
@@ -526,17 +534,19 @@ const Layout = ({ children }) => {
       </FixedHeader>
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <Main sidebarOpen={sidebarOpen} className="custom-scrollbar">
-        <div className="container custom-scrollbar" style={{
+        <div className="container custom-scrollbar content-container" style={{
           overflow: 'auto',
           scrollbarWidth: 'thin',
-          scrollbarColor: 'rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) transparent'
+          scrollbarColor: 'rgba(var(--primary-color-rgb, 74, 144, 226), 0.5) transparent',
+          padding: '20px',
+          height: '100%'
         }}>
           <Breadcrumb />
           {children}
           <PageNavigation />
         </div>
       </Main>
-      <Footer />
+      {/* Footer removed to maintain card layout */}
     </>
   );
 };

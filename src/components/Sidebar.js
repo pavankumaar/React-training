@@ -23,7 +23,8 @@ import {
   FaEquals, 
   FaCodeBranch, 
   FaDatabase, 
-  FaSyncAlt
+  FaSyncAlt,
+  FaBook
 } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 
@@ -46,10 +47,10 @@ const Backdrop = styled.div`
 
 const SidebarContainer = styled.div`
   position: fixed;
-  top: 64px;
-  left: ${props => props.isOpen ? '0' : '-280px'};
+  top: 71px; /* 15px (header top) + 64px (header height) */
+  left: ${props => props.isOpen ? '7px' : '-280px'};
   width: 280px;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 78px); /* 100vh - (15px top + 64px header + 15px bottom) */
   background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
   color: white;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -57,18 +58,24 @@ const SidebarContainer = styled.div`
   overflow-y: auto;
   z-index: 999;
   box-shadow: ${props => props.isOpen ? 'var(--box-shadow)' : 'none'};
+  border-radius: 0 0 0 var(--border-radius, 8px);
+  
+  @media (max-width: 768px) {
+    top: 67px; /* 15px (header top) + 60px (header height on mobile) */
+    height: calc(100vh - 90px); /* 100vh - (15px top + 60px header + 15px bottom) */
+  }
   padding-top: 0.5rem;
   
   @media (max-width: 768px) {
-    top: 60px;
-    height: calc(100vh - 60px);
+    top: 67px;
+    height: calc(100vh - 73px);
     width: 260px;
-    left: ${props => props.isOpen ? '0' : '-260px'};
+    left: ${props => props.isOpen ? '7px' : '-260px'};
   }
   
   @media (max-width: 576px) {
     width: 250px;
-    left: ${props => props.isOpen ? '0' : '-250px'};
+    left: ${props => props.isOpen ? '7px' : '-250px'};
   }
 `;
 
@@ -98,8 +105,45 @@ const SidebarContent = styled.div`
 
 
 
-const NavGroup = styled.div`
-  margin-bottom: 0;
+const NavItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  margin: 0.2rem 0.4rem;
+  border-radius: 10px;
+  transition: all var(--transition-speed) ease;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  ${props => props.active && `
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: bold;
+  `}
+`;
+
+const NavGroupTitle = styled.div`
+  font-weight: ${props => props.active ? 'bold' : 'normal'};
+  font-size: 0.9rem;
+  transition: color var(--transition-speed) ease;
+  display: flex;
+  align-items: center;
+`;
+
+const DayNumber = styled.span`
+  font-size: 0.95rem;
+  margin-right: 0.4rem;
+`;
+
+const DayTitle = styled.span`
+  font-size: 0.8rem;
+  opacity: 0.85;
+  font-weight: normal;
 `;
 
 const NavGroupHeader = styled.div`
@@ -139,27 +183,8 @@ const NavGroupHeader = styled.div`
   }
 `;
 
-const NavGroupTitle = styled.div`
-  font-weight: ${props => props.active ? 'bold' : 'normal'};
-  font-size: 0.9rem;
-  transition: color var(--transition-speed) ease;
-  display: flex;
-  align-items: center;
-`;
-
-const DayNumber = styled.span`
-  font-size: 0.95rem;
-  margin-right: 0.4rem;
-`;
-
-const DayTitle = styled.span`
-  font-size: 0.8rem;
-  opacity: 0.85;
-  font-weight: normal;
-`;
-
 const NavGroupContent = styled.div`
-  max-height: ${props => props.isOpen ? '500px' : '0'};
+  max-height: ${props => props.isOpen ? '2000px' : '0'};
   overflow: hidden;
   transition: max-height var(--transition-speed) ease;
   margin: 0 0.4rem 0.3rem 1.2rem;
@@ -167,28 +192,24 @@ const NavGroupContent = styled.div`
   transition: max-height var(--transition-speed) ease, background-color var(--transition-speed) ease;
   border-radius: 12px;
   padding: ${props => props.isOpen ? '0.3rem 0' : '0'};
+  
+  /* Styling for nested content */
+  &.course-content {
+    margin-left: 0.8rem;
+  }
 `;
 
-const NavItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  padding: 0.6rem 0.8rem;
-  margin: 0.2rem 0.4rem;
-  border-radius: 10px;
-  transition: all var(--transition-speed) ease;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
+const NavGroup = styled.div`
+  margin-bottom: 0;
   
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
+  /* Nested NavGroup styling */
+  .nested-nav-group {
+    margin-left: 0.5rem;
+    
+    ${NavGroupContent} {
+      margin-left: 0.8rem;
+    }
   }
-  
-  ${props => props.active && `
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
-    font-weight: bold;
-  `}
 `;
 
 const TopicIcon = styled.div`
@@ -206,58 +227,9 @@ const TopicIcon = styled.div`
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [openGroups, setOpenGroups] = useState({});
+  const [courseContentOpen, setCourseContentOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
-  
-  // Find the active day based on current location
-  const findActiveDay = () => {
-    for (const navGroup of navigation) {
-      if (location.pathname.startsWith(navGroup.path)) {
-        return navGroup.day;
-      }
-    }
-    return null;
-  };
-  
-  // Effect to handle initial page load only
-  useEffect(() => {
-    const activeDay = findActiveDay();
-    if (activeDay && Object.keys(openGroups).length === 0) {
-      // Only set on initial load when openGroups is empty
-      setOpenGroups({ [activeDay]: true });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-  // Function to get the title for each day
-  const getDayTitle = (day) => {
-    switch (day) {
-      case 'Day 1':
-        return 'HTML Fundamentals';
-      case 'Day 2':
-        return 'CSS Fundamentals';
-      case 'Day 3':
-        return 'Advanced CSS';
-      case 'Day 4':
-        return 'JS Fundamentals - Part 1';
-      case 'Day 5':
-        return 'JS Fundamentals - Part 2';
-      default:
-        return '';
-    }
-  };
-  
-  const toggleGroup = (day) => {
-    setOpenGroups(prev => {
-      // If this day is already open, close it and return empty object
-      if (prev[day]) {
-        return {};
-      }
-      
-      // Otherwise, close all others and only open this one
-      return { [day]: true };
-    });
-  };
   
   // Define the navigation structure with icons
   const navigation = [
@@ -314,58 +286,143 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     },
   ];
   
+  // Find the active day based on current location
+  const findActiveDay = () => {
+    for (const navGroup of navigation) {
+      if (location.pathname.startsWith(navGroup.path)) {
+        return navGroup.day;
+      }
+    }
+    return null;
+  };
+  
+  // Check if any course page is active
+  const isCourseActive = () => {
+    return navigation.some(navGroup => location.pathname.startsWith(navGroup.path));
+  };
+  
+  // Function to get the title for each day
+  const getDayTitle = (day) => {
+    switch (day) {
+      case 'Day 1':
+        return 'HTML Fundamentals';
+      case 'Day 2':
+        return 'CSS Fundamentals';
+      case 'Day 3':
+        return 'Advanced CSS';
+      case 'Day 4':
+        return 'JS Fundamentals - Part 1';
+      case 'Day 5':
+        return 'JS Fundamentals - Part 2';
+      default:
+        return '';
+    }
+  };
+  
+  const toggleGroup = (day) => {
+    setOpenGroups(prev => {
+      // If this day is already open, close it and return empty object
+      if (prev[day]) {
+        return {};
+      }
+      
+      // Otherwise, close all others and only open this one
+      return { [day]: true };
+    });
+  };
+  
+  const toggleCourseContent = () => {
+    setCourseContentOpen(!courseContentOpen);
+  };
+  
+  // Effect to handle initial page load only
+  useEffect(() => {
+    const activeDay = findActiveDay();
+    // If we're on a course page
+    if (isCourseActive()) {
+      // Open the course content section
+      setCourseContentOpen(true);
+      
+      // If there's an active day and no open groups yet
+      if (activeDay && Object.keys(openGroups).length === 0) {
+        // Open the active day's group
+        setOpenGroups({ [activeDay]: true });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   return (
     <>
       <Backdrop isOpen={isOpen} onClick={toggleSidebar} />
       <SidebarContainer isOpen={isOpen} className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
         <SidebarContent>
-        {navigation.map((navGroup) => {
-          const isDayActive = location.pathname.startsWith(navGroup.path);
-          // Group is only open if it's explicitly set to open in state
-          const isGroupOpen = !!openGroups[navGroup.day];
-          
-          return (
-            <NavGroup key={navGroup.day}>
-              <NavGroupHeader 
-                active={isDayActive}
-                onClick={() => toggleGroup(navGroup.day)}
-              >
-                <NavGroupTitle active={isDayActive}>
-                  <DayNumber>{navGroup.day}</DayNumber>
-                  <DayTitle>{getDayTitle(navGroup.day)}</DayTitle>
-                </NavGroupTitle>
-                {isGroupOpen ? <FaChevronDown /> : <FaChevronRight />}
-              </NavGroupHeader>
-              
-              <NavGroupContent isOpen={isGroupOpen}>
-                <NavItem 
-                  to={navGroup.path} 
-                  active={location.pathname === navGroup.path}
-                >
-                  <TopicIcon>
-                    <FaDesktop />
-                  </TopicIcon>
-                  Overview
-                </NavItem>
+          {/* Course Content Menu Item */}
+          <NavGroup>
+            <NavGroupHeader 
+              active={courseContentOpen || isCourseActive()}
+              onClick={toggleCourseContent}
+            >
+              <NavGroupTitle active={courseContentOpen || isCourseActive()}>
+                <TopicIcon><FaBook /></TopicIcon>
+                Course Content
+              </NavGroupTitle>
+              {courseContentOpen ? <FaChevronDown /> : <FaChevronRight />}
+            </NavGroupHeader>
+            
+            {/* Days nested under Course Content */}
+            <NavGroupContent isOpen={courseContentOpen} className="course-content">
+              {navigation.map((navGroup) => {
+                const isDayActive = location.pathname.startsWith(navGroup.path);
+                // Group is only open if it's explicitly set to open in state
+                const isGroupOpen = !!openGroups[navGroup.day];
                 
-                {navGroup.topics.map((topic) => (
-                  <NavItem 
-                    key={topic.path} 
-                    to={topic.path}
-                    active={location.pathname === topic.path}
-                  >
-                    <TopicIcon>
-                      {topic.icon}
-                    </TopicIcon>
-                    {topic.name}
-                  </NavItem>
-                ))}
-              </NavGroupContent>
-            </NavGroup>
-          );
-        })}
-      </SidebarContent>
-    </SidebarContainer>
+                return (
+                  <NavGroup key={navGroup.day} className="nested-nav-group">
+                    <NavGroupHeader 
+                      active={isDayActive}
+                      onClick={() => toggleGroup(navGroup.day)}
+                    >
+                      <NavGroupTitle active={isDayActive}>
+                        <DayNumber>{navGroup.day}</DayNumber>
+                        <DayTitle>{getDayTitle(navGroup.day)}</DayTitle>
+                      </NavGroupTitle>
+                      {isGroupOpen ? <FaChevronDown /> : <FaChevronRight />}
+                    </NavGroupHeader>
+                    
+                    <NavGroupContent isOpen={isGroupOpen}>
+                      <NavItem 
+                        to={navGroup.path} 
+                        active={location.pathname === navGroup.path}
+                      >
+                        <TopicIcon>
+                          <FaDesktop />
+                        </TopicIcon>
+                        Overview
+                      </NavItem>
+                      
+                      {navGroup.topics.map((topic) => (
+                        <NavItem 
+                          key={topic.path} 
+                          to={topic.path}
+                          active={location.pathname === topic.path}
+                        >
+                          <TopicIcon>
+                            {topic.icon}
+                          </TopicIcon>
+                          {topic.name}
+                        </NavItem>
+                      ))}
+                    </NavGroupContent>
+                  </NavGroup>
+                );
+              })}
+            </NavGroupContent>
+          </NavGroup>
+          
+          {/* Add other main navigation items here if needed */}
+        </SidebarContent>
+      </SidebarContainer>
     </>
   );
 };

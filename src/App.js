@@ -120,7 +120,7 @@ function App() {
           {/* 404 route */}
           <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />
         </Routes>
-            </Router>
+              </Router>
           </ToastProvider>
         </ThemeProvider>
       </CompletionProvider>
