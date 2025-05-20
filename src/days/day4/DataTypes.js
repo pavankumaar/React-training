@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day4EditorContent } from './day4_editor_content';
 
 
 const Title = styled.h1`
@@ -45,6 +47,11 @@ const DataTypes = () => {
           <li><strong>Symbol</strong>: Represents a unique identifier</li>
           <li><strong>BigInt</strong>: Represents integers with arbitrary precision</li>
         </ul>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.primitiveTypes.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -238,6 +245,11 @@ function greet(name) {
 
 console.log(greet('Bob')); // "Hello, Bob!"`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.referenceTypes.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       

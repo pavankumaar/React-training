@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day5EditorContent } from './day5_editor_content';
 
 
 const Title = styled.h1`
@@ -76,6 +78,11 @@ const firstFruit = fruits.shift(); // Removes from the beginning
 console.log(firstFruit); // "pear"
 console.log(fruits); // ["apple", "grape", "orange"]`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.arrayBasics.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -142,6 +149,11 @@ console.log(nums); // [100, 40, 25, 10, 5, 1]
 console.log(fruits2.join(", ")); // "apple, banana, grape, orange"
 console.log(fruits2.toString()); // "apple,banana,grape,orange"`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.arrayMethods.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="Array Destructuring">
@@ -226,6 +238,11 @@ console.log("email" in person); // true
 console.log("salary" in person); // false
 console.log(person.hasOwnProperty("age")); // true`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.objectBasics.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -275,6 +292,11 @@ console.log(person.fullName()); // "John Doe"
 person.changeName("Jane", "Smith");
 console.log(person.fullName()); // "Jane Smith"`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.objectMethods.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="Object Destructuring">
@@ -367,6 +389,11 @@ sealed.name = "Jane"; // Allowed
 // sealed.age = 30; // Error in strict mode, silently fails otherwise
 console.log(sealed.name); // "Jane"`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.arrayOfObjects.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       

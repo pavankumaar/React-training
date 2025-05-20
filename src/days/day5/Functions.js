@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day5EditorContent } from './day5_editor_content';
 
 const Section = styled.section`
   margin-bottom: 2rem;
@@ -65,6 +67,11 @@ const sum = add(5, 3); // sum = 8
 greetWithDefault(); // "Hello, Guest!"
 greetWithDefault("Alice"); // "Hello, Alice!"`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.functionDeclaration.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -94,6 +101,11 @@ console.log(factorial(5)); // 120
 // Function declarations are hoisted (can be used before they are defined)
 // Function expressions are not hoisted`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.functionExpression.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -131,6 +143,11 @@ console.log(add(5, 3)); // 8
 console.log(square(4)); // 16
 console.log(createPerson("Alice", 30)); // { name: "Alice", age: 30 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.arrowFunctions.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="When to Use Different Function Types">
@@ -213,6 +230,11 @@ printInfo("Alice", 30, "reading", "hiking", "coding");
 // Name: Alice, Age: 30
 // Hobbies: reading, hiking, coding`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.functionParameters.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -275,6 +297,11 @@ console.log(person.getName()); // "John"
 person.setAge(30);
 console.log(person.getAge()); // 30`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.closures.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -323,6 +350,69 @@ console.log(counter.increment()); // 2
 console.log(counter.decrement()); // 1
 console.log(counter.getCount()); // 1`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={`// Immediately Invoked Function Expressions (IIFE) Example
+
+// Basic IIFE
+(function() {
+    console.log("This function runs immediately!");
+})();
+
+// IIFE with parameters
+(function(name) {
+    console.log(\`Hello, \${name}!\`);
+})("John");
+
+// IIFE with arrow function
+(() => {
+    console.log("Arrow function IIFE");
+})();
+
+// IIFE with return value
+const result = (function() {
+    const a = 5;
+    const b = 10;
+    return a + b;
+})();
+
+console.log("Result:", result); // 15
+
+// IIFE to create private scope
+const counter = (function() {
+    // Private variable
+    let count = 0;
+    
+    // Return an object with methods
+    return {
+        increment: function() {
+            count++;
+            return count;
+        },
+        decrement: function() {
+            count--;
+            return count;
+        },
+        getCount: function() {
+            return count;
+        },
+        reset: function() {
+            count = 0;
+            return count;
+        }
+    };
+})();
+
+console.log("Counter increment:", counter.increment()); // 1
+console.log("Counter increment:", counter.increment()); // 2
+console.log("Counter decrement:", counter.decrement()); // 1
+console.log("Current count:", counter.getCount()); // 1
+console.log("Reset count:", counter.reset()); // 0
+
+// Try modifying these IIFEs or create your own below
+`}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       

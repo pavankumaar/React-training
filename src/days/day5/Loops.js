@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day5EditorContent } from './day5_editor_content';
 
 
 const Title = styled.h1`
@@ -86,6 +88,11 @@ for (let i = 0; i < 3; i++) {
   }
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.forLoop.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -126,6 +133,11 @@ while (k < 10) {
   console.log(k); // Outputs: 1, 3, 5, 7, 9
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.whileLoop.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -156,6 +168,11 @@ do {
 } while (parseInt(userInput) <= 10);
 console.log("Thank you for entering a valid number!");`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.doWhileLoop.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="Choosing the Right Loop">
@@ -240,6 +257,11 @@ for (const [user, role] of userRoles) {
   console.log(\`\${user} is a \${role}\`);
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.forOfLoop.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -286,6 +308,11 @@ for (const key in arr) {
   console.log(key); // Outputs: "0", "1", "2", "customProp"
 }`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.forInLoop.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -328,6 +355,11 @@ console.log(hasEven); // true
 const allEven = numbers.every(number => number % 2 === 0);
 console.log(allEven); // false`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day5EditorContent.arrayIterationMethods.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="Practical Examples with Array Methods">

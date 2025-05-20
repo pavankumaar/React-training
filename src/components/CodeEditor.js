@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { javascript } from '@codemirror/lang-javascript';
 import { useTheme } from '../context/ThemeContext';
+import ConsoleOutput from './ConsoleOutput';
 
 const EditorContainer = styled.div`
   position: fixed;
@@ -65,7 +66,7 @@ const EditorBody = styled.div`
 `;
 
 const EditorPane = styled.div`
-  flex: 1;
+  flex: ${props => props.jsOnly ? '1 0 50%' : '1'};
   overflow: auto;
   border-bottom: 1px solid var(--border-color);
   min-height: 200px;
@@ -80,17 +81,27 @@ const EditorPane = styled.div`
 `;
 
 const PreviewPane = styled.div`
-  flex: 1;
-  overflow: auto;
+  flex: ${props => props.jsOnly ? '1 0 50%' : '1'};
+  overflow: hidden;
   padding: 10px;
   position: relative;
-  min-height: 300px;
+  min-height: ${props => props.jsOnly ? 'auto' : '300px'};
   background-color: var(--background-color);
   transition: background-color var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
   
   @media (min-width: 768px) {
     min-height: auto;
   }
+`;
+
+const IframeContainer = styled.div`
+  flex: ${props => props.hasConsole ? '1 0 60%' : '1'};
+  position: relative;
+  overflow: auto;
+  min-height: ${props => props.hasConsole ? '60%' : '100%'};
+  transition: flex 0.3s ease;
 `;
 
 const LoadingMessage = styled.div`
@@ -142,6 +153,8 @@ const CodeEditor = ({
   onClose 
 }) => {
   const { theme } = useTheme();
+  const iframeRef = useRef(null);
+  
   // Set the initial active tab to the first enabled tab
   const getInitialActiveTab = () => {
     if (enabledTabs.html) return 'html';
@@ -155,6 +168,7 @@ const CodeEditor = ({
   const [cssCode, setCssCode] = useState(initialCss);
   const [jsCode, setJsCode] = useState(initialJs);
   const [isLoading, setIsLoading] = useState(true);
+  const [consoleMessages, setConsoleMessages] = useState([]);
   
   // Run the code when the editor is first opened or when code changes
   useEffect(() => {
@@ -185,21 +199,159 @@ const CodeEditor = ({
       }
     );
     
+    // Wrap the JavaScript code with console capturing logic
+    const wrappedJsCode = `
+      // Capture console output
+      (function() {
+        // Store original console methods
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const originalInfo = console.info;
+        
+        // Message queue to avoid circular references
+        const messageQueue = [];
+        
+        // Helper function to safely stringify values
+        function safeStringify(obj) {
+          if (obj === null) return 'null';
+          if (obj === undefined) return 'undefined';
+          if (typeof obj === 'function') return obj.toString();
+          if (typeof obj !== 'object') return String(obj);
+          
+          try {
+            // Handle circular references
+            return JSON.stringify(obj, (key, value) => {
+              if (typeof value === 'object' && value !== null) {
+                if (messageQueue.includes(value)) return '[Circular Reference]';
+                messageQueue.push(value);
+              }
+              return value;
+            });
+          } catch (e) {
+            return '[Object]';
+          } finally {
+            // Clear the queue
+            messageQueue.length = 0;
+          }
+        }
+        
+        // Helper function to format arguments
+        function formatArgs(args) {
+          return Array.from(args).map(arg => {
+            if (typeof arg === 'object' && arg !== null) {
+              return safeStringify(arg);
+            }
+            return String(arg);
+          }).join(' ');
+        }
+        
+        // Override console methods
+        console.log = function() {
+          const content = formatArgs(arguments);
+          originalLog.apply(console, arguments);
+          window.parent.postMessage({ 
+            type: 'console', 
+            message: { type: 'log', content } 
+          }, '*');
+        };
+        
+        console.error = function() {
+          const content = formatArgs(arguments);
+          originalError.apply(console, arguments);
+          window.parent.postMessage({ 
+            type: 'console', 
+            message: { type: 'error', content } 
+          }, '*');
+        };
+        
+        console.warn = function() {
+          const content = formatArgs(arguments);
+          originalWarn.apply(console, arguments);
+          window.parent.postMessage({ 
+            type: 'console', 
+            message: { type: 'warn', content } 
+          }, '*');
+        };
+        
+        console.info = function() {
+          const content = formatArgs(arguments);
+          originalInfo.apply(console, arguments);
+          window.parent.postMessage({ 
+            type: 'console', 
+            message: { type: 'info', content } 
+          }, '*');
+        };
+        
+        // Capture errors
+        window.addEventListener('error', function(event) {
+          window.parent.postMessage({ 
+            type: 'console', 
+            message: { 
+              type: 'error', 
+              content: \`\${event.message} at line \${event.lineno}:\${event.colno}\` 
+            } 
+          }, '*');
+          return false;
+        });
+      })();
+      
+      // User code
+      ${jsCode}
+    `;
+    
+    // For JavaScript-only examples with no HTML, create a minimal HTML structure
+    const isJsOnly = enabledTabs.js && !enabledTabs.html;
+    const htmlContent = isJsOnly ? '<div id="js-only-console">JavaScript Console Output</div>' : processedHtml;
+    
     return `
       <html>
         <head>
-          <style>${cssCode}</style>
+          <style>
+            ${cssCode}
+            ${isJsOnly ? `
+              body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                padding: 20px;
+                color: #333;
+                background-color: #f5f5f5;
+              }
+              #js-only-console {
+                text-align: center;
+                padding: 20px;
+                font-size: 16px;
+                color: #666;
+                border: 1px dashed #ccc;
+                border-radius: 4px;
+              }
+            ` : ''}
+          </style>
           <base href="${window.location.origin}/" />
         </head>
         <body>
-          ${processedHtml}
-          <script>${jsCode}</script>
+          ${htmlContent}
+          <script>${wrappedJsCode}</script>
         </body>
       </html>
     `;
   };
   
+  // Listen for messages from the iframe
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data && event.data.type === 'console' && event.data.message) {
+        setConsoleMessages(prevMessages => [...prevMessages, event.data.message]);
+      }
+    };
+    
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+  
   const handleRun = () => {
+    // Clear previous console messages
+    setConsoleMessages([]);
+    
     // Instead of trying to access the iframe's document directly,
     // we'll recreate the iframe with a data URI containing our content
     setIsLoading(true);
@@ -220,6 +372,11 @@ const CodeEditor = ({
         setTimeout(() => URL.revokeObjectURL(url), 100);
       };
     }
+  };
+  
+  // Function to clear console messages
+  const clearConsole = () => {
+    setConsoleMessages([]);
   };
   
   return (
@@ -255,7 +412,7 @@ const CodeEditor = ({
           </EditorTabs>
         </EditorHeader>
         
-        <EditorBody>
+        <EditorBody jsOnly={enabledTabs.js && !enabledTabs.html}>
           {enabledTabs.html && (
             <EditorPane style={{ display: activeTab === 'html' ? 'block' : 'none' }}>
               <CodeMirror
@@ -281,7 +438,10 @@ const CodeEditor = ({
           )}
           
           {enabledTabs.js && (
-            <EditorPane style={{ display: activeTab === 'js' ? 'block' : 'none' }}>
+            <EditorPane 
+              style={{ display: activeTab === 'js' ? 'block' : 'none' }}
+              jsOnly={enabledTabs.js && !enabledTabs.html}
+            >
               <CodeMirror
                 value={jsCode}
                 height="100%"
@@ -292,17 +452,77 @@ const CodeEditor = ({
             </EditorPane>
           )}
           
-          <PreviewPane>
-            {isLoading && <LoadingMessage theme={theme}>Loading preview...</LoadingMessage>}
-            <iframe
-              id="preview-iframe"
-              title="Preview"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              sandbox="allow-scripts allow-same-origin"
-            />
-          </PreviewPane>
+          {/* For JavaScript-only mode, use the PreviewPane just for console output */}
+          {enabledTabs.js && !enabledTabs.html ? (
+            <PreviewPane jsOnly={true}>
+              {/* Hidden iframe for JavaScript execution */}
+              <div style={{ display: 'none' }}>
+                <iframe
+                  id="preview-iframe"
+                  ref={iframeRef}
+                  title="JavaScript Runner"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  sandbox="allow-scripts allow-same-origin allow-modals"
+                />
+              </div>
+              
+              {/* Console takes full height in JS-only mode */}
+              {consoleMessages.length > 0 ? (
+                <ConsoleOutput 
+                  messages={consoleMessages} 
+                  onClear={clearConsole}
+                  fullHeight={true}
+                />
+              ) : (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                  color: theme === 'dark' ? '#aaa' : '#666',
+                  fontStyle: 'italic',
+                  textAlign: 'center',
+                  padding: '20px',
+                  border: `1px dashed ${theme === 'dark' ? '#444' : '#ccc'}`,
+                  borderRadius: '4px',
+                  backgroundColor: theme === 'dark' ? '#2a2a2a' : '#f9f9f9',
+                  transition: 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease'
+                }}>
+                  <div>
+                    <p>JavaScript Console</p>
+                    <p style={{ fontSize: '0.9rem' }}>Run your code to see output here</p>
+                  </div>
+                </div>
+              )}
+            </PreviewPane>
+          ) : (
+            /* Regular mode with HTML preview */
+            <PreviewPane>
+              <IframeContainer hasConsole={enabledTabs.js && consoleMessages.length > 0}>
+                {isLoading && <LoadingMessage theme={theme}>Loading preview...</LoadingMessage>}
+                <iframe
+                  id="preview-iframe"
+                  ref={iframeRef}
+                  title="Preview"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  sandbox="allow-scripts allow-same-origin allow-modals"
+                />
+              </IframeContainer>
+              
+              {enabledTabs.js && consoleMessages.length > 0 && (
+                <ConsoleOutput 
+                  messages={consoleMessages} 
+                  onClear={clearConsole}
+                  fullHeight={false}
+                />
+              )}
+            </PreviewPane>
+          )}
+          
         </EditorBody>
         
         <ButtonsContainer>

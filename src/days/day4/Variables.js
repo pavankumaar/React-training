@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day4EditorContent } from './day4_editor_content';
 
 const Section = styled.section`
   margin-bottom: 2rem;
@@ -69,6 +71,11 @@ console.log(score); // 100`}
 
 // console.log(blockScoped); // Error: blockScoped is not defined`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.letVariables.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -106,6 +113,53 @@ console.log(person); // { name: "John", age: 31 }
 // But this is not allowed
 // person = { name: "Jane", age: 25 }; // Error: Assignment to constant variable`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.constVariables.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
+      </Section>
+      
+      <Section>
+        <SectionTitle>The var Keyword (Legacy)</SectionTitle>
+        <p>
+          Before ES6, <code>var</code> was the only way to declare variables in JavaScript. While it's still supported, modern JavaScript favors <code>let</code> and <code>const</code>.
+        </p>
+        
+        <CodeBlock>
+{`// Declaring with var
+var message = "Hello";
+console.log(message); // "Hello"
+
+// var variables can be redeclared
+var message = "Hello again"; // No error
+console.log(message); // "Hello again"
+
+// var has function scope, not block scope
+{
+  var blockVar = "I'm visible outside the block";
+}
+console.log(blockVar); // "I'm visible outside the block"
+
+// var variables are hoisted
+console.log(hoisted); // undefined (not an error)
+var hoisted = "I'm hoisted";`}
+        </CodeBlock>
+        
+        <p>
+          The main differences between <code>var</code> and <code>let</code>/<code>const</code> are:
+        </p>
+        
+        <ul>
+          <li><code>var</code> has function scope, while <code>let</code>/<code>const</code> have block scope</li>
+          <li><code>var</code> variables can be redeclared, <code>let</code>/<code>const</code> cannot</li>
+          <li><code>var</code> variables are hoisted and initialized with <code>undefined</code>, <code>let</code>/<code>const</code> are hoisted but not initialized (Temporal Dead Zone)</li>
+        </ul>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.varVariables.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="When to use let vs const">
@@ -127,6 +181,45 @@ let count = 0;
 count += 1;`}
         </CodeBlock>
       </Example>
+      
+      <Section>
+        <SectionTitle>Variable Scope</SectionTitle>
+        <p>
+          Scope determines where variables are accessible in your code. JavaScript has several types of scope:
+        </p>
+        
+        <ul>
+          <li><strong>Global scope</strong>: Variables declared outside any function or block are globally accessible</li>
+          <li><strong>Function scope</strong>: Variables declared within a function are only accessible inside that function</li>
+          <li><strong>Block scope</strong>: Variables declared with <code>let</code> and <code>const</code> are only accessible within the block they are defined</li>
+        </ul>
+        
+        <CodeBlock>
+{`// Global scope
+const globalVar = "I'm a global variable";
+
+function exampleFunction() {
+  // Function scope
+  const functionVar = "I'm a function-scoped variable";
+  console.log(globalVar); // Can access global variables
+  
+  {
+    // Block scope
+    const blockVar = "I'm a block-scoped variable";
+    console.log(functionVar); // Can access function-scoped variables
+  }
+  
+  // console.log(blockVar); // Error: blockVar is not defined
+}
+
+// console.log(functionVar); // Error: functionVar is not defined`}
+        </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.variableScope.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
+      </Section>
       
       <Section>
         <SectionTitle>Variable Naming Rules</SectionTitle>

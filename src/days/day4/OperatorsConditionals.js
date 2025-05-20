@@ -4,6 +4,8 @@ import Layout from '../../components/Layout';
 import Navigation from '../../components/Navigation';
 import Example from '../../components/Example';
 import CodeBlock from '../../components/CodeBlock';
+import TryEditorButton from '../../components/TryEditorButton';
+import { day4EditorContent } from './day4_editor_content';
 
 
 const Title = styled.h1`
@@ -59,6 +61,11 @@ let b = a++; // b = 5, a = 6 (value is assigned before incrementing)
 let c = 5;
 let d = ++c; // d = 6, c = 6 (value is assigned after incrementing)`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.arithmeticOperators.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -83,6 +90,11 @@ x **= 3; // x = x ** 3 (x is now 8)
 let text = "Hello";
 text += " World"; // text = text + " World" (text is now "Hello World")`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.assignmentOperators.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -108,6 +120,11 @@ console.log(5 <= 4); // false (less than or equal to)
 
 // Best practice: Always use strict equality (=== and !==) to avoid unexpected type conversions`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.comparisonOperators.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Section>
@@ -143,6 +160,11 @@ let b = true || someFunction(); // someFunction() is not called
 const value = null ?? "default"; // "default"
 const count = 0 ?? 42; // 0 (0 is not null or undefined)`}
         </CodeBlock>
+        
+        <TryEditorButton
+          jsCode={day4EditorContent.logicalOperators.js}
+          enabledTabs={{ html: false, css: false, js: true }}
+        />
       </Section>
       
       <Example title="Logical Operators for Default Values">
