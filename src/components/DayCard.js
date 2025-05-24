@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { FaArrowRight, FaCheck } from 'react-icons/fa';
 
 const Card = styled.div`
   border-radius: var(--border-radius);
   overflow: hidden;
-  background-color: var(--card-background);
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
   box-shadow: var(--box-shadow);
   transition: transform var(--transition-speed) ease, 
               box-shadow var(--transition-speed) ease, 
@@ -21,7 +22,7 @@ const Card = styled.div`
 `;
 
 const CardHeader = styled.div`
-  background-color: var(--card-background);
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
   color: var(--text-color);
   padding: 1rem;
   font-size: 1.25rem;
@@ -182,6 +183,7 @@ const ProgressText = styled.div`
 
 const DayCard = ({ day, title, description, topics, link, completedTopics = [], stats = null }) => {
   const { isAdmin } = useAuth();
+  const { theme } = useTheme();
 
   // Calculate completion stats
   const totalTopics = topics.length;
@@ -205,8 +207,8 @@ const DayCard = ({ day, title, description, topics, link, completedTopics = [], 
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card theme={theme}>
+      <CardHeader theme={theme}>
         <HeaderTop>
           <span>Day {day}: {title}</span>
         </HeaderTop>

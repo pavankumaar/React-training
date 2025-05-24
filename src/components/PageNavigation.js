@@ -22,7 +22,7 @@ const NavButton = styled(Link)`
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 12px;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;

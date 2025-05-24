@@ -14,18 +14,22 @@ import { FaBars, FaEllipsisV, FaHome, FaCode, FaSignOutAlt, FaSearch } from 'rea
 const FixedHeader = styled.header`
   position: fixed;
   top: 7px;
-  left: 7px;
+  left: ${props => props.sidebarOpen && window.innerWidth >= 992 ? '287px' : '7px'};
   right: 7px;
   border-radius: var(--border-radius, 8px) var(--border-radius, 8px) 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 0.75rem 0 0.75rem;
-  background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%);
-  color: white;
+  background-color: var(--card-background, #ffffff);
+  color: var(--text-color);
   z-index: 1000;
   height: 64px;
   transition: all var(--transition-speed) ease;
+  
+  @media (max-width: 992px) {
+    left: 7px;
+  }
   
   @media (max-width: 768px) {
     padding: 0 1.5rem 0 0.5rem;
@@ -51,6 +55,16 @@ const HeaderContent = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
+  z-index: 2; /* Ensure logo is above the centered search */
+  
+  /* Hide on desktop when sidebar is open */
+  @media (min-width: 992px) {
+    display: ${props => props.sidebarOpen ? 'none' : 'flex'};
+  }
+  
+  @media (max-width: 992px) {
+    display: flex; /* Always show on mobile/tablet */
+  }
 `;
 
 const LogoIcon = styled.div`
@@ -62,7 +76,7 @@ const LogoIcon = styled.div`
   svg {
     width: 28px;
     height: 28px;
-    fill: white;
+    fill: var(--text-color);
     
     @media (max-width: 576px) {
       width: 24px;
@@ -72,7 +86,7 @@ const LogoIcon = styled.div`
 `;
 
 const Logo = styled(Link)`
-  color: white;
+  color: var(--text-color);
   font-size: 1.25rem;
   font-weight: bold;
   text-decoration: none;
@@ -81,7 +95,7 @@ const Logo = styled(Link)`
   align-items: center;
   
   &:hover {
-    color: white;
+    color: var(--text-color);
     opacity: 0.9;
   }
   
@@ -94,10 +108,12 @@ const HeaderControls = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  z-index: 2; /* Ensure controls are above the centered search */
+  margin-left: auto; /* Push to the right */
 `;
 
 const NavButton = styled(Link)`
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color, #4a90e2);
   color: white;
   border: none;
   border-radius: 20px;
@@ -116,7 +132,7 @@ const NavButton = styled(Link)`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--primary-darker, #3a7bc2);
     transform: translateY(-2px);
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -148,7 +164,7 @@ const NavButton = styled(Link)`
 `;
 
 const SidebarToggleButton = styled.button`
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color, #4a90e2);
   color: white;
   border: none;
   border-radius: 50%;
@@ -163,8 +179,9 @@ const SidebarToggleButton = styled.button`
   padding: 0.5rem 0.25rem;
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--primary-darker, #3a7bc2);
     transform: translateY(-2px);
+    color: white;
   }
   
   &:active {
@@ -176,10 +193,16 @@ const SidebarToggleButton = styled.button`
     height: 18px;
   }
   
+  /* Hide on desktop when sidebar is open */
+  @media (min-width: 992px) {
+    display: ${props => props.sidebarOpen ? 'none' : 'flex'};
+  }
+  
   @media (max-width: 768px) {
     width: 36px;
     height: 36px;
     margin-right: 0.5rem;
+    display: flex; /* Always show on mobile */
     
     svg {
       width: 16px;
@@ -193,7 +216,7 @@ const SidebarToggleButton = styled.button`
 `;
 
 const LogoutButton = styled.button`
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color, #4a90e2);
   color: white;
   border: none;
   border-radius: 50%;
@@ -208,8 +231,9 @@ const LogoutButton = styled.button`
   padding-left: 3px;
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--primary-darker, #3a7bc2);
     transform: translateY(-2px);
+    color: white;
   }
   
   &:active {
@@ -228,7 +252,7 @@ const LogoutButton = styled.button`
 
 const MenuButton = styled.button`
   display: flex;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--primary-color, #4a90e2);
   color: white;
   border: none;
   border-radius: 50%;
@@ -242,8 +266,9 @@ const MenuButton = styled.button`
   margin-left: 5px;
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--primary-darker, #3a7bc2);
     transform: translateY(-2px);
+    color: white;
   }
   
   &:active {
@@ -271,7 +296,7 @@ const MenuDropdown = styled.div`
   position: absolute;
   top: 60px;
   right: 0;
-  background: var(--primary-darker);
+  background: var(--card-background);
   border-radius: 12px; /* Increased border radius */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1001;
@@ -299,7 +324,7 @@ const baseMenuItemStyles = `
   display: flex;
   align-items: center;
   padding: 12px 16px; /* Consistent padding for all menu items */
-  color: white;
+  color: var(--text-color);
   transition: background-color 0.2s ease;
   font-size: 0.9rem; /* Consistent font size */
   font-weight: normal;
@@ -309,7 +334,7 @@ const baseMenuItemStyles = `
   box-shadow: none; /* Remove any box shadow */
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--primary-color, #4a90e2);
     color: white;
   }
   
@@ -317,7 +342,7 @@ const baseMenuItemStyles = `
     margin-right: 10px;
     width: 16px;
     height: 16px;
-    fill: white;
+    fill: currentColor;
   }
   
   @media (max-width: 576px) {
@@ -366,19 +391,17 @@ const ThemeMenuItem = styled.button`
 const Main = styled.main`
   min-height: calc(100vh - 140px);
   padding: 0;
-  margin-left: ${props => props.sidebarOpen ? '280px' : '0'};
-  transition: margin-left var(--transition-speed) ease, padding var(--transition-speed) ease;
-  width: ${props => props.sidebarOpen ? 'auto' : 'auto'};
+  margin-left: 0;
+  transition: all var(--transition-speed) ease;
+  width: auto;
   overflow-y: auto;
   position: fixed;
   top: 71px; /* 15px (header top) + 64px (header height) */
-  left: 7px;
-  right: 7px;
-  bottom: 7px;
-  border-radius: 0 0 var(--border-radius, 8px) var(--border-radius, 8px);
-  border-bottom-left-radius: ${props => props.sidebarOpen ? '0' : 'var(--border-radius, 8px)'};
+  left: ${props => props.sidebarOpen && window.innerWidth >= 992 ? '287px' : '0px'};
+  right: 0px;
+  bottom: 0px;
+  border-bottom-left-radius: ${props => props.sidebarOpen && window.innerWidth < 992 ? '0' : 'var(--border-radius, 8px)'};
   background-color: var(--card-background, #ffffff);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   
   /* Custom scrollbar for main content - matching sidebar style */
   &::-webkit-scrollbar {
@@ -401,9 +424,8 @@ const Main = styled.main`
   }
   
   @media (max-width: 992px) {
-    width: auto;
-    margin-left: 0;
-    padding-left: ${props => props.sidebarOpen ? '1rem' : '0'};
+    left: 0px;
+    padding-left: 0;
   }
   
   @media (max-width: 768px) {
@@ -415,8 +437,9 @@ const Layout = ({ children }) => {
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 992);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchContainerKey, setSearchContainerKey] = useState(0);
   const mobileMenuRef = useRef(null);
   
   const handleLogout = () => {
@@ -426,6 +449,8 @@ const Layout = ({ children }) => {
   
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+    // Force re-render of search container to update positioning
+    setSearchContainerKey(prevKey => prevKey + 1);
   };
   
   const toggleMobileMenu = () => {
@@ -446,29 +471,37 @@ const Layout = ({ children }) => {
     };
   }, []);
   
-  // Close mobile menu when clicking outside
+  // Handle window resize to adjust sidebar state
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        setMobileMenuOpen(false);
-      }
+    const handleResize = () => {
+      // Open sidebar on desktop, close on mobile
+      setSidebarOpen(window.innerWidth >= 992);
+      
+      // Force re-render to update search container positioning
+      setSearchContainerKey(prevKey => prevKey + 1);
     };
     
-    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', handleResize);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
   
   return (
     <>
       <GlobalStyles />
-      <FixedHeader>
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <FixedHeader sidebarOpen={sidebarOpen}>
         <HeaderContent>
-          <SidebarToggleButton onClick={toggleSidebar} aria-label="Toggle Sidebar" title="Toggle Sidebar">
+          <SidebarToggleButton 
+            onClick={toggleSidebar} 
+            aria-label="Toggle Sidebar" 
+            title="Toggle Sidebar"
+            sidebarOpen={sidebarOpen}
+          >
             <FaBars />
           </SidebarToggleButton>
-          <LogoContainer>
+          <LogoContainer sidebarOpen={sidebarOpen}>
             <Logo to="/">
               <LogoIcon>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -479,11 +512,23 @@ const Layout = ({ children }) => {
             </Logo>
           </LogoContainer>
           
-          {/* Spacer to push items to the right */}
-          <div style={{ flexGrow: 1 }}></div>
-          
-          {/* Expandable Search with Suggestions */}
-          <ExpandableSearch />
+          {/* Center section for search - only centered on larger screens when sidebar is open */}
+          <div 
+            key={searchContainerKey}
+            style={{ 
+              display: 'flex', 
+              justifyContent: sidebarOpen && window.innerWidth >= 992 ? 'center' : 'flex-end', 
+              alignItems: 'center',
+              flexGrow: 1,
+              position: sidebarOpen && window.innerWidth >= 992 ? 'absolute' : 'relative',
+              left: sidebarOpen && window.innerWidth >= 992 ? '0' : 'auto',
+              right: sidebarOpen && window.innerWidth >= 992 ? '0' : 'auto',
+              pointerEvents: 'auto'
+            }}
+          >
+            {/* Expandable Search with Suggestions */}
+            <ExpandableSearch sidebarOpen={sidebarOpen} theme={theme} />
+          </div>
           
           <HeaderControls>
             {/* Menu Button - Visible on all resolutions */}
@@ -498,18 +543,7 @@ const Layout = ({ children }) => {
             {/* Menu Dropdown */}
             <div ref={mobileMenuRef}>
               <MenuDropdown isOpen={mobileMenuOpen}>
-                <MenuItem to="/" onClick={() => setMobileMenuOpen(false)}>
-                  <FaHome />
-                  Home
-                </MenuItem>
-                <MenuItem to="/code-editor" onClick={() => setMobileMenuOpen(false)}>
-                  <FaCode />
-                  Code Editor
-                </MenuItem>
-                <MenuItem to="/search" onClick={() => setMobileMenuOpen(false)}>
-                  <FaSearch />
-                  Advanced Search
-                </MenuItem>
+                {/* Code Editor and Advanced Search links moved to sidebar */}
                 <ThemeMenuItem onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}>
                   {/* Using SVG with explicit white fill color */}
                   {theme === 'light' ? (
@@ -532,7 +566,6 @@ const Layout = ({ children }) => {
           </HeaderControls>
         </HeaderContent>
       </FixedHeader>
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <Main sidebarOpen={sidebarOpen} className="custom-scrollbar">
         <div className="container custom-scrollbar content-container" style={{
           overflow: 'auto',

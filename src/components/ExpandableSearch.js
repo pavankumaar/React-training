@@ -8,24 +8,28 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
   border-radius: 20px;
   height: 40px;
-  margin-right: 0.75rem;
+  margin: ${props => window.innerWidth >= 992 && props.sidebarOpen ? '0 auto' : '0 0.75rem 0 0'};
   overflow: visible;
   transition: all 0.3s ease;
-  width: ${props => props.isExpanded ? '350px' : '40px'};
+  width: ${props => props.isExpanded ? '400px' : '40px'};
   position: relative;
   flex-grow: 0;
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: ${props => props.theme === 'dark' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
+  }
+  
+  @media (max-width: 992px) {
+    width: ${props => props.isExpanded ? '300px' : '40px'};
   }
   
   @media (max-width: 768px) {
     height: 36px;
-    margin-right: 0.5rem;
-    width: ${props => props.isExpanded ? '200px' : '36px'};
+    margin: ${props => props.isExpanded ? '0 auto' : '0 0.5rem'};
+    width: ${props => props.isExpanded ? '250px' : '36px'};
   }
   
   @media (max-width: 576px) {
@@ -40,15 +44,15 @@ const SearchContainer = styled.div`
     padding: ${props => props.isExpanded ? '0 10px' : '0'};
     z-index: 1010;
     background: ${props => props.isExpanded 
-      ? 'linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-color) 100%)' 
-      : 'rgba(255, 255, 255, 0.1)'};
+      ? (props.theme === 'dark' ? 'black' : 'white')
+      : (props.theme === 'dark' ? 'black' : 'white')};
     box-shadow: ${props => props.isExpanded ? '0 4px 15px rgba(0, 0, 0, 0.15)' : 'none'};
   }
 `;
 
 const SearchButton = styled.button`
   background: transparent;
-  color: white;
+  color: ${props => props.theme === 'dark' ? 'white' : 'black'};
   border: none;
   width: 40px;
   height: 40px;
@@ -98,7 +102,7 @@ const SearchInputWrapper = styled.div`
 const SearchInput = styled.input`
   background: transparent;
   border: none;
-  color: white;
+  color: ${props => props.theme === 'dark' ? 'white' : 'black'};
   width: 100%;
   height: 100%;
   outline: none;
@@ -106,7 +110,7 @@ const SearchInput = styled.input`
   font-size: 14px;
   
   &::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    color: ${props => props.theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)'};
   }
   
   @media (max-width: 576px) {
@@ -256,20 +260,31 @@ const HighlightedText = ({ text, highlight }) => {
   );
 };
 
-const ExpandableSearch = () => {
+const ExpandableSearch = ({ sidebarOpen, theme = 'light' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(window.innerWidth >= 768); // Default expanded on larger screens
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+  const isLargeScreen = window.innerWidth >= 992;
   const searchRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
   
-  // Update isMobile state when window is resized
+  // Update states when window is resized
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 576);
+      const windowWidth = window.innerWidth;
+      const newIsLargeScreen = windowWidth >= 992;
+      setIsMobile(windowWidth <= 576);
+      
+      // Keep expanded on larger screens, collapse on smaller screens
+      if (windowWidth >= 768) {
+        setIsExpanded(true);
+      } else if (!newIsLargeScreen) {
+        // Only collapse on smaller screens
+        setIsExpanded(false);
+      }
     };
     
     window.addEventListener('resize', handleResize);
@@ -282,11 +297,15 @@ const ExpandableSearch = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
+        // Always close results when clicking outside
         setShowResults(false);
-        // Collapse the search box when clicking outside
-        setIsExpanded(false);
-        // Clear search term when collapsing
-        setSearchTerm('');
+        
+        // Only collapse the search box on smaller screens
+        if (window.innerWidth < 768) {
+          setIsExpanded(false);
+          // Clear search term when collapsing
+          setSearchTerm('');
+        }
       }
     };
     
@@ -396,13 +415,14 @@ const ExpandableSearch = () => {
           onClick={toggleSearch}
         />
       )}
-      <SearchContainer ref={searchRef} isExpanded={isExpanded}>
+      <SearchContainer ref={searchRef} isExpanded={isExpanded} sidebarOpen={sidebarOpen} theme={theme}>
         {isExpanded && isMobile ? (
           <SearchButton 
             onClick={toggleSearch} 
             aria-label="Back" 
             title="Back"
             isBack={true}
+            theme={theme}
           >
             <FaTimes />
           </SearchButton>
@@ -411,6 +431,7 @@ const ExpandableSearch = () => {
             onClick={toggleSearch} 
             aria-label="Search" 
             title="Search"
+            theme={theme}
           >
             <FaSearch />
           </SearchButton>
@@ -419,6 +440,7 @@ const ExpandableSearch = () => {
       <SearchInputWrapper isVisible={isExpanded}>
         <form onSubmit={handleSubmit}>
           <SearchInput
+            theme={theme}
             ref={inputRef}
             type="text"
             placeholder="Search topics, keywords..."

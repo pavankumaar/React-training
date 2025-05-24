@@ -6,12 +6,76 @@ import DayCard from '../components/DayCard';
 import { useAuth } from '../context/AuthContext';
 import { useCompletion } from '../context/CompletionContext';
 import { getFromCache, saveToCache } from '../utils/apiCache';
+import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaLaptopCode, FaGraduationCap } from 'react-icons/fa';
 
 const Subtitle = styled.p`
   text-align: center;
   font-size: 1.2rem;
   color: var(--dark-gray);
   margin-bottom: 1.5rem;
+`;
+
+const IntroductionContainer = styled.div`
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+`;
+
+const IntroTitle = styled.h2`
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  
+  svg {
+    font-size: 1.8rem;
+    color: var(--text-color);
+  }
+`;
+
+const IntroText = styled.p`
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+`;
+
+const IconWrapper = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  vertical-align: middle;
+`;
+
+const HighlightList = styled.ul`
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+`;
+
+const HighlightItem = styled.li`
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  
+  strong {
+    color: var(--primary-color);
+  }
+  
+  svg {
+    margin-top: 0.2rem;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+  }
 `;
 
 // RefreshButton removed as requested
@@ -248,8 +312,54 @@ const HomePage = () => {
   }, [statsUpdated]);
   
   return (
-    <Layout>
-      <Subtitle>A comprehensive journey from HTML basics to React mastery</Subtitle>
+    <Layout>      
+      <IntroductionContainer>
+        <IntroTitle><FaGraduationCap /> Your Web Development Journey</IntroTitle>
+        <IntroText>
+          <IconWrapper><FaLaptopCode /></IconWrapper>
+          In this comprehensive course, you will be learning the essential technologies that power modern web development, 
+          starting with the fundamentals and progressing to advanced React concepts.
+        </IntroText>
+        <IntroText>
+          You will be building a strong foundation in web development by mastering HTML, CSS, JavaScript, and React. 
+          Each day introduces new concepts that build upon previous knowledge, creating a seamless learning path.
+        </IntroText>
+        <HighlightList>
+          <HighlightItem>
+            <FaHtml5 />
+            <div>
+              <strong>HTML</strong> - Starting with the building blocks of the web, you'll learn how to structure content 
+              with semantic elements, forms, tables, and more.
+            </div>
+          </HighlightItem>
+          <HighlightItem>
+            <FaCss3Alt />
+            <div>
+              <strong>CSS</strong> - Moving to styling, you'll master selectors, the box model, and advanced layout techniques 
+              like Flexbox and Grid to create responsive, beautiful designs.
+            </div>
+          </HighlightItem>
+          <HighlightItem>
+            <FaJs />
+            <div>
+              <strong>JavaScript</strong> - The programming language of the web will enable you to add interactivity, 
+              with topics covering variables, functions, arrays, objects, and modern ES6+ features.
+            </div>
+          </HighlightItem>
+          <HighlightItem>
+            <FaReact />
+            <div>
+              <strong>React</strong> - Finally, you'll learn how these technologies come together in React, 
+              building reusable components and creating dynamic user interfaces with this powerful library.
+            </div>
+          </HighlightItem>
+        </HighlightList>
+        <IntroText>
+          <IconWrapper><FaGraduationCap /></IconWrapper>
+          By the end of this course, you'll have the skills to create modern, interactive web applications 
+          and a solid understanding of front-end development principles.
+        </IntroText>
+      </IntroductionContainer>
       
       {error && (
         <div style={{ 
@@ -285,13 +395,6 @@ const HomePage = () => {
             color: 'var(--text-secondary)',
             transition: 'color var(--transition-speed) ease'
           }}>
-            <div style={{ 
-              fontSize: '1.2rem', 
-              color: 'var(--primary-color)',
-              transition: 'color var(--transition-speed) ease'
-            }}>
-              Loading course content...
-            </div>
           </div>
           <DaysContainer>
             <ShimmerCard />

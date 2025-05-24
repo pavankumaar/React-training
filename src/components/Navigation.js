@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
 
 const NavContainer = styled.div`
   display: flex;
@@ -33,15 +34,15 @@ const NavLink = styled(Link)`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
+  background-color: ${props => props.theme === 'dark' ? '#000000' : '#FFFFFF'};
+  color: ${props => props.theme === 'dark' ? '#FFFFFF' : '#000000'};
+  border: 2px solid var(--border-color);
   border-radius: 50%;
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease;
   
   &:hover {
-    background-color: var(--light-gray);
-    color: var(--text-color);
+    background-color: ${props => props.theme === 'dark' ? '#333333' : '#F0F0F0'};
+    color: ${props => props.theme === 'dark' ? '#FFFFFF' : '#000000'};
     border-color: var(--primary-color);
   }
   
@@ -113,10 +114,11 @@ const Navigation = ({ indexLink, title, subtitle }) => {
   // Determine the appropriate back link
   // If indexLink is provided, use it, otherwise go to the main page
   const backLink = indexLink || '/';
+  const { theme } = useTheme();
   
   return (
     <NavContainer className="navigation">
-      <NavLink to={backLink} aria-label="Go back">
+      <NavLink to={backLink} aria-label="Go back" theme={theme}>
         <FaArrowLeft />
       </NavLink>
       

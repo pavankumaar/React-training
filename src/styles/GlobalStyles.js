@@ -49,7 +49,7 @@ const GlobalStyles = createGlobalStyle`
     --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     --code-background: #f0f2f5;
     --code-text: #333333;
-    --example-background: #f8f9fa;
+    --example-background: #ffffff;
     --header-text: #ffffff;
     --button-text: #ffffff;
     --hover-bg: #f5f5f5;
@@ -76,7 +76,7 @@ const GlobalStyles = createGlobalStyle`
     /* Dark theme specific */
     --background-color: #1a1a1a;
     --background: #1a1a1a;
-    --card-background: #2d2d35;
+    --card-background: #0f0f0f;
     --card-background-lighter: #3a3a45;
     --card-background-darker: #242428;
     --image-background: #3a3a45;
@@ -97,7 +97,7 @@ const GlobalStyles = createGlobalStyle`
     --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     --code-background: #2d2d2d;
     --code-text: #e0e0e0;
-    --example-background: #2d2d35;
+    --example-background: #000000;
     --header-text: #ffffff;
     --button-text: #ffffff;
     --hover-bg: #333333;
@@ -118,7 +118,7 @@ const GlobalStyles = createGlobalStyle`
     font-family: var(--font-family);
     line-height: 1.6;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background-color: var(--card-background);
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

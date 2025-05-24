@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCompletion } from '../context/CompletionContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { getRandomWebDevImage } from '../utils/imageUtils';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -10,7 +11,7 @@ const Card = styled.div`
   border-radius: 20px;
   padding: 0;
   margin-bottom: 1.5rem;
-  background-color: var(--card-background);
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
   box-shadow: var(--box-shadow);
   transition: transform var(--transition-speed) ease, 
               box-shadow var(--transition-speed) ease, 
@@ -34,7 +35,7 @@ const TopicImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--image-background);
+  background-color: ${props => props.theme === 'dark' ? 'black' : 'white'};
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -85,11 +86,11 @@ const StatusIcon = styled.span`
   justify-content: center;
   width: 20px;
   height: 20px;
-  color: white;
   border-radius: 50%;
   margin-right: 10px;
   padding-top: 2px;
-  background-color: ${props => props.completed ? 'var(--success-color)' : 'var(--medium-gray)'};
+  background-color: ${props => props.completed ? 'rgba(46, 204, 113, 0.15)' : 'rgba(52, 152, 219, 0.15)'};
+  color: ${props => props.completed ? 'var(--success-color)' : 'var(--primary-color, #3498db)'};
 `;
 
 const TopicTitle = styled.h3`
@@ -112,8 +113,8 @@ const ViewButton = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: rgba(52, 152, 219, 0.15);
+  color: var(--primary-color, #3498db);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -123,8 +124,8 @@ const ViewButton = styled(Link)`
               box-shadow var(--transition-speed) ease;
   
   &:hover {
-    background-color: #2980b9;
-    color: white;
+    background-color: rgba(52, 152, 219, 0.25);
+    color: var(--primary-color, #3498db);
     transform: translateX(3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
@@ -137,8 +138,8 @@ const ViewButton = styled(Link)`
 
 const CompleteButton = styled.button`
   display: inline-block;
-  background-color: ${props => props.completed ? 'var(--success-color)' : 'var(--primary-color)'};
-  color: white;
+  background-color: ${props => props.completed ? 'rgba(46, 204, 113, 0.15)' : 'rgba(52, 152, 219, 0.15)'};
+  color: ${props => props.completed ? 'var(--success-color)' : 'var(--primary-color, #3498db)'};
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 20px;
@@ -149,9 +150,10 @@ const CompleteButton = styled.button`
               transform var(--transition-speed) ease;
   
   &:hover {
-    background-color: ${props => props.completed ? '#27ae60' : '#2980b9'};
+    background-color: ${props => props.completed ? 'rgba(46, 204, 113, 0.25)' : 'rgba(52, 152, 219, 0.25)'};
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
+    color: ${props => props.completed ? 'var(--success-color)' : 'var(--primary-color, #3498db)'};
   }
   
   &:active {
@@ -163,6 +165,7 @@ const CompleteButton = styled.button`
 const TopicCard = ({ title, description, link, completed: propCompleted = false }) => {
   const { isTopicCompleted, markAsCompleted, markAsNotCompleted, loading } = useCompletion();
   const { isAdmin } = useAuth();
+  const { theme } = useTheme();
   const [isUpdating, setIsUpdating] = useState(false);
   const [imageSize, setImageSize] = useState(0);
   const cardRef = React.useRef(null);
@@ -215,9 +218,10 @@ const TopicCard = ({ title, description, link, completed: propCompleted = false 
   const imageSrc = getRandomWebDevImage(link);
 
   return (
-    <Card ref={cardRef}>
+    <Card ref={cardRef} theme={theme}>
       <TopicImage 
         ref={imageContainerRef} 
+        theme={theme}
         style={{ width: imageSize > 0 ? imageSize : 'auto' }}
       >
         <img src={imageSrc} alt={`${title} icon`} />
