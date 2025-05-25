@@ -121,18 +121,16 @@ const SearchInput = styled.input`
 
 const SearchResults = styled.div`
   position: absolute;
-  top: 45px;
+  top: 40px;
   right: 0;
   background: var(--background);
   color: var(--text);
-  border: 1px solid var(--border-color);
   border-radius: 4px;
-  margin-top: 5px;
   max-height: 400px;
   overflow-y: auto;
   z-index: 10;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 350px;
+  width: 398px;
   
   @media (max-width: 768px) {
     top: 40px;

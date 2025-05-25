@@ -188,6 +188,10 @@ const SidebarContent = styled.div`
   @media (max-width: 992px) {
     height: 100%; /* Full height on mobile/tablet */
   }
+  
+  @media (max-width: 576px) {
+    margin-top: 10px;
+  }
 `;
 
 
@@ -277,10 +281,10 @@ const NavGroupContent = styled.div`
   overflow: hidden;
   transition: max-height var(--transition-speed) ease;
   margin: 0 0.3rem 0.2rem 0.8rem;
-  background-color: ${props => props.isOpen ? 'var(--sidebar-submenu-bg)' : 'transparent'};
   transition: max-height var(--transition-speed) ease, background-color var(--transition-speed) ease;
-  border-radius: 8px;
   padding: ${props => props.isOpen ? '0.2rem 0' : '0'};
+  border-left: 1px solid #e4e4e4;
+  margin-left: 1rem !important;
   
   /* Styling for nested content */
   &.course-content {

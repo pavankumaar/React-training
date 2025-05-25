@@ -15,13 +15,11 @@ const BreadcrumbContainer = styled.div`
   @media (max-width: 768px) {
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
-    padding: 0.7rem 0.9rem;
   }
   
   @media (max-width: 576px) {
     font-size: 0.95rem;
     margin-bottom: 0.75rem;
-    padding: 0.7rem 0.8rem;
   }
 `;
 
