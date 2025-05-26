@@ -268,10 +268,15 @@ const getMobileFriendlyName = (name, isMobile) => {
     'Day 3: CSS Advanced': 'Day 3',
     'Day 4: JavaScript Basics': 'Day 4',
     'Day 5: JavaScript Advanced': 'Day 5',
+    'Day 6: DOM Manipulation': 'Day 6',
+    'Day 7: ES6+ Features': 'Day 7',
     'Paragraphs & Text': 'Paragraphs',
     'Styling Forms & Buttons': 'Forms & Buttons',
     'Operators & Conditionals': 'Operators',
-    'Arrays & Objects': 'Arrays'
+    'Arrays & Objects': 'Arrays',
+    'getElementById & querySelector': 'DOM Selectors',
+    'Arrow Functions & Template Literals': 'Arrow Functions',
+    'Destructuring, Spread & Rest': 'Destructuring'
   };
   
   return shortNames[name] || name;
@@ -315,6 +320,8 @@ const Breadcrumb = () => {
     'day3': 'Day 3: CSS Advanced',
     'day4': 'Day 4: JavaScript Basics',
     'day5': 'Day 5: JavaScript Advanced',
+    'day6': 'Day 6: DOM Manipulation',
+    'day7': 'Day 7: ES6+ Features',
     'html-basics': 'HTML Basics',
     'headings': 'Headings',
     'paragraphs-text': 'Paragraphs & Text',
@@ -336,6 +343,12 @@ const Breadcrumb = () => {
     'functions': 'Functions',
     'arrays-objects': 'Arrays & Objects',
     'loops': 'Loops',
+    'getelementbyid-queryselector': 'getElementById & querySelector',
+    'event-handling': 'Event Handling',
+    'modifying-dom': 'Modifying DOM Elements',
+    'arrow-functions-template-literals': 'Arrow Functions & Template Literals',
+    'destructuring-spread-rest': 'Destructuring, Spread & Rest',
+    'array-methods': 'Array Methods',
     'login': 'Login'
   };
 
@@ -371,6 +384,16 @@ const Breadcrumb = () => {
       { path: '/day5/functions', name: 'Functions' },
       { path: '/day5/arrays-objects', name: 'Arrays & Objects' },
       { path: '/day5/loops', name: 'Loops' }
+    ],
+    'day6': [
+      { path: '/day6/getelementbyid-queryselector', name: 'getElementById & querySelector' },
+      { path: '/day6/event-handling', name: 'Event Handling' },
+      { path: '/day6/modifying-dom', name: 'Modifying DOM Elements' }
+    ],
+    'day7': [
+      { path: '/day7/arrow-functions-template-literals', name: 'Arrow Functions & Template Literals' },
+      { path: '/day7/destructuring-spread-rest', name: 'Destructuring, Spread & Rest' },
+      { path: '/day7/array-methods', name: 'Array Methods' }
     ]
   };
 
@@ -380,20 +403,22 @@ const Breadcrumb = () => {
     { path: '/day2', name: 'Day 2: CSS Basics' },
     { path: '/day3', name: 'Day 3: CSS Advanced' },
     { path: '/day4', name: 'Day 4: JavaScript Basics' },
-    { path: '/day5', name: 'Day 5: JavaScript Advanced' }
+    { path: '/day5', name: 'Day 5: JavaScript Advanced' },
+    { path: '/day6', name: 'Day 6: DOM Manipulation' },
+    { path: '/day7', name: 'Day 7: ES6+ Features' }
   ];
 
   // Get dropdown items based on breadcrumb type
   const getDropdownItems = (name, index) => {
     // For day breadcrumbs (day1, day2, etc.), show all days
-    if (index === 0 && name.match(/^day[1-5]$/)) {
+    if (index === 0 && name.match(/^day[1-7]$/)) {
       return {
         header: 'All Days',
         items: allDays
       };
     } 
     // For topic breadcrumbs, show all topics from the same day
-    else if (index === 1 && pathnames[0].match(/^day[1-5]$/)) {
+    else if (index === 1 && pathnames[0].match(/^day[1-7]$/)) {
       const day = pathnames[0]; // e.g., 'day1'
       return {
         header: `${routeNames[day]} Topics`,
@@ -412,12 +437,12 @@ const Breadcrumb = () => {
   // Check if a breadcrumb should have a dropdown
   const shouldHaveDropdown = (name, index) => {
     // Day breadcrumbs (day1, day2, etc.)
-    if (index === 0 && name.match(/^day[1-5]$/)) {
+    if (index === 0 && name.match(/^day[1-7]$/)) {
       return true;
     }
     
     // Topic breadcrumbs (html-basics, css-selectors, etc.) - including the active one
-    if (pathnames[0].match(/^day[1-5]$/) && index === 1) {
+    if (pathnames[0].match(/^day[1-7]$/) && index === 1) {
       return true;
     }
     

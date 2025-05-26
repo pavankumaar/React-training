@@ -378,6 +378,24 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { name: 'Loops', path: '/day5/loops', icon: <FaSyncAlt /> },
       ]
     },
+    {
+      day: 'Day 6',
+      path: '/day6',
+      topics: [
+        { name: 'getElementById, querySelector', path: '/day6/getelementbyid-queryselector', icon: <FaCode /> },
+        { name: 'Event Handling', path: '/day6/event-handling', icon: <FaCodeBranch /> },
+        { name: 'Modifying DOM Elements', path: '/day6/modifying-dom', icon: <FaLayerGroup /> },
+      ]
+    },
+    {
+      day: 'Day 7',
+      path: '/day7',
+      topics: [
+        { name: 'Arrow Functions & Template Literals', path: '/day7/arrow-functions-template-literals', icon: <FaJs /> },
+        { name: 'Destructuring, Spread & Rest', path: '/day7/destructuring-spread-rest', icon: <FaCodeBranch /> },
+        { name: 'Array Methods', path: '/day7/array-methods', icon: <FaDatabase /> },
+      ]
+    },
   ];
   
   // Find the active day based on current location
@@ -408,6 +426,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         return 'JS Fundamentals - Part 1';
       case 'Day 5':
         return 'JS Fundamentals - Part 2';
+      case 'Day 6':
+        return 'DOM Manipulation';
+      case 'Day 7':
+        return 'ES6+ Features';
       default:
         return '';
     }

@@ -111,7 +111,9 @@ const allDays = [
   { path: '/day2', name: 'Day 2: CSS Basics' },
   { path: '/day3', name: 'Day 3: CSS Advanced' },
   { path: '/day4', name: 'Day 4: JavaScript Basics' },
-  { path: '/day5', name: 'Day 5: JavaScript Advanced' }
+  { path: '/day5', name: 'Day 5: JavaScript Advanced' },
+  { path: '/day6', name: 'Day 6: DOM Manipulation' },
+  { path: '/day7', name: 'Day 7: ES6+ Features' }
 ];
 
 const dayTopics = {
@@ -145,6 +147,16 @@ const dayTopics = {
     { path: '/day5/functions', name: 'Functions' },
     { path: '/day5/arrays-objects', name: 'Arrays & Objects' },
     { path: '/day5/loops', name: 'Loops' }
+  ],
+  'day6': [
+    { path: '/day6/getelementbyid-queryselector', name: 'getElementById & querySelector' },
+    { path: '/day6/event-handling', name: 'Event Handling' },
+    { path: '/day6/modifying-dom', name: 'Modifying DOM Elements' }
+  ],
+  'day7': [
+    { path: '/day7/arrow-functions-template-literals', name: 'Arrow Functions & Template Literals' },
+    { path: '/day7/destructuring-spread-rest', name: 'Destructuring, Spread & Rest' },
+    { path: '/day7/array-methods', name: 'Array Methods' }
   ]
 };
 
@@ -170,7 +182,7 @@ const PageNavigation = () => {
   };
   
   // If we're on a day index page (e.g., /day1, /day2)
-  if (pathnames.length === 1 && pathnames[0].match(/^day[1-5]$/)) {
+  if (pathnames.length === 1 && pathnames[0].match(/^day[1-7]$/)) {
     const currentDayIndex = allDays.findIndex(day => day.path === `/${pathnames[0]}`);
     const currentDayName = allDays[currentDayIndex].name;
     
@@ -196,7 +208,7 @@ const PageNavigation = () => {
     }
   }
   // If we're on a topic page (e.g., /day1/html-basics)
-  else if (pathnames.length === 2 && pathnames[0].match(/^day[1-5]$/)) {
+  else if (pathnames.length === 2 && pathnames[0].match(/^day[1-7]$/)) {
     const day = pathnames[0];
     const dayIndex = allDays.findIndex(d => d.path === `/${day}`);
     const currentDayName = allDays[dayIndex].name;

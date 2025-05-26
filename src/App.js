@@ -21,6 +21,8 @@ import Day2IndexPage from './pages/Day2IndexPage';
 import Day3IndexPage from './pages/Day3IndexPage';
 import Day4IndexPage from './pages/Day4IndexPage';
 import Day5IndexPage from './pages/Day5IndexPage';
+import Day6IndexPage from './pages/Day6IndexPage';
+import Day7IndexPage from './pages/Day7IndexPage';
 
 // Day 1 pages
 import HtmlBasics from './days/day1/HtmlBasics';
@@ -52,6 +54,16 @@ import OperatorsConditionals from './days/day4/OperatorsConditionals';
 import Functions from './days/day5/Functions';
 import ArraysObjects from './days/day5/ArraysObjects';
 import Loops from './days/day5/Loops';
+
+// Day 6 pages
+import GetElementQuerySelector from './days/day6/GetElementQuerySelector';
+import EventHandling from './days/day6/EventHandling';
+import ModifyingDOM from './days/day6/ModifyingDOM';
+
+// Day 7 pages
+import ArrowFunctionsTemplateLiterals from './days/day7/ArrowFunctionsTemplateLiterals';
+import DestructuringSpreadRest from './days/day7/DestructuringSpreadRest';
+import ArrayMethods from './days/day7/ArrayMethods';
 
 function App() {
   return (
@@ -87,6 +99,8 @@ function App() {
           <Route path="/day3" element={<ProtectedRoute><Day3IndexPage /></ProtectedRoute>} />
           <Route path="/day4" element={<ProtectedRoute><Day4IndexPage /></ProtectedRoute>} />
           <Route path="/day5" element={<ProtectedRoute><Day5IndexPage /></ProtectedRoute>} />
+          <Route path="/day6" element={<ProtectedRoute><Day6IndexPage /></ProtectedRoute>} />
+          <Route path="/day7" element={<ProtectedRoute><Day7IndexPage /></ProtectedRoute>} />
           
           {/* Day 1 routes */}
           <Route path="/day1/html-basics" element={<ProtectedRoute><HtmlBasics /></ProtectedRoute>} />
@@ -118,6 +132,16 @@ function App() {
           <Route path="/day5/functions" element={<ProtectedRoute><Functions /></ProtectedRoute>} />
           <Route path="/day5/arrays-objects" element={<ProtectedRoute><ArraysObjects /></ProtectedRoute>} />
           <Route path="/day5/loops" element={<ProtectedRoute><Loops /></ProtectedRoute>} />
+          
+          {/* Day 6 routes */}
+          <Route path="/day6/getelementbyid-queryselector" element={<ProtectedRoute><GetElementQuerySelector /></ProtectedRoute>} />
+          <Route path="/day6/event-handling" element={<ProtectedRoute><EventHandling /></ProtectedRoute>} />
+          <Route path="/day6/modifying-dom" element={<ProtectedRoute><ModifyingDOM /></ProtectedRoute>} />
+          
+          {/* Day 7 routes */}
+          <Route path="/day7/arrow-functions-template-literals" element={<ProtectedRoute><ArrowFunctionsTemplateLiterals /></ProtectedRoute>} />
+          <Route path="/day7/destructuring-spread-rest" element={<ProtectedRoute><DestructuringSpreadRest /></ProtectedRoute>} />
+          <Route path="/day7/array-methods" element={<ProtectedRoute><ArrayMethods /></ProtectedRoute>} />
           
           {/* 404 route */}
           <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />

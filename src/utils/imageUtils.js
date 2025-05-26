@@ -30,6 +30,16 @@ const webDevImages = {
   functions: '/images/web-dev/js-icon.svg',
   arraysObjects: '/images/web-dev/js-icon.svg',
   loops: '/images/web-dev/js-icon.svg',
+  
+  // DOM Manipulation topics (Day 6)
+  getelementbyidQueryselector: '/images/web-dev/js-icon.svg',
+  eventHandling: '/images/web-dev/js-icon.svg',
+  modifyingDom: '/images/web-dev/js-icon.svg',
+  
+  // ES6+ Features topics (Day 7)
+  arrowFunctionsTemplateLiterals: '/images/web-dev/js-icon.svg',
+  destructuringSpreadRest: '/images/web-dev/js-icon.svg',
+  arrayMethods: '/images/web-dev/js-icon.svg',
 };
 
 // Default images by day
@@ -39,6 +49,8 @@ const dayDefaultImages = {
   day3: '/images/web-dev/responsive-design.svg',
   day4: '/images/web-dev/js-icon.svg',
   day5: '/images/web-dev/js-icon.svg',
+  day6: '/images/web-dev/js-icon.svg',
+  day7: '/images/web-dev/js-icon.svg',
 };
 
 // Fallback image if no match is found
@@ -96,6 +108,16 @@ export const getRandomWebDevImage = (topicPath) => {
   else if (topic === 'functions') imageKey = 'functions';
   else if (topic === 'arrays-objects') imageKey = 'arraysObjects';
   else if (topic === 'loops') imageKey = 'loops';
+  
+  // DOM Manipulation topics (Day 6)
+  else if (topic === 'getelementbyid-queryselector') imageKey = 'getelementbyidQueryselector';
+  else if (topic === 'event-handling') imageKey = 'eventHandling';
+  else if (topic === 'modifying-dom') imageKey = 'modifyingDom';
+  
+  // ES6+ Features topics (Day 7)
+  else if (topic === 'arrow-functions-template-literals') imageKey = 'arrowFunctionsTemplateLiterals';
+  else if (topic === 'destructuring-spread-rest') imageKey = 'destructuringSpreadRest';
+  else if (topic === 'array-methods') imageKey = 'arrayMethods';
   
   // If we have a direct mapping, use it
   if (imageKey && webDevImages[imageKey]) {

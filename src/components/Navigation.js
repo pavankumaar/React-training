@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 
 const NavContainer = styled.div`
@@ -110,7 +110,7 @@ const PageSubtitle = styled.p`
   }
 `;
 
-const Navigation = ({ indexLink, title, subtitle }) => {  
+const Navigation = ({ prevLink, nextLink, indexLink, title, subtitle }) => {  
   // Determine the appropriate back link
   // If indexLink is provided, use it, otherwise go to the main page
   const backLink = indexLink || '/';

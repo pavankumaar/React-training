@@ -200,7 +200,9 @@ const HomePage = () => {
     day2: [],
     day3: [],
     day4: [],
-    day5: []
+    day5: [],
+    day6: [],
+    day7: []
   });
   
   const [dayStats, setDayStats] = useState({
@@ -208,7 +210,9 @@ const HomePage = () => {
     day2: { completed: 0, total: 5, topics: [] },
     day3: { completed: 0, total: 3, topics: [] },
     day4: { completed: 0, total: 3, topics: [] },
-    day5: { completed: 0, total: 3, topics: [] }
+    day5: { completed: 0, total: 3, topics: [] },
+    day6: { completed: 0, total: 3, topics: [] },
+    day7: { completed: 0, total: 3, topics: [] }
   });
   
   const [loading, setLoading] = useState(true);
@@ -262,7 +266,9 @@ const HomePage = () => {
           day2: response.data.day2 || { completed: 0, total: 5, topics: [] },
           day3: response.data.day3 || { completed: 0, total: 3, topics: [] },
           day4: response.data.day4 || { completed: 0, total: 3, topics: [] },
-          day5: response.data.day5 || { completed: 0, total: 3, topics: [] }
+          day5: response.data.day5 || { completed: 0, total: 3, topics: [] },
+          day6: response.data.day6 || { completed: 0, total: 3, topics: [] },
+          day7: response.data.day7 || { completed: 0, total: 3, topics: [] }
         };
         
         // Save to localStorage cache
@@ -276,7 +282,9 @@ const HomePage = () => {
           day2: completeStats.day2.topics || [],
           day3: completeStats.day3.topics || [],
           day4: completeStats.day4.topics || [],
-          day5: completeStats.day5.topics || []
+          day5: completeStats.day5.topics || [],
+          day6: completeStats.day6.topics || [],
+          day7: completeStats.day7.topics || []
         };
         
         setCompletedTopics(updatedCompletedTopics);
@@ -292,7 +300,9 @@ const HomePage = () => {
             day2: cachedStats.day2.topics || [],
             day3: cachedStats.day3.topics || [],
             day4: cachedStats.day4.topics || [],
-            day5: cachedStats.day5.topics || []
+            day5: cachedStats.day5.topics || [],
+            day6: cachedStats.day6.topics || [],
+            day7: cachedStats.day7.topics || []
           };
           
           setCompletedTopics(updatedCompletedTopics);
@@ -402,6 +412,8 @@ const HomePage = () => {
             <ShimmerCard />
             <ShimmerCard />
             <ShimmerCard />
+            <ShimmerCard />
+            <ShimmerCard />
           </DaysContainer>
         </>
       ) : (
@@ -480,6 +492,34 @@ const HomePage = () => {
             link="/day5"
             completedTopics={completedTopics.day5}
             stats={dayStats.day5}
+          />
+          
+          <DayCard 
+            day={6}
+            title="DOM Manipulation"
+            description="Learn how to interact with and modify the Document Object Model (DOM) using JavaScript."
+            topics={[
+              'getElementById & querySelector',
+              'Event Handling',
+              'Modifying DOM Elements'
+            ]}
+            link="/day6"
+            completedTopics={completedTopics.day6}
+            stats={dayStats.day6}
+          />
+          
+          <DayCard 
+            day={7}
+            title="ES6+ Features"
+            description="Explore modern JavaScript features introduced in ES6 and beyond that make code more concise and powerful."
+            topics={[
+              'Arrow Functions & Template Literals',
+              'Destructuring, Spread & Rest',
+              'Array Methods (map, filter, reduce)'
+            ]}
+            link="/day7"
+            completedTopics={completedTopics.day7}
+            stats={dayStats.day7}
           />
         </DaysContainer>
       )}
